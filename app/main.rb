@@ -2,9 +2,9 @@ require_relative 'player'
 require_relative 'floor'
 
 def tick(args)
-  args.state.player ||= Player.up
-  args.state.starting_position ||= { col: 2, row: 3 }
-  args.state.goal_position ||= { col: 5, row: 6 }
+  args.state.starting_position ||= { col: 4, row: 5, direction: 'up' }
+  # args.state.player ||= Player.up(args)
+  args.state.goal_positions ||= [{ col: 5, row: 6 }, { col: 6, row: 7 }, { col: 9, row: 8 }]
   args.state.player_grid ||= args.state.starting_position.clone
 
   args.state.move_queue ||= []
@@ -12,32 +12,37 @@ def tick(args)
   args.state.direction ||= 'up'
 
   args.state.player_sprites ||= {
-    up: Player.up,
+    up: Player.up(args),
     down: Player.down,
     left: Player.left,
     right: Player.right
   }
+  args.state.player ||= args.state.player_sprites[args.state.direction.to_sym].dup
 
   unless args.state.executing
     display_commands(args)
     args.outputs.labels << { x: 30, y: 40, text: 'Press C to clear queue', size_enum: 7, r: 255, g: 255, b: 255 }
   end
 
-  args.outputs.sprites << Floor.tarp
-  args.outputs.sprites << Floor.laminate
-  args.outputs.sprites << Floor.hardwood
-  args.outputs.sprites << Floor.tiles
-  args.outputs.solids << {
-    x: args.state.goal_position.col * 80,
-    y: args.state.goal_position.row * 80,
-    w: 80,
-    h: 80,
-    r: 0,
-    g: 255,
-    b: 0,
-    a: 100,
-    primitive_marker: :solid
-  }
+  # args.outputs.sprites << Floor.tarp
+  # args.outputs.sprites << Floor.laminate
+  # args.outputs.sprites << Floor.hardwood
+  # args.outputs.sprites << Floor.tiles
+  cover_floor(args, 'tarp')
+
+  args.state.goal_positions.each do |pos|
+    args.outputs.primitives << {
+      x: pos.col * 80,
+      y: pos.row * 80,
+      w: 80,
+      h: 80,
+      r: 0,
+      g: 255,
+      b: 0,
+      a: 100,
+      primitive_marker: :solid
+    }
+  end
   (1..15).each do |i|
     args.outputs.primitives << vertical_line(i, args)
   end
@@ -71,10 +76,15 @@ def tick(args)
     args.state.executing = false
 
     # Check if player reached the goal
-    if args.state.player_grid != args.state.goal_position
-      args.state.player_grid = args.state.starting_position.clone
-      Player.move_direction(args, args.state.direction) # re-render sprite
+    if reached_goal?(args)
+      update_player_position(args)
+      reject_goal(args)
+    else
+      reset_player(args)
+
     end
+    reset_player(args)
+
   end
 end
 
@@ -126,5 +136,43 @@ def command_display(command)
   when 'down'  then '⇩'
   when 'left'  then '⇦'
   when 'right' then '⇨'
+  end
+end
+
+def reset_player(args)
+  args.state.player_grid = args.state.starting_position.clone
+  args.state.direction = args.state.starting_position[:direction]
+
+  sprite = args.state.player_sprites[args.state.direction.to_sym].dup
+  sprite.x = args.state.player_grid.col * 80
+  sprite.y = args.state.player_grid.row * 80
+  args.state.player = sprite
+end
+
+def reached_goal?(args)
+  grid = args.state.player_grid
+  goals = args.state.goal_positions
+  goals.any? { |goal| grid[:col] == goal[:col] && grid[:row] == goal[:row] }
+end
+
+def update_player_position(args)
+  args.state.starting_position = {
+    col: args.state.player_grid[:col],
+    row: args.state.player_grid[:row],
+    direction: args.state.direction
+  }
+end
+
+def reject_goal(args)
+  grid = args.state.player_grid
+  goals = args.state.goal_positions
+  goals.reject! { |goal| grid[:col] == goal[:col] && grid[:row] == goal[:row] }
+end
+
+def cover_floor(args, material = 'tarp')
+  (0..6).each do |row|
+    (0..14).each do |col|
+      args.outputs.sprites << Floor.send(material, row, col)
+    end
   end
 end

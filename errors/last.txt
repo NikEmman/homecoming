@@ -1,19 +1,7 @@
-* EXCEPTION:
-* ERROR - :y= method missing on ~Class~.
-
-#+begin_src ~Class#inspect~
-NIL
-#+end_src ~Class#inspect~
-
-
-
-The method named
-  :y=
-with args
-  [240]
-doesn't exist on [NilClass].
-
-(suggestions above)
+* EXCEPTION: 'tarp': wrong number of arguments (2 for 0)
 ** Backtrace:
-*** app/player.rb:16:in move_direction
-*** app/main.rb:71:in tick
+*** app/floor.rb:4:in tarp
+*** app/main.rb:175:in cover_floor
+*** app/main.rb:174:in cover_floor
+*** app/main.rb:173:in cover_floor
+*** app/main.rb:31:in tick

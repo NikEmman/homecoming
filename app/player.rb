@@ -18,9 +18,10 @@ class Player
       args.state.direction = direction
     end
 
-    def up
-      { x: 0,
-        y: 0,
+    def up(args)
+      grid = args.state.player_grid
+      { x: grid.col * 80,
+        y: grid.row * 82,
         w: 60,
         h: 60,
         path: 'sprites/robot2.png',

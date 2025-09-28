@@ -1,9 +1,9 @@
 # Floorboard tiles class
 class Floor
   class << self
-    def tarp
-      { x: 0,
-        y: 0,
+    def tarp(row = 0, col = 0)
+      { x: row * 200,
+        y: col * 200,
         w: 200,
         h: 200,
         tile_w: 60,
@@ -13,9 +13,9 @@ class Floor
         path: 'sprites/background/topDownHouse_floorsAndWalls.png' }
     end
 
-    def laminate
-      { x: 200,
-        y: 0,
+    def laminate(row = 0, col = 1)
+      { x: row * 200,
+        y: col * 200,
         w: 200,
         h: 200,
         tile_w: 64,
@@ -25,9 +25,9 @@ class Floor
         path: 'sprites/background/topDownHouse_floorsAndWalls.png' }
     end
 
-    def hardwood
-      { x: 400,
-        y: 0,
+    def hardwood(row = 0, col = 2)
+      { x: row * 200,
+        y: col * 200,
         w: 200,
         h: 200,
         tile_w: 61,
@@ -37,9 +37,9 @@ class Floor
         path: 'sprites/background/topDownHouse_floorsAndWalls.png' }
     end
 
-    def tiles
-      { x: 600,
-        y: 0,
+    def tiles(row = 0, col = 3)
+      { x: row * 200,
+        y: col * 200,
         w: 200,
         h: 200,
         tile_w: 62,
