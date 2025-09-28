@@ -1,5 +1,19 @@
-* EXCEPTION: non float value
+* EXCEPTION:
+* ERROR - :y= method missing on ~Class~.
+
+#+begin_src ~Class#inspect~
+NIL
+#+end_src ~Class#inspect~
+
+
+
+The method named
+  :y=
+with args
+  [240]
+doesn't exist on [NilClass].
+
+(suggestions above)
 ** Backtrace:
-*** app/player.rb:87:in inbounds?
-*** app/player.rb:26:in move_direction
-*** app/main.rb:20:in tick
+*** app/player.rb:16:in move_direction
+*** app/main.rb:71:in tick

@@ -2,98 +2,82 @@
 class Player
   class << self
     def move_direction(args, direction)
-      sprites = args.state.player_sprites
-      current = args.state.player
-      # use dup to avoid mutating the original sprite
-      target = sprites[direction.to_sym].dup
-
-      # Copy current position
-      target.x = current.x
-      target.y = current.y
-
-      # Apply movement
+      grid = args.state.player_grid
       case direction
-      when 'up'
-        target.y += target.speed
-      when 'down'
-        target.y -= target.speed
-      when 'left'
-        target.x -= target.speed
-      when 'right'
-        target.x += target.speed
+      when 'up'    then grid.row += 1 if grid.row < 8
+      when 'down'  then grid.row -= 1 if grid.row > 0
+      when 'left'  then grid.col -= 1 if grid.col > 0
+      when 'right' then grid.col += 1 if grid.col < 15
       end
 
-      # Only update if within bounds
-      return unless inbounds?(args, target)
-
-      args.state.player = target
-      args.state.direction = direction
+      # Update sprite position
+      sprite = args.state.player_sprites[direction.to_sym].dup
+      sprite.x = grid.col * 80
+      sprite.y = grid.row * 80
+      args.state.player = sprite
     end
 
     def up
-      { x: 200,
-        y: 300,
-        w: 80,
-        h: 80,
+      { x: 0,
+        y: 0,
+        w: 60,
+        h: 60,
         path: 'sprites/robot2.png',
         tile_w: 64,
         tile_h: 64,
         tile_x: 64,
         tile_y: 0,
-        speed: 10 }
+        speed: 41 }
     end
 
     def down
       { x: 200,
         y: 300,
-        w: 80,
-        h: 80,
+        w: 60,
+        h: 60,
         path: 'sprites/robot2.png',
         tile_w: 64,
         tile_h: 64,
         tile_x: 0,
-        tile_y: 0,
-        speed: 10 }
+        tile_y: 0 }
     end
 
     def left
       { x: 200,
         y: 300,
-        w: 100,
-        h: 100,
+        w: 80,
+        h: 80,
         path: 'sprites/robot.png',
         tile_w: 64,
         tile_h: 64,
         tile_x: 0,
-        tile_y: 64,
-        speed: 10 }
+        tile_y: 64 }
     end
 
     def right
       { x: 200,
         y: 300,
-        w: 100,
-        h: 100,
+        w: 80,
+        h: 80,
         path: 'sprites/robot.png',
         tile_w: 64,
         tile_h: 64,
         tile_x: 0,
-        tile_y: 0,
-        speed: 10 }
+        tile_y: 0 }
     end
 
-    def inbounds?(args, sprite)
-      x = sprite.x
-      y = sprite.y
+    # def inbounds?(args, sprite)
+    #   x = sprite.x
+    #   y = sprite.y
 
-      # This ensures that bounds work, since up and down sprites are smaller than 100x100
-      w = [sprite.w, 100].max
-      h = [sprite.h, 100].max
+    #   # This ensures that bounds work, since up and down sprites are smaller than 80x80
+    #   w = [sprite.w, 80].max
+    #   h = [sprite.h, 80].max
 
-      x >= 0 &&
-        y >= 0 &&
-        x + w <= args.grid.w &&
-        y + h <= args.grid.h
-    end
+    #   x >= 0 &&
+    #     y >= 0 &&
+    #     x + w <= args.grid.w &&
+    #     y + h <= args.grid.h
+    # end
   end
 end
