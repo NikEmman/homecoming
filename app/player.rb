@@ -13,8 +13,9 @@ class Player
       # Update sprite position
       sprite = args.state.player_sprites[direction.to_sym].dup
       sprite.x = grid.col * 80
-      sprite.y = grid.row * 80
+      sprite.y = grid.row * 82
       args.state.player = sprite
+      args.state.direction = direction
     end
 
     def up
@@ -65,19 +66,5 @@ class Player
         tile_x: 0,
         tile_y: 0 }
     end
-
-    # def inbounds?(args, sprite)
-    #   x = sprite.x
-    #   y = sprite.y
-
-    #   # This ensures that bounds work, since up and down sprites are smaller than 80x80
-    #   w = [sprite.w, 80].max
-    #   h = [sprite.h, 80].max
-
-    #   x >= 0 &&
-    #     y >= 0 &&
-    #     x + w <= args.grid.w &&
-    #     y + h <= args.grid.h
-    # end
   end
 end

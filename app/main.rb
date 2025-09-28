@@ -3,9 +3,13 @@ require_relative 'floor'
 
 def tick(args)
   args.state.player ||= Player.up
-  args.state.player_grid ||= { col: 2, row: 3 }
+  args.state.starting_position ||= { col: 2, row: 3 }
+  args.state.goal_position ||= { col: 5, row: 6 }
+  args.state.player_grid ||= args.state.starting_position.clone
+
   args.state.move_queue ||= []
   args.state.executing ||= false
+  args.state.direction ||= 'up'
 
   args.state.player_sprites ||= {
     up: Player.up,
@@ -13,12 +17,27 @@ def tick(args)
     left: Player.left,
     right: Player.right
   }
-  display_commands(args) unless args.state.executing
+
+  unless args.state.executing
+    display_commands(args)
+    args.outputs.labels << { x: 30, y: 40, text: 'Press C to clear queue', size_enum: 7, r: 255, g: 255, b: 255 }
+  end
 
   args.outputs.sprites << Floor.tarp
   args.outputs.sprites << Floor.laminate
   args.outputs.sprites << Floor.hardwood
   args.outputs.sprites << Floor.tiles
+  args.outputs.solids << {
+    x: args.state.goal_position.col * 80,
+    y: args.state.goal_position.row * 80,
+    w: 80,
+    h: 80,
+    r: 0,
+    g: 255,
+    b: 0,
+    a: 100,
+    primitive_marker: :solid
+  }
   (1..15).each do |i|
     args.outputs.primitives << vertical_line(i, args)
   end
@@ -48,8 +67,14 @@ def tick(args)
 
   if args.state.tick_count % 60 == 0 && args.state.move_queue.any?
     Player.move_direction(args, args.state.move_queue.shift)
-  elsif args.state.move_queue.empty?
+  elsif args.state.executing && args.state.move_queue.empty?
     args.state.executing = false
+
+    # Check if player reached the goal
+    if args.state.player_grid != args.state.goal_position
+      args.state.player_grid = args.state.starting_position.clone
+      Player.move_direction(args, args.state.direction) # re-render sprite
+    end
   end
 end
 
