@@ -1,5 +1,6 @@
 require_relative 'player'
 require_relative 'floor'
+require_relative 'furniture'
 
 def tick(args)
   args.state.starting_position ||= { col: 4, row: 5, direction: 'up' }
@@ -21,14 +22,15 @@ def tick(args)
 
   unless args.state.executing
     display_commands(args)
-    args.outputs.labels << { x: 30, y: 40, text: 'Press C to clear queue', size_enum: 7, r: 255, g: 255, b: 255 }
+    diplay_reset_instruction(args)
   end
 
   # args.outputs.sprites << Floor.tarp
   # args.outputs.sprites << Floor.laminate
   # args.outputs.sprites << Floor.hardwood
   # args.outputs.sprites << Floor.tiles
-  cover_floor(args, 'tarp')
+  cover_floor(args, 'hardwood')
+  args.outputs.sprites << Furniture.sofa(0, 0)
 
   args.state.goal_positions.each do |pos|
     args.outputs.primitives << {
@@ -39,7 +41,7 @@ def tick(args)
       r: 0,
       g: 255,
       b: 0,
-      a: 100,
+      a: 100 + 50 * Math.sin(args.state.tick_count / 20.0),
       primitive_marker: :solid
     }
   end
@@ -114,6 +116,13 @@ def horizontal_line(row, args)
     a: 128,
     primitive_marker: :solid
   }
+end
+
+def diplay_reset_instruction(args)
+  return if args.state.move_queue.empty?
+
+  args.outputs.labels << { x: 30, y: 40, text: 'Press C to clear queue', size_enum: 7, r: 255, g: 255,
+                           b: 255 }
 end
 
 def display_commands(args)

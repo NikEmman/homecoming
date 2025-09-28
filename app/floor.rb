@@ -31,7 +31,7 @@ class Floor
         w: 200,
         h: 200,
         tile_w: 61,
-        tile_h: 47,
+        tile_h: 46,
         tile_x: 17,
         tile_y: 81,
         path: 'sprites/background/topDownHouse_floorsAndWalls.png' }
