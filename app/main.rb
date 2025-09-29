@@ -12,6 +12,7 @@ def tick(args)
   args.state.executing ||= false
   args.state.direction ||= 'up'
   args.state.frame_delay ||= 60
+  args.state.missed_goal ||= false
 
   args.state.player_sprites ||= {
     up: Player.up(args),
@@ -26,12 +27,11 @@ def tick(args)
   if args.state.reset_at_tick && args.state.tick_count >= args.state.reset_at_tick
     reset_player(args)
     args.state.reset_at_tick = nil
-    return # Exit tick early to ensure no other logic runs this frame after reset
   end
 
   unless args.state.executing
     display_commands(args)
-    diplay_reset_instruction(args)
+    display_reset_instruction(args)
   end
 
   # args.outputs.sprites << Floor.tarp
@@ -77,15 +77,17 @@ def tick(args)
     args.state.reset_at_tick = nil
   end
 
+  display_missed_goal(args) if args.state.missed_goal
+
   # execute queued moves by pressing 'e'
   args.state.executing = true if args.inputs.keyboard.key_down.e
 
-  if args.inputs.keyboard.key_down.d
+  if args.inputs.keyboard.key_down.d && !args.state.executing
     args.state.move_queue.pop
     args.state.executing = false
   end
   # clear queued moves by pressing 'c'
-  if args.inputs.keyboard.key_down.c
+  if args.inputs.keyboard.key_down.c !args.state.executing
     args.state.move_queue.clear
     args.state.executing = false
   end
@@ -111,6 +113,7 @@ def tick(args)
       update_player_position(args)
       reject_goal(args)
     else
+      args.state.missed_goal = true
       args.state.reset_at_tick = args.state.tick_count + 120 # Schedule reset in 2 seconds
 
     end
@@ -146,11 +149,16 @@ def horizontal_line(row, args)
   }
 end
 
-def diplay_reset_instruction(args)
+def display_reset_instruction(args)
   return if args.state.move_queue.empty?
 
   args.outputs.labels << { x: 30, y: 40, text: 'Press C to clear queue, or D to delete last step', size_enum: 7, r: 255, g: 255,
                            b: 255 }
+end
+
+def display_missed_goal(args)
+  args.outputs.labels << { x: 100, y: 700, text: 'Missed the goal! Resetting position...', size_enum: 20, r: 255, g: 0,
+                           b: 0 }
 end
 
 def display_commands(args)
@@ -184,6 +192,7 @@ def reset_player(args)
   sprite.x = args.state.player_grid.col * 80
   sprite.y = args.state.player_grid.row * 80
   args.state.player = sprite
+  args.state.missed_goal = false
 end
 
 def reached_goal?(args)
