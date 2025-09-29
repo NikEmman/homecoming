@@ -30,7 +30,15 @@ def tick(args)
   # args.outputs.sprites << Floor.hardwood
   # args.outputs.sprites << Floor.tiles
   cover_floor(args, 'hardwood')
-  args.outputs.sprites << Furniture.sofa(0, 0)
+  args.outputs.sprites << Furniture.sofa_back(0.0, 0, 2)
+  args.outputs.sprites << Furniture.sofa_front(6.5, 5)
+  args.outputs.sprites << Furniture.sofa_left(10, 3.5, 2)
+  args.outputs.sprites << Furniture.sofa_right(8, 3.5)
+  args.outputs.sprites << Furniture.fridge(8, 1.5, 1)
+  args.outputs.sprites << Furniture.oven(9, 3, 2)
+  args.outputs.sprites << Furniture.single_sofa_front(5, 5, 2)
+  args.outputs.sprites << Furniture.single_sofa_back(7, 5)
+  args.outputs.sprites << Furniture.single_sofa_left(9, 5)
 
   args.state.goal_positions.each do |pos|
     args.outputs.primitives << {
