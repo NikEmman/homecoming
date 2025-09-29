@@ -3,7 +3,7 @@ require_relative 'floor'
 require_relative 'furniture'
 
 def tick(args)
-  args.state.starting_position ||= { col: 4, row: 5, direction: 'up' }
+  args.state.starting_position ||= { col: 3, row: 5, direction: 'up' }
   # args.state.player ||= Player.up(args)
   args.state.goal_positions ||= [{ col: 5, row: 6 }, { col: 6, row: 7 }, { col: 9, row: 8 }]
   args.state.player_grid ||= args.state.starting_position.clone
@@ -11,6 +11,7 @@ def tick(args)
   args.state.move_queue ||= []
   args.state.executing ||= false
   args.state.direction ||= 'up'
+  args.state.frame_delay ||= 60
 
   args.state.player_sprites ||= {
     up: Player.up(args),
@@ -19,6 +20,14 @@ def tick(args)
     right: Player.right
   }
   args.state.player ||= args.state.player_sprites[args.state.direction.to_sym].dup
+  args.state.reset_at_tick ||= nil
+
+  # execute scheduled reset
+  if args.state.reset_at_tick && args.state.tick_count >= args.state.reset_at_tick
+    reset_player(args)
+    args.state.reset_at_tick = nil
+    return # Exit tick early to ensure no other logic runs this frame after reset
+  end
 
   unless args.state.executing
     display_commands(args)
@@ -61,8 +70,20 @@ def tick(args)
   end
 
   args.outputs.sprites << args.state.player
+
+  # execute scheduled reset
+  if args.state.reset_at_tick && args.state.tick_count >= args.state.reset_at_tick
+    reset_player(args)
+    args.state.reset_at_tick = nil
+  end
+
   # execute queued moves by pressing 'e'
   args.state.executing = true if args.inputs.keyboard.key_down.e
+
+  if args.inputs.keyboard.key_down.d
+    args.state.move_queue.pop
+    args.state.executing = false
+  end
   # clear queued moves by pressing 'c'
   if args.inputs.keyboard.key_down.c
     args.state.move_queue.clear
@@ -80,7 +101,7 @@ def tick(args)
   # process move queue
   return unless args.state.executing
 
-  if args.state.tick_count % 60 == 0 && args.state.move_queue.any?
+  if args.state.tick_count % args.state.frame_delay == 0 && args.state.move_queue.any?
     Player.move_direction(args, args.state.move_queue.shift)
   elsif args.state.executing && args.state.move_queue.empty?
     args.state.executing = false
@@ -90,10 +111,9 @@ def tick(args)
       update_player_position(args)
       reject_goal(args)
     else
-      reset_player(args)
+      args.state.reset_at_tick = args.state.tick_count + 120 # Schedule reset in 2 seconds
 
     end
-    reset_player(args)
 
   end
 end
@@ -129,7 +149,7 @@ end
 def diplay_reset_instruction(args)
   return if args.state.move_queue.empty?
 
-  args.outputs.labels << { x: 30, y: 40, text: 'Press C to clear queue', size_enum: 7, r: 255, g: 255,
+  args.outputs.labels << { x: 30, y: 40, text: 'Press C to clear queue, or D to delete last step', size_enum: 7, r: 255, g: 255,
                            b: 255 }
 end
 
