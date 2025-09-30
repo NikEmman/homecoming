@@ -1,9 +1,9 @@
 # Floorboard tiles class
 class Furniture
   class << self
-    def sofa_back(row = 0, col = 0, variant = 1)
-      { x: row * 160,
-        y: col * 81,
+    def sofa_back(row = 0, col = 0, variant = 1, args)
+      { x: row * args.state.grid_box.w,
+        y: col * args.state.grid_box.h,
         w: 158,
         h: 79,
         tile_w: 53,
@@ -13,9 +13,9 @@ class Furniture
         path: "sprites/background/TopDownHouse_FurnitureState#{variant}.png" }
     end
 
-    def sofa_front(row = 0, col = 0, variant = 1)
-      { x: row * 160,
-        y: col * 81,
+    def sofa_front(row = 0, col = 0, variant = 1, args)
+      { x: row * args.state.grid_box.w,
+        y: col * args.state.grid_box.h,
         w: 158,
         h: 79,
         tile_w: 53,
@@ -25,9 +25,9 @@ class Furniture
         path: "sprites/background/TopDownHouse_FurnitureState#{variant}.png" }
     end
 
-    def sofa_right(row = 0, col = 0, variant = 1)
-      { x: row * 80,
-        y: col * 160,
+    def sofa_right(row = 0, col = 0, variant = 1, args)
+      { x: row * args.state.grid_box.w,
+        y: col * args.state.grid_box.h,
         w: 79,
         h: 159,
         tile_w: 34,
@@ -37,9 +37,9 @@ class Furniture
         path: "sprites/background/TopDownHouse_FurnitureState#{variant}.png" }
     end
 
-    def sofa_left(row = 0, col = 0, variant = 1)
-      { x: row * 80,
-        y: col * 160,
+    def sofa_left(row = 0, col = 0, variant = 1, args)
+      { x: row * args.state.grid_box.w,
+        y: col * args.state.grid_box.h,
         w: 79,
         h: 159,
         tile_w: 34,
@@ -50,9 +50,9 @@ class Furniture
         path: "sprites/background/TopDownHouse_FurnitureState#{variant}.png" }
     end
 
-    def fridge(row = 0, col = 0, variant = 1)
-      { x: row * 80,
-        y: col * 160,
+    def fridge(row = 0, col = 0, variant = 1, args)
+      { x: row * args.state.grid_box.w,
+        y: col * args.state.grid_box.h,
         w: 79,
         h: 159,
         tile_w: 34,
@@ -62,9 +62,9 @@ class Furniture
         path: "sprites/background/TopDownHouse_FurnitureState#{variant}.png" }
     end
 
-    def oven(row = 0, col = 0, variant = 1)
-      { x: row * 80,
-        y: col * 80,
+    def oven(row = 0, col = 0, variant = 1, args)
+      { x: row * args.state.grid_box.w,
+        y: col * args.state.grid_box.h,
         w: 79,
         h: 119,
         tile_w: 34,
@@ -74,9 +74,9 @@ class Furniture
         path: "sprites/background/TopDownHouse_FurnitureState#{variant}.png" }
     end
 
-    def single_sofa_front(row = 0, col = 0, variant = 1)
-      { x: row * 80,
-        y: col * 81,
+    def single_sofa_front(row = 0, col = 0, variant = 1, args)
+      { x: row * args.state.grid_box.w,
+        y: col * args.state.grid_box.h,
         w: 79,
         h: 79,
         tile_w: 34,
@@ -86,9 +86,9 @@ class Furniture
         path: "sprites/background/TopDownHouse_FurnitureState#{variant}.png" }
     end
 
-    def single_sofa_back(row = 0, col = 0, variant = 1)
-      { x: row * 80,
-        y: col * 81,
+    def single_sofa_back(row = 0, col = 0, variant = 1, args)
+      { x: row * args.state.grid_box.w,
+        y: col * args.state.grid_box.h,
         w: 79,
         h: 79,
         tile_w: 34,
@@ -98,9 +98,9 @@ class Furniture
         path: "sprites/background/TopDownHouse_FurnitureState#{variant}.png" }
     end
 
-    def single_sofa_right(row = 0, col = 0, variant = 1)
-      { x: row * 80,
-        y: col * 81,
+    def single_sofa_right(row = 0, col = 0, variant = 1, args)
+      { x: row * args.state.grid_box.w,
+        y: col * args.state.grid_box.h,
         w: 79,
         h: 79,
         tile_w: 34,
@@ -110,9 +110,9 @@ class Furniture
         path: "sprites/background/TopDownHouse_FurnitureState#{variant}.png" }
     end
 
-    def single_sofa_left(row = 0, col = 0, variant = 1)
-      { x: row * 80,
-        y: col * 81,
+    def single_sofa_left(row = 0, col = 0, variant = 1, args)
+      { x: row * args.state.grid_box.w,
+        y: col * args.state.grid_box.h,
         w: 79,
         h: 79,
         tile_w: 34,

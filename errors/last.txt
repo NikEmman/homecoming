@@ -1,4 +1,16 @@
-* EXCEPTION: 'down': wrong number of arguments (0 for 1)
+* EXCEPTION:
+* ERROR:
+** method_missing: state
+** instance:       2
+** on class:       Integer
+** with modules:   [NumericDeprecated, ValueType, Comparable, Kernel]
+** with values:    2
+** given args:     [[]]
+** exception:      can't define singleton
+** backtrace:
+app/furniture.rb:5:in sofa_back
+app/main.rb:48:in tick
+
 ** Backtrace:
-*** app/player.rb:35:in down
-*** app/main.rb:25:in tick
+*** app/furniture.rb:5:in sofa_back
+*** app/main.rb:48:in tick

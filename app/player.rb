@@ -5,8 +5,8 @@ class Player
       grid = args.state.player_grid
       case direction
       when 'up'    then grid.row += 1 if grid.row < args.state.grid_total.h
-      when 'down'  then grid.row -= 1 if grid.row < 0
-      when 'left'  then grid.col -= 1 if grid.col < 0
+      when 'down'  then grid.row -= 1 if grid.row > 0
+      when 'left'  then grid.col -= 1 if grid.col > 0
       when 'right' then grid.col += 1 if grid.col < args.state.grid_total.w
       end
 
@@ -49,8 +49,8 @@ class Player
       grid = args.state.player_grid
       { x: grid.col * args.state.grid_box.h,
         y: grid.row * args.state.grid_box.w,
-        w: 80,
-        h: 80,
+        w: 75,
+        h: 75,
         path: 'sprites/robot.png',
         tile_w: 64,
         tile_h: 64,
@@ -62,8 +62,8 @@ class Player
       grid = args.state.player_grid
       { x: grid.col * args.state.grid_box.h,
         y: grid.row * args.state.grid_box.w,
-        w: 80,
-        h: 80,
+        w: 75,
+        h: 75,
         path: 'sprites/robot.png',
         tile_w: 64,
         tile_h: 64,
