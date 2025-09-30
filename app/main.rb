@@ -14,11 +14,17 @@ def tick(args)
   args.state.frame_delay ||= 60
   args.state.missed_goal ||= false
 
+  # custom grid size for grid and grid boxes
+  args.state.grid_box.h ||= 80
+  args.state.grid_box.w ||= 80
+  args.state.grid_total.h ||= 9
+  args.state.grid_total.w ||= 16
+
   args.state.player_sprites ||= {
     up: Player.up(args),
-    down: Player.down,
-    left: Player.left,
-    right: Player.right
+    down: Player.down(args),
+    left: Player.left(args),
+    right: Player.right(args)
   }
   args.state.player ||= args.state.player_sprites[args.state.direction.to_sym].dup
   args.state.reset_at_tick ||= nil
@@ -62,10 +68,10 @@ def tick(args)
       primitive_marker: :solid
     }
   end
-  (1..15).each do |i|
+  (1..args.state.grid_total.w).each do |i|
     args.outputs.primitives << vertical_line(i, args)
   end
-  (1..9).each do |i|
+  (1..args.state.grid_total.h).each do |i|
     args.outputs.primitives << horizontal_line(i, args)
   end
 
@@ -123,10 +129,10 @@ end
 
 def vertical_line(column, args)
   {
-    x: column * 80,
+    x: column * args.state.grid_box.h,
     y: 0,
     w: 2,
-    h: args.grid.h,
+    h: args.state.grid_total.w * args.state.grid_box.w,
     r: 92,
     g: 120,
     b: 230,
@@ -138,8 +144,8 @@ end
 def horizontal_line(row, args)
   {
     x: 0,
-    y: row * 80,
-    w: args.grid.w,
+    y: row * args.state.grid_box.h,
+    w: args.state.grid_total.w * args.state.grid_box.w,
     h: 2,
     r: 92,
     g: 120,
