@@ -4,10 +4,10 @@ class Player
     def move_direction(args, direction)
       grid = args.state.player_grid
       case direction
-      when 'up'    then grid.row += 1 if grid.row < args.state.grid_total.h
+      when 'up'    then grid.row += 1 if grid.row < args.state.grid_total.h - 1
       when 'down'  then grid.row -= 1 if grid.row > 0
       when 'left'  then grid.col -= 1 if grid.col > 0
-      when 'right' then grid.col += 1 if grid.col < args.state.grid_total.w
+      when 'right' then grid.col += 1 if grid.col < args.state.grid_total.w - 1
       end
 
       # Update sprite position

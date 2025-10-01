@@ -13,6 +13,7 @@ def tick(args)
   args.state.direction ||= 'up'
   args.state.frame_delay ||= 60
   args.state.missed_goal ||= false
+  args.state.blocked_route ||= false
 
   # custom grid size for grid and grid boxes
   args.state.grid_box.h ||= 80
@@ -23,12 +24,12 @@ def tick(args)
   args.state.furniture ||= [Furniture.sofa_back(1, 0, 2, args),
                             Furniture.sofa_front(6, 5, args),
                             Furniture.sofa_left(10, 3, 2, args),
-                            Furniture.sofa_right(8, 3, args),
-                            Furniture.fridge(8, 1, 1, args),
+                            # Furniture.sofa_right(8, 3, args),
+                            # Furniture.fridge(8, 1, 1, args),
                             Furniture.oven(9, 3, 2, args),
                             Furniture.single_sofa_front(5, 5, 2, args),
-                            Furniture.single_sofa_back(10, 5, args),
-                            Furniture.single_sofa_left(9, 5, args)]
+                            Furniture.single_sofa_back(10, 5, args)]
+  # Furniture.single_sofa_left(9, 5, args)]
 
   args.state.player_sprites ||= {
     up: Player.up(args),
@@ -109,10 +110,11 @@ def tick(args)
     direction = args.state.move_queue.first
     next_pos = next_grid_position(args.state.player_grid, direction)
 
-    if blocked?(args, next_pos)
+    if blocked?(args, next_pos, direction) # Pass direction
       args.state.missed_goal = true
+      args.state.blocked_route = true
       args.state.reset_at_tick = args.state.tick_count + 120 # Schedule reset in 2 seconds
-      args.state.move_queue.shift # discard blocked move
+      args.state.move_queue.clear # discard the rest of the moves
     else
       Player.move_direction(args, args.state.move_queue.shift)
     end
@@ -135,10 +137,10 @@ end
 
 def vertical_line(column, args)
   {
-    x: column * args.state.grid_box.h,
+    x: column * args.state.grid_box.w,
     y: 0,
     w: 2,
-    h: args.state.grid_total.w * args.state.grid_box.w,
+    h: args.state.grid_total.h * args.state.grid_box.h,
     r: 92,
     g: 120,
     b: 230,
@@ -169,7 +171,12 @@ def display_reset_instruction(args)
 end
 
 def display_missed_goal(args)
-  args.outputs.labels << { x: 100, y: 700, text: 'Missed the goal! Resetting position...', size_enum: 20, r: 255, g: 0,
+  text = if args.state.blocked_route
+           'Error, the way is shut! Resetting position...'
+         else
+           'Missed the goal! Resetting position...'
+         end
+  args.outputs.labels << { x: 50, y: 700, text: text, size_enum: 20, r: 255, g: 0,
                            b: 0 }
 end
 
@@ -201,10 +208,11 @@ def reset_player(args)
   args.state.direction = args.state.starting_position[:direction]
 
   sprite = args.state.player_sprites[args.state.direction.to_sym].dup
-  sprite.x = args.state.player_grid.col * args.state.grid_box.w
-  sprite.y = args.state.player_grid.row * args.state.grid_box.h
+  sprite.x = args.state.player_grid[:col] * args.state.grid_box.w
+  sprite.y = args.state.player_grid[:row] * args.state.grid_box.h
   args.state.player = sprite
   args.state.missed_goal = false
+  args.state.blocked_route = false
 end
 
 def reached_goal?(args)
@@ -241,16 +249,16 @@ def display_furniture(args)
   end
 end
 
-def blocked?(args, next_pos)
+def blocked?(args, next_pos, direction)
   # Grid bounds
   return true if outside_grid_x?(args, next_pos) || outside_grid_y?(args, next_pos)
 
-  # Sprite collision (optional)
-  player_sprite = args.state.player
-  furniture_sprites = args.outputs.sprites.select { |s| s[:path].include?('FurnitureState') }
-  return true if furniture_sprites.any? { |f| args.geometry.intersect_rect?(player_sprite, f) }
+  # Sprite collision
+  player_sprite = args.state.player_sprites[direction.to_sym].dup
+  player_sprite.x = next_pos[:col] * args.state.grid_box.w  # col for x (horizontal)
+  player_sprite.y = next_pos[:row] * args.state.grid_box.h  # row for y (vertical)
 
-  false
+  args.state.furniture.any? { |f| args.geometry.intersect_rect?(player_sprite, f) }
 end
 
 def outside_grid_x?(args, next_pos)

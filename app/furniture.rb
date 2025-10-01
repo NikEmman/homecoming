@@ -1,9 +1,9 @@
 # Floorboard tiles class
 class Furniture
   class << self
-    def sofa_back(row = 0, col = 0, variant = 1, args)
-      { x: row * args.state.grid_box.w,
-        y: col * args.state.grid_box.h,
+    def sofa_back(col = 0, row = 0, variant = 1, args)
+      { x: col * args.state.grid_box.w,
+        y: row * args.state.grid_box.h,
         w: 158,
         h: 79,
         tile_w: 53,
@@ -13,9 +13,9 @@ class Furniture
         path: "sprites/background/TopDownHouse_FurnitureState#{variant}.png" }
     end
 
-    def sofa_front(row = 0, col = 0, variant = 1, args)
-      { x: row * args.state.grid_box.w,
-        y: col * args.state.grid_box.h,
+    def sofa_front(col = 0, row = 0, variant = 1, args)
+      { x: col * args.state.grid_box.w,
+        y: row * args.state.grid_box.h,
         w: 158,
         h: 79,
         tile_w: 53,
@@ -25,9 +25,9 @@ class Furniture
         path: "sprites/background/TopDownHouse_FurnitureState#{variant}.png" }
     end
 
-    def sofa_right(row = 0, col = 0, variant = 1, args)
-      { x: row * args.state.grid_box.w,
-        y: col * args.state.grid_box.h,
+    def sofa_right(col = 0, row = 0, variant = 1, args)
+      { x: col * args.state.grid_box.w,
+        y: row * args.state.grid_box.h,
         w: 79,
         h: 159,
         tile_w: 34,
@@ -37,9 +37,9 @@ class Furniture
         path: "sprites/background/TopDownHouse_FurnitureState#{variant}.png" }
     end
 
-    def sofa_left(row = 0, col = 0, variant = 1, args)
-      { x: row * args.state.grid_box.w,
-        y: col * args.state.grid_box.h,
+    def sofa_left(col = 0, row = 0, variant = 1, args)
+      { x: col * args.state.grid_box.w,
+        y: row * args.state.grid_box.h,
         w: 79,
         h: 159,
         tile_w: 34,
@@ -50,9 +50,9 @@ class Furniture
         path: "sprites/background/TopDownHouse_FurnitureState#{variant}.png" }
     end
 
-    def fridge(row = 0, col = 0, variant = 1, args)
-      { x: row * args.state.grid_box.w,
-        y: col * args.state.grid_box.h,
+    def fridge(col = 0, row = 0, variant = 1, args)
+      { x: col * args.state.grid_box.w,
+        y: row * args.state.grid_box.h,
         w: 79,
         h: 159,
         tile_w: 34,
@@ -62,9 +62,9 @@ class Furniture
         path: "sprites/background/TopDownHouse_FurnitureState#{variant}.png" }
     end
 
-    def oven(row = 0, col = 0, variant = 1, args)
-      { x: row * args.state.grid_box.w,
-        y: col * args.state.grid_box.h,
+    def oven(col = 0, row = 0, variant = 1, args)
+      { x: col * args.state.grid_box.w,
+        y: row * args.state.grid_box.h,
         w: 79,
         h: 119,
         tile_w: 34,
