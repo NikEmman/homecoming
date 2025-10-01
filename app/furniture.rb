@@ -1,7 +1,7 @@
 # Floorboard tiles class
 class Furniture
   class << self
-    def sofa_back(col = 0, row = 0, variant = 1, args)
+    def sofa_back(args, col = 0, row = 0, variant = 1)
       { x: col * args.state.grid_box.w,
         y: row * args.state.grid_box.h,
         w: 158,
@@ -13,7 +13,7 @@ class Furniture
         path: "sprites/background/TopDownHouse_FurnitureState#{variant}.png" }
     end
 
-    def sofa_front(col = 0, row = 0, variant = 1, args)
+    def sofa_front(args, col = 0, row = 0, variant = 1)
       { x: col * args.state.grid_box.w,
         y: row * args.state.grid_box.h,
         w: 158,
@@ -25,7 +25,7 @@ class Furniture
         path: "sprites/background/TopDownHouse_FurnitureState#{variant}.png" }
     end
 
-    def sofa_right(col = 0, row = 0, variant = 1, args)
+    def sofa_right(args, col = 0, row = 0, variant = 1)
       { x: col * args.state.grid_box.w,
         y: row * args.state.grid_box.h,
         w: 79,
@@ -37,7 +37,7 @@ class Furniture
         path: "sprites/background/TopDownHouse_FurnitureState#{variant}.png" }
     end
 
-    def sofa_left(col = 0, row = 0, variant = 1, args)
+    def sofa_left(args, col = 0, row = 0, variant = 1)
       { x: col * args.state.grid_box.w,
         y: row * args.state.grid_box.h,
         w: 79,
@@ -50,7 +50,7 @@ class Furniture
         path: "sprites/background/TopDownHouse_FurnitureState#{variant}.png" }
     end
 
-    def fridge(col = 0, row = 0, variant = 1, args)
+    def fridge(args, col = 0, row = 0, variant = 1)
       { x: col * args.state.grid_box.w,
         y: row * args.state.grid_box.h,
         w: 79,
@@ -62,9 +62,9 @@ class Furniture
         path: "sprites/background/TopDownHouse_FurnitureState#{variant}.png" }
     end
 
-    def oven(col = 0, row = 0, variant = 1, args)
+    def oven(args, col = 0, row = 0, variant = 1)
       { x: col * args.state.grid_box.w,
-        y: row * args.state.grid_box.h,
+        y: (row * args.state.grid_box.h) + (args.state.grid_box.h / 4),
         w: 79,
         h: 119,
         tile_w: 34,
@@ -74,7 +74,7 @@ class Furniture
         path: "sprites/background/TopDownHouse_FurnitureState#{variant}.png" }
     end
 
-    def single_sofa_front(row = 0, col = 0, variant = 1, args)
+    def single_sofa_front(args, row = 0, col = 0, variant = 1)
       { x: row * args.state.grid_box.w,
         y: col * args.state.grid_box.h,
         w: 79,
@@ -86,7 +86,7 @@ class Furniture
         path: "sprites/background/TopDownHouse_FurnitureState#{variant}.png" }
     end
 
-    def single_sofa_back(row = 0, col = 0, variant = 1, args)
+    def single_sofa_back(args, row = 0, col = 0, variant = 1)
       { x: row * args.state.grid_box.w,
         y: col * args.state.grid_box.h,
         w: 79,
@@ -98,7 +98,7 @@ class Furniture
         path: "sprites/background/TopDownHouse_FurnitureState#{variant}.png" }
     end
 
-    def single_sofa_right(row = 0, col = 0, variant = 1, args)
+    def single_sofa_right(args, row = 0, col = 0, variant = 1)
       { x: row * args.state.grid_box.w,
         y: col * args.state.grid_box.h,
         w: 79,
@@ -110,7 +110,7 @@ class Furniture
         path: "sprites/background/TopDownHouse_FurnitureState#{variant}.png" }
     end
 
-    def single_sofa_left(row = 0, col = 0, variant = 1, args)
+    def single_sofa_left(args, row = 0, col = 0, variant = 1)
       { x: row * args.state.grid_box.w,
         y: col * args.state.grid_box.h,
         w: 79,

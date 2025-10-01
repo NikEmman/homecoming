@@ -14,6 +14,7 @@ def tick(args)
   args.state.frame_delay ||= 60
   args.state.missed_goal ||= false
   args.state.blocked_route ||= false
+  args.state.in_error_state ||= false
 
   # custom grid size for grid and grid boxes
   args.state.grid_box.h ||= 80
@@ -21,15 +22,15 @@ def tick(args)
   args.state.grid_total.h ||= 9
   args.state.grid_total.w ||= 16
 
-  args.state.furniture ||= [Furniture.sofa_back(1, 0, 2, args),
-                            Furniture.sofa_front(6, 5, args),
-                            Furniture.sofa_left(10, 3, 2, args),
-                            # Furniture.sofa_right(8, 3, args),
-                            # Furniture.fridge(8, 1, 1, args),
-                            Furniture.oven(9, 3, 2, args),
-                            Furniture.single_sofa_front(5, 5, 2, args),
-                            Furniture.single_sofa_back(10, 5, args)]
-  # Furniture.single_sofa_left(9, 5, args)]
+  args.state.furniture ||= [Furniture.sofa_back(args, 1, 0, 2),
+                            Furniture.sofa_front(args, 6, 5),
+                            Furniture.sofa_left(args, 10, 3, 2),
+                            Furniture.sofa_right(args, 8, 3),
+                            Furniture.fridge(args, 8, 1, 1),
+                            Furniture.oven(args, 9, 3, 2),
+                            Furniture.single_sofa_front(args, 5, 5, 2),
+                            Furniture.single_sofa_back(args,  10, 5),
+                            Furniture.single_sofa_left(args,  9, 5)]
 
   args.state.player_sprites ||= {
     up: Player.up(args),
@@ -40,7 +41,7 @@ def tick(args)
   args.state.player ||= args.state.player_sprites[args.state.direction.to_sym].dup
   args.state.reset_at_tick ||= nil
 
-  unless args.state.executing
+  unless args.state.executing || args.state.in_error_state
     display_commands(args)
     display_reset_instruction(args)
   end
@@ -51,10 +52,10 @@ def tick(args)
 
   args.state.goal_positions.each do |pos|
     args.outputs.primitives << {
-      x: pos.col * 80,
-      y: pos.row * 80,
-      w: 80,
-      h: 80,
+      x: pos.col * args.state.grid_box.w,
+      y: pos.row * args.state.grid_box.w,
+      w: args.state.grid_box.w,
+      h: args.state.grid_box.h,
       r: 0,
       g: 255,
       b: 0,
@@ -82,18 +83,18 @@ def tick(args)
   # execute queued moves by pressing 'e'
   args.state.executing = true if args.inputs.keyboard.key_down.e
 
-  if args.inputs.keyboard.key_down.d && !args.state.executing
+  if args.inputs.keyboard.key_down.d && !args.state.executing && !args.state.in_error_state
     args.state.move_queue.pop
     args.state.executing = false
   end
   # clear queued moves by pressing 'c'
-  if args.inputs.keyboard.key_down.c !args.state.executing
+  if args.inputs.keyboard.key_down.c && !args.state.executing && !args.state.in_error_state
     args.state.move_queue.clear
     args.state.executing = false
   end
 
   # queue moves with arrow keys
-  unless args.state.executing
+  unless args.state.executing || args.state.in_error_state
     args.state.move_queue << 'up' if args.inputs.keyboard.key_down.up
     args.state.move_queue << 'down'  if args.inputs.keyboard.key_down.down
     args.state.move_queue << 'left'  if args.inputs.keyboard.key_down.left
@@ -113,6 +114,7 @@ def tick(args)
     if blocked?(args, next_pos, direction) # Pass direction
       args.state.missed_goal = true
       args.state.blocked_route = true
+      args.state.in_error_state = true
       args.state.reset_at_tick = args.state.tick_count + 120 # Schedule reset in 2 seconds
       args.state.move_queue.clear # discard the rest of the moves
     else
@@ -128,6 +130,7 @@ def tick(args)
       reject_goal(args)
     else
       args.state.missed_goal = true
+      args.state.in_error_state = true
       args.state.reset_at_tick = args.state.tick_count + 120 # Schedule reset in 2 seconds
 
     end
@@ -212,6 +215,7 @@ def reset_player(args)
   sprite.y = args.state.player_grid[:row] * args.state.grid_box.h
   args.state.player = sprite
   args.state.missed_goal = false
+  args.state.in_error_state = false
   args.state.blocked_route = false
 end
 
@@ -255,8 +259,8 @@ def blocked?(args, next_pos, direction)
 
   # Sprite collision
   player_sprite = args.state.player_sprites[direction.to_sym].dup
-  player_sprite.x = next_pos[:col] * args.state.grid_box.w  # col for x (horizontal)
-  player_sprite.y = next_pos[:row] * args.state.grid_box.h  # row for y (vertical)
+  player_sprite.x = next_pos[:col] * args.state.grid_box.w
+  player_sprite.y = next_pos[:row] * args.state.grid_box.h
 
   args.state.furniture.any? { |f| args.geometry.intersect_rect?(player_sprite, f) }
 end
@@ -271,7 +275,6 @@ end
 
 def will_collide_with_furniture?(args)
   player_sprite = args.state.player
-  # furniture_sprites = args.outputs.sprites.select { |s| s[:path].include?('FurnitureState') }
   args.state.furniture.any? { |f| args.geometry.intersect_rect?(player_sprite, f) }
 end
 
