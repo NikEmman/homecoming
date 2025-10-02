@@ -98,6 +98,10 @@ def tick(args)
 
   display_missed_goal(args) if args.state.missed_goal
 
+  if args.state.goal_positions.empty? && args.state.home_position && !args.state.executing && !args.state.in_error_state
+    display_completed_goals_msg(args)
+  end
+
   # execute queued moves by pressing 'e'
   args.state.executing = true if args.inputs.keyboard.key_down.e
 
@@ -198,6 +202,12 @@ def display_missed_goal(args)
            'Missed the goal! Resetting position...'
          end
   args.outputs.labels << { x: 50, y: 700, text: text, size_enum: 20, r: 255, g: 0,
+                           b: 0 }
+end
+
+def display_completed_goals_msg(args)
+  text = 'The house is clean! Return to home base to charge'
+  args.outputs.labels << { x: 50, y: 700, text: text, size_enum: 20, r: 0, g: 255,
                            b: 0 }
 end
 

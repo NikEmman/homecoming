@@ -32,7 +32,7 @@ class Furniture
         h: 159,
         tile_w: 34,
         tile_h: 60,
-        tile_x: -8,
+        tile_x: 0,
         tile_y: 195,
         path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }
     end
@@ -44,7 +44,7 @@ class Furniture
         h: 159,
         tile_w: 34,
         tile_h: 60,
-        tile_x: -8,
+        tile_x: 0,
         tile_y: 195,
         flip_horizontally: true,
         path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }

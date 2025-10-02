@@ -1,9 +1,8 @@
 * EXCEPTION:
 * ERROR:
-Undefined method goals for main.
+Undefined method args for main. Did you forget to pass in args as a parameter?
 
 
 ** Backtrace:
-*** app/main.rb:254:in reached_home?
-*** app/main.rb:247:in reached_goal?
-*** app/main.rb:146:in tick
+*** app/main.rb:208:in display_completed_goals_msg
+*** app/main.rb:101:in tick
