@@ -10,7 +10,7 @@ class Floor
         tile_h: 55,
         tile_x: 18,
         tile_y: 18,
-        path: 'sprites/background/topDownHouse_floorsAndWalls.png' }
+        path: 'sprites/background/topdownhouse_floorsandwalls.png' }
     end
 
     def laminate(row = 0, col = 1)
@@ -22,7 +22,7 @@ class Floor
         tile_h: 47,
         tile_x: 144,
         tile_y: 81,
-        path: 'sprites/background/topDownHouse_floorsAndWalls.png' }
+        path: 'sprites/background/topdownhouse_floorsandwalls.png' }
     end
 
     def hardwood(row = 0, col = 2)
@@ -34,7 +34,7 @@ class Floor
         tile_h: 46,
         tile_x: 17,
         tile_y: 81,
-        path: 'sprites/background/topDownHouse_floorsAndWalls.png' }
+        path: 'sprites/background/topdownhouse_floorsandwalls.png' }
     end
 
     def tiles(row = 0, col = 3)
@@ -46,7 +46,7 @@ class Floor
         tile_h: 38,
         tile_x: 209,
         tile_y: 42,
-        path: 'sprites/background/topDownHouse_floorsAndWalls.png' }
+        path: 'sprites/background/topdownhouse_floorsandwalls.png' }
     end
   end
 end

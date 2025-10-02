@@ -10,7 +10,7 @@ class Furniture
         tile_h: 30,
         tile_x: 22,
         tile_y: 162,
-        path: "sprites/background/TopDownHouse_FurnitureState#{variant}.png" }
+        path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }
     end
 
     def sofa_front(args, col = 0, row = 0, variant = 1)
@@ -22,7 +22,7 @@ class Furniture
         tile_h: 34,
         tile_x: 85,
         tile_y: 158,
-        path: "sprites/background/TopDownHouse_FurnitureState#{variant}.png" }
+        path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }
     end
 
     def sofa_right(args, col = 0, row = 0, variant = 1)
@@ -34,7 +34,7 @@ class Furniture
         tile_h: 60,
         tile_x: -8,
         tile_y: 195,
-        path: "sprites/background/TopDownHouse_FurnitureState#{variant}.png" }
+        path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }
     end
 
     def sofa_left(args, col = 0, row = 0, variant = 1)
@@ -47,7 +47,7 @@ class Furniture
         tile_x: -8,
         tile_y: 195,
         flip_horizontally: true,
-        path: "sprites/background/TopDownHouse_FurnitureState#{variant}.png" }
+        path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }
     end
 
     def fridge(args, col = 0, row = 0, variant = 1)
@@ -59,7 +59,7 @@ class Furniture
         tile_h: 63,
         tile_x: 30,
         tile_y: 195,
-        path: "sprites/background/TopDownHouse_FurnitureState#{variant}.png" }
+        path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }
     end
 
     def oven(args, col = 0, row = 0, variant = 1)
@@ -71,7 +71,7 @@ class Furniture
         tile_h: 45,
         tile_x: 62,
         tile_y: 195,
-        path: "sprites/background/TopDownHouse_FurnitureState#{variant}.png" }
+        path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }
     end
 
     def single_sofa_front(args, row = 0, col = 0, variant = 1)
@@ -83,7 +83,7 @@ class Furniture
         tile_h: 34,
         tile_x: 142,
         tile_y: 158,
-        path: "sprites/background/TopDownHouse_FurnitureState#{variant}.png" }
+        path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }
     end
 
     def single_sofa_back(args, row = 0, col = 0, variant = 1)
@@ -95,7 +95,7 @@ class Furniture
         tile_h: 34,
         tile_x: 176,
         tile_y: 158,
-        path: "sprites/background/TopDownHouse_FurnitureState#{variant}.png" }
+        path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }
     end
 
     def single_sofa_right(args, row = 0, col = 0, variant = 1)
@@ -107,7 +107,7 @@ class Furniture
         tile_h: 38,
         tile_x: 172,
         tile_y: 115,
-        path: "sprites/background/TopDownHouse_FurnitureState#{variant}.png" }
+        path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }
     end
 
     def single_sofa_left(args, row = 0, col = 0, variant = 1)
@@ -120,7 +120,7 @@ class Furniture
         tile_x: 172,
         tile_y: 115,
         flip_horizontally: true,
-        path: "sprites/background/TopDownHouse_FurnitureState#{variant}.png" }
+        path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }
     end
   end
 end

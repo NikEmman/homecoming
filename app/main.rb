@@ -7,6 +7,7 @@ def tick(args)
   # args.state.player ||= Player.up(args)
   args.state.goal_positions ||= [{ col: 5, row: 6 }, { col: 6, row: 7 }, { col: 9, row: 8 }]
   args.state.player_grid ||= args.state.starting_position.clone
+  args.state.home_position ||= { col: 1, row: 5 }
 
   args.state.move_queue ||= []
   args.state.executing ||= false
@@ -50,6 +51,7 @@ def tick(args)
 
   display_furniture(args)
 
+  # display goal positions
   args.state.goal_positions.each do |pos|
     args.outputs.primitives << {
       x: pos.col * args.state.grid_box.w,
@@ -63,6 +65,22 @@ def tick(args)
       primitive_marker: :solid
     }
   end
+
+  # home base
+  args.outputs.primitives << {
+
+    x: args.state.home_position.col * args.state.grid_box.w,
+    y: args.state.home_position.row * args.state.grid_box.w,
+    w: args.state.grid_box.w,
+    h: args.state.grid_box.h,
+    r: 255,
+    g: 0,
+    b: 0,
+    a: 100 + 50 * Math.sin(args.state.tick_count / 20.0),
+    primitive_marker: :solid
+
+  }
+
   (1..args.state.grid_total.w).each do |i|
     args.outputs.primitives << vertical_line(i, args)
   end
@@ -222,7 +240,19 @@ end
 def reached_goal?(args)
   grid = args.state.player_grid
   goals = args.state.goal_positions
-  goals.any? { |goal| grid[:col] == goal[:col] && grid[:row] == goal[:row] }
+
+  # player reaches goal when lands on a goal position, or  reaches home base after all positions are reached
+  goals.any? do |goal|
+    grid[:col] == goal[:col] && grid[:row] == goal[:row]
+  end || reached_home?(args)
+end
+
+def reached_home?(args)
+  grid = args.state.player_grid
+  home = args.state.home_position
+  goals = args.state.goal_positions
+  # reached home returns true only when goals are done
+  goals.empty? && grid[:row] == home[:row] && grid[:col] == home[:col]
 end
 
 def update_player_position(args)
