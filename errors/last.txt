@@ -1,8 +1,17 @@
 * EXCEPTION:
-* ERROR:
-Undefined method args for main. Did you forget to pass in args as a parameter?
+* ERROR - :s method missing on ~GTK::Inputs~.
+
+#+begin_src ~GTK::Inputs#inspect~
+#<GTK::Inputs:0x8a6b6a0 @mouse_touch={:x=>-1000, :y=>-1000, :tracking_speed=>1.0}, @finger_two=nil, @finger_left=nil, @keyboard=#<GTK::Keyboard:0x8a6b010>, @finger_one=nil, @touch_enabled=false, @touch={}, @http_requests=[], @locale_raw="en", @text=[], @pinch_zoom=0, @controllers=[{:left_analog_x_raw=>0, :left_analog_y_raw=>0, :left_analog_x_perc=>0.0, :left_analog_y_perc=>0.0, :right_analog_x_raw=>0, :right_analog_y_raw=>0, :right_analog_x_perc=>0.0, :right_analog_y_perc=>0.0, :active=>false, :key_down=>{}, :key_held=>{}, :key_up=>{}, :left_analog_angle=>nil, :right_analog_angle=>nil, :left_analog_active=>false, :right_analog_active=>false}, {:left_analog_x_raw=>0, :left_analog_y_raw=>0, :left_analog_x_perc=>0.0, :left_analog_y_perc=>0.0, :right_analog_x_raw=>0, :right_analog_y_raw=>0, :right_analog_x_perc=>0.0, :right_analog_y_perc=>0.0, :active=>false, :key_down=>{}, :key_held=>{}, :key_up=>{}, :left_analog_angle=>nil, :right_analog_angle=>nil, :left_analog_active=>false, :right_analog_active=>false}, {:left_analog_x_raw=>0, :left_analog_y_raw=>0, :left_analog_x_perc=>0.0, :left_analog_y_perc=>0.0, :right_analog_x_raw=>0, :right_analog_y_raw=>0, :right_analog_x_perc=>0.0, :right_analog_y_perc=>0.0, :active=>false, :key_down=>{}, :key_held=>{}, :key_up=>{}, :left_analog_angle=>nil, :right_analog_angle=>nil, :left_analog_active=>false, :right_analog_active=>false}, {:left_analog_x_raw=>0, :left_analog_y_raw=>0, :left_analog_x_perc=>0.0, :left_analog_y_perc=>0.0, :right_analog_x_raw=>0, :right_analog_y_raw=>0, :right_analog_x_perc=>0.0, :right_analog_y_perc=>0.0, :active=>false, :key_down=>{}, :key_held=>{}, :key_up=>{}, :left_analog_angle=>nil, :right_analog_angle=>nil, :left_analog_active=>false, :right_analog_active=>false}], @keyboard_or_controller_key_down=#<GTK::Inputs::KeyboardOrControllerKeyDown:0x8a6a7a0>, @last_active_global_at=36430, @keyboard_or_controller_key_up=#<GTK::Inputs::KeyboardOrControllerKeyUp:0x8a6a740>, @mouse=#<GTK::Mouse:0x8a6ad70>, @a11y={}, @locale="en", @last_active=:mouse, @keyboard_or_controller_key_held=#<GTK::Inputs::KeyboardOrControllerKeyHeld:0x8a6a6e0>, @finger_right=nil, @last_active_at=1808, @headset={:position=>{:x=>0.0, :y=>0.0, :z=>0.0}, :orientation=>{:x=>0.0, :y=>0.0, :z=>0.0}}>
+#+end_src ~GTK::Inputs#inspect~
 
 
+
+The method named
+  :s
+doesn't exist on [GTK::Inputs].
+
+(suggestions above)
 ** Backtrace:
-*** app/main.rb:208:in display_completed_goals_msg
-*** app/main.rb:101:in tick
+*** app/main.rb:13:in title_tick
+*** app/main.rb:7:in tick

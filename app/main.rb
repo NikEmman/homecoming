@@ -3,8 +3,65 @@ require_relative 'floor'
 require_relative 'furniture'
 
 def tick(args)
+  args.state.scene ||= 'title'
+  send("#{args.state.scene}_tick", args)
+end
+
+def title_tick(args)
+  args.audio[:music] ||=
+    { input: 'sounds/title_scene.mp3', looping: true, gain: 0.3 }
+
+  if args.inputs.keyboard.key_down.s
+    args.outputs.sounds << { input: 'sounds/robot_start.mp3', gain: 1.0 }
+    args.state.scene = 'gameplay'
+    args.audio[:music] = nil
+    return
+  end
+
+  labels = []
+  labels << {
+    x: 40,
+    y: args.grid.h - 40,
+    text: 'Home coming',
+    size_enum: 6
+  }
+  labels << {
+    x: 40,
+    y: args.grid.h - 88,
+    text: 'Lead the vacuum to clean all dirt, then help it return to base'
+  }
+  labels << {
+    x: 40,
+    y: args.grid.h - 120,
+    text: 'by Nikos Emmanouilidis'
+  }
+  labels << {
+    x: 40,
+    y: 160,
+    text: ' Press arrow keys to program moves | E to execute them'
+  }
+  labels << {
+    x: 40,
+    y: 120,
+    text: 'C to clear move sequence or D to remove last step'
+  }
+  labels << {
+    x: 40,
+    y: 80,
+    text: 'S to start the game',
+    size_enum: 2
+  }
+  args.outputs.labels << labels
+end
+
+def gameplay_tick(args)
+  # custom grid size for grid and grid boxes
+  args.state.grid_box.h ||= 80
+  args.state.grid_box.w ||= 80
+  args.state.grid_total.h ||= 9
+  args.state.grid_total.w ||= 16
+
   args.state.starting_position ||= { col: 3, row: 5, direction: 'up' }
-  # args.state.player ||= Player.up(args)
   args.state.goal_positions ||= [{ col: 5, row: 6 }, { col: 6, row: 7 }, { col: 9, row: 8 }]
   args.state.player_grid ||= args.state.starting_position.clone
   args.state.home_position ||= { col: 1, row: 5 }
@@ -16,12 +73,6 @@ def tick(args)
   args.state.missed_goal ||= false
   args.state.blocked_route ||= false
   args.state.in_error_state ||= false
-
-  # custom grid size for grid and grid boxes
-  args.state.grid_box.h ||= 80
-  args.state.grid_box.w ||= 80
-  args.state.grid_total.h ||= 9
-  args.state.grid_total.w ||= 16
 
   args.state.furniture ||= [Furniture.sofa_back(args, 1, 0, 2),
                             Furniture.sofa_front(args, 6, 5),
