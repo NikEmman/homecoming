@@ -1,6 +1,7 @@
 require_relative 'player'
 require_relative 'floor'
 require_relative 'furniture'
+require_relative 'sounds'
 
 def tick(args)
   args.state.scene ||= 'title'
@@ -12,7 +13,7 @@ def title_tick(args)
     { input: 'sounds/title_scene.mp3', looping: true, gain: 0.3 }
 
   if args.inputs.keyboard.key_down.s
-    args.outputs.sounds << { input: 'sounds/robot_start.mp3', gain: 1.0 }
+    Sound.area_cleanup(args)
     args.state.scene = 'gameplay'
     args.audio[:music] = nil
     return
