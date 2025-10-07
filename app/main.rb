@@ -14,6 +14,7 @@ def title_tick(args)
 
   if args.inputs.keyboard.key_down.s
     Sound.area_cleanup(args)
+
     args.state.scene = 'gameplay'
     args.audio[:music] = nil
     return
@@ -62,10 +63,12 @@ def gameplay_tick(args)
   args.state.grid_total.h ||= 9
   args.state.grid_total.w ||= 16
 
-  args.state.starting_position ||= { col: 3, row: 5, direction: 'up' }
-  args.state.goal_positions ||= [{ col: 5, row: 6 }, { col: 6, row: 7 }, { col: 9, row: 8 }]
+  args.state.starting_position ||= { col: 4, row: 5, direction: 'up' }
+  args.state.goal_positions ||= [{ col: 5, row: 6 }]
+  # args.state.goal_positions ||= [{ col: 5, row: 6 }, { col: 6, row: 7 }, { col: 9, row: 8 }]
+
   args.state.player_grid ||= args.state.starting_position.clone
-  args.state.home_position ||= { col: 1, row: 5 }
+  args.state.home_position ||= { col: 3, row: 5 }
 
   args.state.move_queue ||= []
   args.state.executing ||= false
@@ -185,7 +188,7 @@ def gameplay_tick(args)
     direction = args.state.move_queue.first
     next_pos = next_grid_position(args.state.player_grid, direction)
 
-    if blocked?(args, next_pos, direction) # Pass direction
+    if blocked?(args, next_pos, direction)
       args.state.missed_goal = true
       args.state.blocked_route = true
       args.state.in_error_state = true
@@ -202,10 +205,21 @@ def gameplay_tick(args)
     if reached_goal?(args)
       update_player_position(args)
       reject_goal(args)
+
+      if args.state.goal_positions.empty?
+        if args.state.starting_position[:col] == args.state.home_position[:col] && args.state.starting_position[:row] == args.state.home_position[:row]
+          Sound.charging(args)
+        else
+          Sound.cleanup_completed(args)
+        end
+      else # player has reached a goal
+        Sound.trash_pickup(args)
+      end
+
     else
       args.state.missed_goal = true
       args.state.in_error_state = true
-      args.state.reset_at_tick = args.state.tick_count + 120 # Schedule reset in 2 seconds
+      args.state.reset_at_tick = args.state.tick_count + 120
 
     end
 
@@ -259,7 +273,7 @@ end
 
 def display_completed_goals_msg(args)
   text = 'The house is clean! Return to home base to charge'
-  args.outputs.labels << { x: 50, y: 700, text: text, size_enum: 20, r: 0, g: 255,
+  args.outputs.labels << { x: 30, y: 700, text: text, size_enum: 16, r: 0, g: 255,
                            b: 0 }
 end
 
