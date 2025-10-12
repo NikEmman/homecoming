@@ -2,6 +2,7 @@ require_relative 'player'
 require_relative 'floor'
 require_relative 'furniture'
 require_relative 'sounds'
+require_relative 'carpet'
 
 def tick(args)
   args.state.scene ||= 'title'
@@ -62,8 +63,9 @@ def gameplay_tick(args)
   args.state.grid_box.w ||= 80
   args.state.grid_total.h ||= 9
   args.state.grid_total.w ||= 16
+  args.state.direction ||= 'up'
 
-  args.state.starting_position ||= { col: 4, row: 5, direction: 'up' }
+  args.state.starting_position ||= { col: 4, row: 5, direction: args.state.direction }
   args.state.goal_positions ||= [{ col: 5, row: 6 }]
   # args.state.goal_positions ||= [{ col: 5, row: 6 }, { col: 6, row: 7 }, { col: 9, row: 8 }]
 
@@ -72,7 +74,6 @@ def gameplay_tick(args)
 
   args.state.move_queue ||= []
   args.state.executing ||= false
-  args.state.direction ||= 'up'
   args.state.frame_delay ||= 60
   args.state.missed_goal ||= false
   args.state.blocked_route ||= false
@@ -102,7 +103,8 @@ def gameplay_tick(args)
     display_reset_instruction(args)
   end
 
-  cover_floor(args, 'hardwood')
+  cover_floor(args, 'laminate')
+  args.outputs.sprites << Carpet.carpet_horizontal(2, 2)
 
   display_furniture(args)
 

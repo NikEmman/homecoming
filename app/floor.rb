@@ -18,9 +18,9 @@ class Floor
         y: col * 200,
         w: 200,
         h: 200,
-        tile_w: 64,
-        tile_h: 47,
-        tile_x: 144,
+        tile_w: 62,
+        tile_h: 46,
+        tile_x: 145,
         tile_y: 81,
         path: 'sprites/background/topdownhouse_floorsandwalls.png' }
     end
