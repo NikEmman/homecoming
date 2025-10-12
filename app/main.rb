@@ -206,13 +206,11 @@ def gameplay_tick(args)
       update_player_position(args)
       reject_goal(args)
 
-      if args.state.goal_positions.empty?
-        if args.state.starting_position[:col] == args.state.home_position[:col] && args.state.starting_position[:row] == args.state.home_position[:row]
-          Sound.charging(args)
-        else
-          Sound.cleanup_completed(args)
-        end
-      else # player has reached a goal
+      if reached_home?(args)
+        Sound.return_home(args)
+      elsif args.state.goal_positions.empty?
+        Sound.cleanup_completed(args)
+      else
         Sound.trash_pickup(args)
       end
 
@@ -278,12 +276,21 @@ def display_completed_goals_msg(args)
 end
 
 def display_commands(args)
+  items_per_line = 21
+  label_width = 60
+  size_enum = 20
+  # for dragonruby size_enum 0 is 18 pixel, and every size increase, adds 2 pixels
+  line_height = 18 + 2 * size_enum
+
   args.state.move_queue.each_with_index do |command, index|
+    line = (index / items_per_line).to_i
+    column = index % items_per_line
+
     args.outputs.labels << {
-      x: 30 + (index * 60),
-      y: 710,
+      x: 30 + (column * label_width),
+      y: 710 - (line * line_height),
       text: command_display(command),
-      size_enum: 20,
+      size_enum: size_enum,
       r: 255,
       g: 255,
       b: 255
@@ -292,12 +299,13 @@ def display_commands(args)
 end
 
 def command_display(command)
-  case command
-  when 'up'    then '⇧'
-  when 'down'  then '⇩'
-  when 'left'  then '⇦'
-  when 'right' then '⇨'
-  end
+  {
+    'up' => '⇧',
+    'down' => '⇩',
+    'left' => '⇦',
+    'right' => '⇨'
+  }[command]
+  # should I need a default, instead of [command], I can use instead  {...}.fetch(command,"default")
 end
 
 def reset_player(args)
@@ -385,10 +393,13 @@ def will_collide_with_furniture?(args)
 end
 
 def next_grid_position(grid, direction)
-  case direction
-  when 'up'    then { col: grid[:col], row: grid[:row] + 1 }
-  when 'down'  then { col: grid[:col], row: grid[:row] - 1 }
-  when 'left'  then { col: grid[:col] - 1, row: grid[:row] }
-  when 'right' then { col: grid[:col] + 1, row: grid[:row] }
-  end
+  deltas = {
+    'up' => [0, 1],
+    'down' => [0, -1],
+    'left' => [-1, 0],
+    'right' => [1, 0]
+  }
+
+  dx, dy = deltas[direction]
+  { col: grid[:col] + dx, row: grid[:row] + dy }
 end
