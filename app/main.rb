@@ -103,8 +103,8 @@ def gameplay_tick(args)
     display_reset_instruction(args)
   end
 
-  cover_floor(args, 'laminate')
-  args.outputs.sprites << Carpet.carpet_horizontal(2, 2)
+  cover_floor(args, 'tarp')
+  args.outputs.sprites << Carpet.round(1, 1)
 
   display_furniture(args)
 

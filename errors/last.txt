@@ -1,21 +1,22 @@
 * EXCEPTION:
-* ERROR - :carpet_horizontal method missing on ~Class~.
+* ERROR - :big_carpet_horizontal method missing on ~Class~.
 
 #+begin_src ~Class#inspect~
-Floor
+Carpet
 #+end_src ~Class#inspect~
 
 ** Did you mean?
-Here's a list of methods that kind of look like :carpet_horizontal.
+Here's a list of methods that kind of look like :big_carpet_horizontal.
+*** :carpet_horizontal
 *** :horizontal_line
 
 The method named
-  :carpet_horizontal
+  :big_carpet_horizontal
 with args
-  [2, 3]
-doesn't exist on [Class, Floor].
+  [1, 1]
+doesn't exist on [Class, Carpet].
 
 (suggestions above)
 ** Backtrace:
-*** app/main.rb:109:in gameplay_tick
+*** app/main.rb:107:in gameplay_tick
 *** app/main.rb:9:in tick
