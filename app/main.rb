@@ -103,24 +103,19 @@ def gameplay_tick(args)
     display_reset_instruction(args)
   end
 
-  cover_floor(args, 'tarp')
+  cover_floor(args, 'hardwood')
   args.outputs.sprites << Carpet.round(1, 1)
 
   display_furniture(args)
 
   # display goal positions
   args.state.goal_positions.each do |pos|
-    args.outputs.primitives << {
-      x: pos.col * args.state.grid_box.w,
-      y: pos.row * args.state.grid_box.w,
-      w: args.state.grid_box.w,
-      h: args.state.grid_box.h,
-      r: 0,
-      g: 255,
-      b: 0,
-      a: 100 + 50 * Math.sin(args.state.tick_count / 20.0),
-      primitive_marker: :solid
-    }
+    args.outputs.sprites <<
+      { x: pos.col * args.state.grid_box.w,
+        y: pos.row * args.state.grid_box.h,
+        w: args.state.grid_box.w,
+        h: args.state.grid_box.h,
+        path: 'sprites/trash.png' }
   end
 
   # home base
