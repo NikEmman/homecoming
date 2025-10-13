@@ -70,5 +70,27 @@ class Player
         tile_x: 0,
         tile_y: 0 }
     end
+
+    def docked(args)
+      grid = args.state.home_position
+      { x: grid.col * args.state.grid_box.h,
+        y: grid.row * args.state.grid_box.w,
+        tile_x: -10,
+        w: 100,
+        h: 80,
+        flip_horizontally: true,
+        path: 'sprites/docked2.png' }
+    end
+
+    def empty_dock(args)
+      grid = args.state.home_position
+      { x: grid.col * args.state.grid_box.h,
+        y: grid.row * args.state.grid_box.w,
+        tile_x: -10,
+        w: 100,
+        h: 80,
+        flip_horizontally: true,
+        path: 'sprites/empty_dock.png' }
+    end
   end
 end

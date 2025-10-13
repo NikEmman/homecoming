@@ -104,7 +104,7 @@ def gameplay_tick(args)
   end
 
   cover_floor(args, 'hardwood')
-  args.outputs.sprites << Carpet.round(1, 1)
+  args.outputs.sprites << Carpet.small_horizontal(1, 1, 2)
 
   display_furniture(args)
 
@@ -119,19 +119,8 @@ def gameplay_tick(args)
   end
 
   # home base
-  args.outputs.primitives << {
 
-    x: args.state.home_position.col * args.state.grid_box.w,
-    y: args.state.home_position.row * args.state.grid_box.w,
-    w: args.state.grid_box.w,
-    h: args.state.grid_box.h,
-    r: 255,
-    g: 0,
-    b: 0,
-    a: 100 + 50 * Math.sin(args.state.tick_count / 20.0),
-    primitive_marker: :solid
-
-  }
+  args.outputs.sprites << Player.empty_dock(args)
 
   (1..args.state.grid_total.w).each do |i|
     args.outputs.primitives << vertical_line(i, args)
@@ -140,6 +129,7 @@ def gameplay_tick(args)
     args.outputs.primitives << horizontal_line(i, args)
   end
 
+  # player
   args.outputs.sprites << args.state.player
 
   # Execute scheduled reset, see below in Move processor, PLAYER MOVEMENT
