@@ -6,7 +6,8 @@ class Sound
     end
 
     def vacuum_on(args)
-      args.outputs.sounds << 'sounds/on.mp3'
+      args.audio[:music] ||=
+        { input: 'sounds/on.mp3', looping: true }
     end
 
     def vacuum_off(args)
@@ -23,10 +24,6 @@ class Sound
 
     def return_home(args)
       args.outputs.sounds << 'sounds/return_home.mp3'
-    end
-
-    def vacuuming(args)
-      args.outputs.sounds << 'sounds/vacuuming.mp3'
     end
   end
 end

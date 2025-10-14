@@ -139,6 +139,7 @@ def gameplay_tick(args)
   # Execute scheduled reset, see below in Move processor, PLAYER MOVEMENT
   if args.state.reset_at_tick && args.state.tick_count >= args.state.reset_at_tick
     reset_player(args)
+
     args.state.reset_at_tick = nil
   end
 
@@ -149,9 +150,12 @@ def gameplay_tick(args)
   end
 
   # execute queued moves by pressing 'e'
-  args.state.executing = true if args.inputs.keyboard.key_down.e && !args.state.level_complete
+  if args.inputs.keyboard.key_down.e && !args.state.level_complete
+    args.state.executing = true
+    Sound.vacuum_on(args)
+  end
 
-  if args.inputs.keyboard.key_down.d && !args.state.executing && !args.state.in_error_state
+  if args.inputs.keyboard.key_down.d && !args.state.executing && !args.state.in_error_state && !args.state.level_complete
     args.state.move_queue.pop
     args.state.executing = false
   end
@@ -196,6 +200,7 @@ def gameplay_tick(args)
     if reached_goal?(args)
       update_player_position(args)
       reject_goal(args)
+      args.audio[:music] = nil
 
       if reached_home?(args)
         Sound.return_home(args)
@@ -211,6 +216,8 @@ def gameplay_tick(args)
       args.state.missed_goal = true
       args.state.in_error_state = true
       args.state.reset_at_tick = args.state.tick_count + 120
+      args.audio[:music] = nil
+      Sound.vacuum_off(args)
 
     end
 
