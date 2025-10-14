@@ -25,5 +25,10 @@ class Sound
     def return_home(args)
       args.outputs.sounds << 'sounds/return_home.mp3'
     end
+
+    def title_music(args)
+      args.audio[:music] ||=
+        { input: 'sounds/title_scene.mp3', looping: true, gain: 0.3 }
+    end
   end
 end

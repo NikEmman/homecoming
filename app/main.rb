@@ -10,14 +10,11 @@ def tick(args)
 end
 
 def title_tick(args)
-  args.audio[:music] ||=
-    { input: 'sounds/title_scene.mp3', looping: true, gain: 0.3 }
-
+  Sound.title_music(args)
   if args.inputs.keyboard.key_down.s
     Sound.area_cleanup(args)
-
     args.state.scene = 'gameplay'
-    args.audio[:music] = nil
+    args.audio[:music] = nil # cancels the title music
     return
   end
 
@@ -216,7 +213,7 @@ def gameplay_tick(args)
       args.state.missed_goal = true
       args.state.in_error_state = true
       args.state.reset_at_tick = args.state.tick_count + 120
-      args.audio[:music] = nil
+      args.audio[:music] = nil # cancels the on sound loop that started when execution started
       Sound.vacuum_off(args)
 
     end
