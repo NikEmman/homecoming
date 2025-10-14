@@ -1,9 +1,20 @@
 * EXCEPTION:
-* ERROR:
-Undefined method col for main.
+* ERROR - :y= method missing on ~Class~.
+
+#+begin_src ~Class#inspect~
+NIL
+#+end_src ~Class#inspect~
 
 
+
+The method named
+  :y=
+with args
+  [400]
+doesn't exist on [NilClass].
+
+(suggestions above)
 ** Backtrace:
-*** app/main.rb:114:in gameplay_tick
-*** app/main.rb:112:in gameplay_tick
+*** app/main.rb:310:in reset_player
+*** app/main.rb:141:in gameplay_tick
 *** app/main.rb:9:in tick

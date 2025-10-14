@@ -5,7 +5,7 @@ require_relative 'sounds'
 require_relative 'carpet'
 
 def tick(args)
-  args.state.scene ||= 'title'
+  args.state.scene ||= 'gameplay'
   send("#{args.state.scene}_tick", args)
 end
 
@@ -21,39 +21,40 @@ def title_tick(args)
     return
   end
 
-  labels = []
-  labels << {
-    x: 40,
-    y: args.grid.h - 40,
-    text: 'Home coming',
-    size_enum: 6
-  }
-  labels << {
-    x: 40,
-    y: args.grid.h - 88,
-    text: 'Lead the vacuum to clean all dirt, then help it return to base'
-  }
-  labels << {
-    x: 40,
-    y: args.grid.h - 120,
-    text: 'by Nikos Emmanouilidis'
-  }
-  labels << {
-    x: 40,
-    y: 160,
-    text: ' Press arrow keys to program moves | E to execute them'
-  }
-  labels << {
-    x: 40,
-    y: 120,
-    text: 'C to clear move sequence or D to remove last step'
-  }
-  labels << {
-    x: 40,
-    y: 80,
-    text: 'S to start the game',
-    size_enum: 2
-  }
+  labels = [
+    {
+      x: 40,
+      y: args.grid.h - 40,
+      text: 'Home coming',
+      size_enum: 6
+    },
+    {
+      x: 40,
+      y: args.grid.h - 88,
+      text: 'Lead the vacuum to clean all dirt, then help it return to base'
+    },
+    {
+      x: 40,
+      y: args.grid.h - 120,
+      text: 'by Nikos Emmanouilidis'
+    },
+    {
+      x: 40,
+      y: 160,
+      text: 'Press arrow keys to program moves | E to execute them'
+    },
+    {
+      x: 40,
+      y: 120,
+      text: 'C to clear move sequence or D to remove last step'
+    },
+    {
+      x: 40,
+      y: 80,
+      text: 'S to start the game',
+      size_enum: 2
+    }
+  ]
   args.outputs.labels << labels
 end
 
@@ -63,14 +64,15 @@ def gameplay_tick(args)
   args.state.grid_box.w ||= 80
   args.state.grid_total.h ||= 9
   args.state.grid_total.w ||= 16
-  args.state.direction ||= 'up'
+  args.state.direction ||= 'home'
+  args.state.home_position ||= { col: 3, row: 5, direction: 'home' }
 
-  args.state.starting_position ||= { col: 4, row: 5, direction: args.state.direction }
+  args.state.starting_position ||= args.state.home_position.clone
   args.state.goal_positions ||= [{ col: 5, row: 6 }]
   # args.state.goal_positions ||= [{ col: 5, row: 6 }, { col: 6, row: 7 }, { col: 9, row: 8 }]
 
   args.state.player_grid ||= args.state.starting_position.clone
-  args.state.home_position ||= { col: 3, row: 5 }
+  args.state.home_position ||= { col: 3, row: 5, direction: 'home' }
 
   args.state.move_queue ||= []
   args.state.executing ||= false
@@ -78,6 +80,7 @@ def gameplay_tick(args)
   args.state.missed_goal ||= false
   args.state.blocked_route ||= false
   args.state.in_error_state ||= false
+  args.state.level_complete ||= false
 
   args.state.furniture ||= [Furniture.sofa_back(args, 1, 0, 2),
                             Furniture.sofa_front(args, 6, 5),
@@ -93,7 +96,8 @@ def gameplay_tick(args)
     up: Player.up(args),
     down: Player.down(args),
     left: Player.left(args),
-    right: Player.right(args)
+    right: Player.right(args),
+    home: Player.docked(args)
   }
   args.state.player ||= args.state.player_sprites[args.state.direction.to_sym].dup
   args.state.reset_at_tick ||= nil
@@ -145,20 +149,20 @@ def gameplay_tick(args)
   end
 
   # execute queued moves by pressing 'e'
-  args.state.executing = true if args.inputs.keyboard.key_down.e
+  args.state.executing = true if args.inputs.keyboard.key_down.e && !args.state.level_complete
 
   if args.inputs.keyboard.key_down.d && !args.state.executing && !args.state.in_error_state
     args.state.move_queue.pop
     args.state.executing = false
   end
   # clear queued moves by pressing 'c'
-  if args.inputs.keyboard.key_down.c && !args.state.executing && !args.state.in_error_state
+  if args.inputs.keyboard.key_down.c && !args.state.executing && !args.state.in_error_state && !args.state.level_complete
     args.state.move_queue.clear
     args.state.executing = false
   end
 
   # queue moves with arrow keys
-  unless args.state.executing || args.state.in_error_state
+  unless args.state.executing || args.state.in_error_state || args.state.level_complete
     args.state.move_queue << 'up' if args.inputs.keyboard.key_down.up
     args.state.move_queue << 'down'  if args.inputs.keyboard.key_down.down
     args.state.move_queue << 'left'  if args.inputs.keyboard.key_down.left
@@ -195,6 +199,8 @@ def gameplay_tick(args)
 
       if reached_home?(args)
         Sound.return_home(args)
+        args.state.player = Player.docked(args)
+        args.state.level_complete = true
       elsif args.state.goal_positions.empty?
         Sound.cleanup_completed(args)
       else
@@ -257,7 +263,7 @@ def display_missed_goal(args)
 end
 
 def display_completed_goals_msg(args)
-  text = 'The house is clean! Return to home base to charge'
+  text = args.state.level_complete ? 'Level completed, press "N" to go to the next level' : 'The house is clean! Return to home base to charge'
   args.outputs.labels << { x: 30, y: 700, text: text, size_enum: 16, r: 0, g: 255,
                            b: 0 }
 end

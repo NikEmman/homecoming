@@ -8,6 +8,8 @@ class Player
       when 'down'  then grid.row -= 1 if grid.row > 0
       when 'left'  then grid.col -= 1 if grid.col > 0
       when 'right' then grid.col += 1 if grid.col < args.state.grid_total.w - 1
+      when 'home'  then grid.col = args.state.home_position[:col]
+                        grid.row = args.state.home_position[:row]
       end
 
       # Update sprite position
