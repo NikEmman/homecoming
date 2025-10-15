@@ -1,8 +1,8 @@
 class Carpet
   class << self
-    def big_horizontal(row = 0, col = 0, variant = 1)
-      { x: row * 200,
-        y: col * 200,
+    def big_horizontal(args, row = 0, col = 0, variant = 1)
+      { x: col * args.state.grid_box.w,
+        y: row * args.state.grid_box.h,
         w: 200,
         h: 150,
         tile_w: 48,
@@ -13,8 +13,8 @@ class Carpet
     end
 
     def big_vertical(row = 0, col = 0, variant = 1)
-      { x: row * 200,
-        y: col * 200,
+      { x: col * args.state.grid_box.w,
+        y: row * args.state.grid_box.h,
         w: 150,
         h: 200,
         tile_w: 48,
@@ -25,8 +25,8 @@ class Carpet
     end
 
     def small_vertical(row = 0, col = 0, variant = 1)
-      { x: row * 200,
-        y: col * 200,
+      { x: col * args.state.grid_box.w,
+        y: row * args.state.grid_box.h,
         w: 80,
         h: 150,
         tile_w: 18,
@@ -37,8 +37,8 @@ class Carpet
     end
 
     def small_horizontal(row = 0, col = 0, variant = 1)
-      { x: row * 200,
-        y: col * 200,
+      { x: col * args.state.grid_box.w,
+        y: row * args.state.grid_box.h,
         w: 150,
         h: 80,
         tile_w: 32,
@@ -49,8 +49,8 @@ class Carpet
     end
 
     def round(row = 0, col = 0, variant = 1)
-      { x: row * 200,
-        y: col * 200,
+      { x: col * args.state.grid_box.w,
+        y: row * args.state.grid_box.h,
         w: 80,
         h: 80,
         tile_w: 23,

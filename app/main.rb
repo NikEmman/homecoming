@@ -2,6 +2,7 @@ require_relative 'player'
 require_relative 'floor'
 require_relative 'furniture'
 require_relative 'sounds'
+require_relative 'level'
 require_relative 'carpet'
 
 def tick(args)
@@ -62,14 +63,13 @@ def gameplay_tick(args)
   args.state.grid_total.h ||= 9
   args.state.grid_total.w ||= 16
   args.state.direction ||= 'home'
-  args.state.home_position ||= { col: 3, row: 5, direction: 'home' }
+  args.state.level ||= 1
+
+  Level.send("load_#{args.state.level}", args)
 
   args.state.starting_position ||= args.state.home_position.clone
-  args.state.goal_positions ||= [{ col: 5, row: 6 }]
-  # args.state.goal_positions ||= [{ col: 5, row: 6 }, { col: 6, row: 7 }, { col: 9, row: 8 }]
 
   args.state.player_grid ||= args.state.starting_position.clone
-  args.state.home_position ||= { col: 3, row: 5, direction: 'home' }
 
   args.state.move_queue ||= []
   args.state.executing ||= false
@@ -78,16 +78,6 @@ def gameplay_tick(args)
   args.state.blocked_route ||= false
   args.state.in_error_state ||= false
   args.state.level_complete ||= false
-
-  args.state.furniture ||= [Furniture.sofa_back(args, 1, 0, 2),
-                            Furniture.sofa_front(args, 6, 5),
-                            Furniture.sofa_left(args, 10, 3, 2),
-                            Furniture.sofa_right(args, 8, 3),
-                            Furniture.fridge(args, 8, 1, 1),
-                            Furniture.oven(args, 9, 3, 2),
-                            Furniture.single_sofa_front(args, 5, 5, 2),
-                            Furniture.single_sofa_back(args,  10, 5),
-                            Furniture.single_sofa_left(args,  9, 5)]
 
   args.state.player_sprites ||= {
     up: Player.up(args),
@@ -103,9 +93,13 @@ def gameplay_tick(args)
     display_commands(args)
     display_reset_instruction(args)
   end
+  # args.outputs.sprites << Floor.hex(4, 2)
+  # args.outputs.sprites << Floor.hex(4, 3)
+  # args.outputs.sprites << Floor.hex(5, 2)
 
-  cover_floor(args, 'hardwood')
-  args.outputs.sprites << Carpet.small_horizontal(1, 1, 2)
+  cover_floor(args, args.state.floor_type)
+
+  display_carpets(args)
 
   display_furniture(args)
 
@@ -267,8 +261,12 @@ def display_missed_goal(args)
 end
 
 def display_completed_goals_msg(args)
-  text = args.state.level_complete ? 'Level completed, press "N" to go to the next level' : 'The house is clean! Return to home base to charge'
-  args.outputs.labels << { x: 30, y: 700, text: text, size_enum: 16, r: 0, g: 255,
+  text = if args.state.level_complete
+           'Level completed, press "N" to go to the next level'
+         else
+           'The house is clean! Return to home base'
+         end
+  args.outputs.labels << { x: 30, y: 60, text: text, size_enum: 16, r: 0, g: 255,
                            b: 0 }
 end
 
@@ -361,6 +359,12 @@ end
 def display_furniture(args)
   args.state.furniture.each do |f|
     args.outputs.sprites << f
+  end
+end
+
+def display_carpets(args)
+  args.state.carpets.each do |c|
+    args.outputs.sprites << c
   end
 end
 

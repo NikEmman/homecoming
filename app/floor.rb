@@ -18,11 +18,11 @@ class Floor
         y: col * 200,
         w: 200,
         h: 200,
-        tile_w: 62,
-        tile_h: 46,
-        tile_x: 145,
-        tile_y: 81,
-        path: 'sprites/background/topdownhouse_floorsandwalls.png' }
+        tile_w: 200,
+        tile_h: 200,
+        tile_x: 0,
+        tile_y: 60,
+        path: 'sprites/background/laminate2.jpg' }
     end
 
     def hardwood(row = 0, col = 2)
@@ -37,16 +37,28 @@ class Floor
         path: 'sprites/background/topdownhouse_floorsandwalls.png' }
     end
 
-    def tiles(row = 0, col = 3)
+    def fishbone(row = 0, col = 1)
       { x: row * 200,
         y: col * 200,
         w: 200,
         h: 200,
-        tile_w: 62,
-        tile_h: 38,
-        tile_x: 209,
-        tile_y: 42,
-        path: 'sprites/background/topdownhouse_floorsandwalls.png' }
+        tile_w: 800,
+        tile_h: 900,
+        tile_x: 0,
+        tile_y: 140,
+        path: 'sprites/background/fishbone.png' }
+    end
+
+    def hex(row = 0, col = 1)
+      { x: row * 200,
+        y: col * 200,
+        w: 200,
+        h: 200,
+        tile_w: 2500,
+        tile_h: 2500,
+        tile_x: 0,
+        tile_y: 270,
+        path: 'sprites/background/hex.png' }
     end
   end
 end
