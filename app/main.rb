@@ -6,7 +6,7 @@ require_relative 'level'
 require_relative 'carpet'
 
 def tick(args)
-  args.state.scene ||= 'gameplay'
+  args.state.scene ||= 'title'
   send("#{args.state.scene}_tick", args)
 end
 
@@ -29,7 +29,7 @@ def title_tick(args)
     {
       x: 40,
       y: args.grid.h - 88,
-      text: 'Lead the vacuum to clean all dirt, then help it return to base'
+      text: 'Lead the vacuum to clean all dirty spots, then guide it to base'
     },
     {
       x: 40,
@@ -49,11 +49,14 @@ def title_tick(args)
     {
       x: 40,
       y: 80,
-      text: 'S to start the game',
-      size_enum: 2
+      text: 'S to start the game'
+
     }
   ]
-  args.outputs.labels << labels
+  labels.each do |label|
+    display_label_with_background(args, label)
+  end
+  args.outputs.solids << { x: 0, y: 0, w: args.grid.w, h: args.grid.h, r: 73, g: 139, b: 227 }
 end
 
 def gameplay_tick(args)
@@ -246,8 +249,9 @@ end
 def display_reset_instruction(args)
   return if args.state.move_queue.empty?
 
-  args.outputs.labels << { x: 30, y: 40, text: 'Press C to clear queue, or D to delete last step', size_enum: 7, r: 255, g: 255,
-                           b: 255 }
+  label = { x: 30, y: 40, text: 'Press C to clear queue, or D to delete last step', size_enum: 7, r: 255, g: 255,
+            b: 255 }
+  display_label_with_background(args, label)
 end
 
 def display_missed_goal(args)
@@ -256,8 +260,9 @@ def display_missed_goal(args)
          else
            'Missed the goal! Resetting position...'
          end
-  args.outputs.labels << { x: 50, y: 700, text: text, size_enum: 20, r: 255, g: 50,
-                           b: 60 }
+  label = { x: 50, y: 700, text: text, size_enum: 20, r: 255, g: 50,
+            b: 60 }
+  display_label_with_background(args, label)
 end
 
 def display_completed_goals_msg(args)
@@ -266,8 +271,62 @@ def display_completed_goals_msg(args)
          else
            'The house is clean! Return to home base'
          end
-  args.outputs.labels << { x: 30, y: 60, text: text, size_enum: 16, r: 111, g: 180,
-                           b: 67 }
+  label = { x: 30, y: 60, text: text, size_enum: 16, r: 111, g: 180,
+            b: 67 }
+  display_label_with_background(args, label)
+end
+
+def display_label_with_background(args, label_hash)
+  # Extract label properties (defaults if missing)
+  x = label_hash[:x] || 0
+  y = label_hash[:y] || 0
+  text = label_hash[:text] || ''
+  size_enum = label_hash[:size_enum] || 0
+  text_r = label_hash[:r] || 255
+  text_g = label_hash[:g] || 255
+  text_b = label_hash[:b] || 255
+  text_a = label_hash[:a] || 255 # Default fully opaque
+
+  # Optional: font (if provided)
+  font = label_hash[:font]
+
+  # Calculate text dimensions
+  text_w, text_h = args.gtk.calcstringbox(text, size_enum)
+
+  # Padding for the background box (adjust as needed)
+  padding = 4
+
+  # Background box position and size (top-left aligned with padding)
+  box_x = x - padding
+  box_y = y - text_h - padding
+  box_w = text_w + (2 * padding)
+  box_h = text_h + (2 * padding)
+
+  # Render semi-transparent dark background box (soft black for white text readability)
+  args.outputs.primitives << {
+    x: box_x,
+    y: box_y,
+    w: box_w,
+    h: box_h,
+    r: 0, # Dark base
+    g: 0,
+    b: 0,
+    a: 60, # Semi-transparent (adjust 0-255 for softness; 100 ~40% opacity)
+    primitive_marker: :solid
+  }
+
+  # Render the label on top (top-left anchor by default)
+  args.outputs.labels << {
+    x: x,
+    y: y,
+    text: text,
+    size_enum: size_enum,
+    r: text_r,
+    g: text_g,
+    b: text_b,
+    a: text_a,
+    font: font
+  }
 end
 
 def display_commands(args)
@@ -281,7 +340,7 @@ def display_commands(args)
     line = (index / items_per_line).to_i
     column = index % items_per_line
 
-    args.outputs.labels << {
+    label = {
       x: 30 + (column * label_width),
       y: 710 - (line * line_height),
       text: command_display(command),
@@ -290,6 +349,7 @@ def display_commands(args)
       g: 255,
       b: 255
     }
+    display_label_with_background(args, label)
   end
 end
 

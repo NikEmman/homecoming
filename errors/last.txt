@@ -1,19 +1,6 @@
-* EXCEPTION:
-* ERROR - :args method missing on ~Class~.
-
-#+begin_src ~Class#inspect~
-Carpet
-#+end_src ~Class#inspect~
-
-
-
-The method named
-  :args
-doesn't exist on [Class, Carpet].
-
-(suggestions above)
+* EXCEPTION: wrong number of arguments (given 2, expected 3)
 ** Backtrace:
-*** app/carpet.rb:52:in round
-*** app/level.rb:6:in load_1
-*** app/main.rb:68:in gameplay_tick
+*** app/main.rb:293:in display_label_with_background
+*** app/main.rb:57:in title_tick
+*** app/main.rb:56:in title_tick
 *** app/main.rb:10:in tick
