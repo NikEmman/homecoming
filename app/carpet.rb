@@ -12,7 +12,7 @@ class Carpet
         path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }
     end
 
-    def big_vertical(row = 0, col = 0, variant = 1)
+    def big_vertical(args, row = 0, col = 0, variant = 1)
       { x: col * args.state.grid_box.w,
         y: row * args.state.grid_box.h,
         w: 150,
@@ -24,7 +24,7 @@ class Carpet
         path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }
     end
 
-    def small_vertical(row = 0, col = 0, variant = 1)
+    def small_vertical(args, row = 0, col = 0, variant = 1)
       { x: col * args.state.grid_box.w,
         y: row * args.state.grid_box.h,
         w: 80,
@@ -36,7 +36,7 @@ class Carpet
         path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }
     end
 
-    def small_horizontal(row = 0, col = 0, variant = 1)
+    def small_horizontal(args, row = 0, col = 0, variant = 1)
       { x: col * args.state.grid_box.w,
         y: row * args.state.grid_box.h,
         w: 150,
@@ -48,7 +48,7 @@ class Carpet
         path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }
     end
 
-    def round(row = 0, col = 0, variant = 1)
+    def round(args, row = 0, col = 0, variant = 1)
       { x: col * args.state.grid_box.w,
         y: row * args.state.grid_box.h,
         w: 80,

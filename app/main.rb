@@ -93,9 +93,9 @@ def gameplay_tick(args)
     display_commands(args)
     display_reset_instruction(args)
   end
-  # args.outputs.sprites << Floor.hex(4, 2)
-  # args.outputs.sprites << Floor.hex(4, 3)
-  # args.outputs.sprites << Floor.hex(5, 2)
+  # args.outputs.sprites << Floor.tiles(4, 2)
+  # args.outputs.sprites << Floor.tiles(4, 3)
+  # args.outputs.sprites << Floor.tiles(5, 2)
 
   cover_floor(args, args.state.floor_type)
 
@@ -110,7 +110,7 @@ def gameplay_tick(args)
         y: pos.row * args.state.grid_box.h,
         w: args.state.grid_box.w,
         h: args.state.grid_box.h,
-        path: 'sprites/trash.png' }
+        path: "sprites/trash#{args.state.trash_type}.png" }
   end
 
   # home base
@@ -256,8 +256,8 @@ def display_missed_goal(args)
          else
            'Missed the goal! Resetting position...'
          end
-  args.outputs.labels << { x: 50, y: 700, text: text, size_enum: 20, r: 255, g: 0,
-                           b: 0 }
+  args.outputs.labels << { x: 50, y: 700, text: text, size_enum: 20, r: 255, g: 50,
+                           b: 60 }
 end
 
 def display_completed_goals_msg(args)
@@ -266,8 +266,8 @@ def display_completed_goals_msg(args)
          else
            'The house is clean! Return to home base'
          end
-  args.outputs.labels << { x: 30, y: 60, text: text, size_enum: 16, r: 0, g: 255,
-                           b: 0 }
+  args.outputs.labels << { x: 30, y: 60, text: text, size_enum: 16, r: 111, g: 180,
+                           b: 67 }
 end
 
 def display_commands(args)
