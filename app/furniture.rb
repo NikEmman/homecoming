@@ -77,12 +77,24 @@ class Furniture
     def counter(args, col = 0, row = 0, variant = 1)
       { x: col * args.state.grid_box.w,
         y: (row * args.state.grid_box.h) + (args.state.grid_box.h / 4),
-        w: 79,
-        h: 119,
-        tile_w: 34,
-        tile_h: 45,
-        tile_x: 62,
-        tile_y: 195,
+        w: 240,
+        h: 120,
+        tile_w: 80,
+        tile_h: 40,
+        tile_x: 96,
+        tile_y: 193,
+        path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }
+    end
+
+    def counter_corner(args, col = 0, row = 0, variant = 1)
+      { x: col * args.state.grid_box.w,
+        y: (row * args.state.grid_box.h) + (args.state.grid_box.h / 4),
+        w: 119,
+        h: 158,
+        tile_w: 80,
+        tile_h: 56,
+        tile_x: 176,
+        tile_y: 192,
         path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }
     end
 

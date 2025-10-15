@@ -6,7 +6,7 @@ require_relative 'level'
 require_relative 'carpet'
 
 def tick(args)
-  args.state.scene ||= 'title'
+  args.state.scene ||= 'gameplay'
   send("#{args.state.scene}_tick", args)
 end
 
@@ -105,6 +105,8 @@ def gameplay_tick(args)
   display_carpets(args)
 
   display_furniture(args)
+  args.outputs.sprites << Furniture.counter(args, 6, 6)
+  args.outputs.sprites << Furniture.counter_corner(args, 9, 5.5)
 
   # display goal positions
   args.state.goal_positions.each do |pos|
