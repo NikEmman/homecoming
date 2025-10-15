@@ -74,6 +74,18 @@ class Furniture
         path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }
     end
 
+    def counter(args, col = 0, row = 0, variant = 1)
+      { x: col * args.state.grid_box.w,
+        y: (row * args.state.grid_box.h) + (args.state.grid_box.h / 4),
+        w: 79,
+        h: 119,
+        tile_w: 34,
+        tile_h: 45,
+        tile_x: 62,
+        tile_y: 195,
+        path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }
+    end
+
     def single_sofa_front(args, row = 0, col = 0, variant = 1)
       { x: row * args.state.grid_box.w,
         y: col * args.state.grid_box.h,

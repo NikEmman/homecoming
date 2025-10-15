@@ -285,7 +285,7 @@ def display_label_with_background(args, label_hash)
   text_r = label_hash[:r] || 255
   text_g = label_hash[:g] || 255
   text_b = label_hash[:b] || 255
-  text_a = label_hash[:a] || 255 # Default fully opaque
+  text_a = label_hash[:a] || 255
 
   # Optional: font (if provided)
   font = label_hash[:font]
@@ -293,7 +293,6 @@ def display_label_with_background(args, label_hash)
   # Calculate text dimensions
   text_w, text_h = args.gtk.calcstringbox(text, size_enum)
 
-  # Padding for the background box (adjust as needed)
   padding = 4
 
   # Background box position and size (top-left aligned with padding)
@@ -302,20 +301,19 @@ def display_label_with_background(args, label_hash)
   box_w = text_w + (2 * padding)
   box_h = text_h + (2 * padding)
 
-  # Render semi-transparent dark background box (soft black for white text readability)
+  # Render semi-transparent dark background box
   args.outputs.primitives << {
     x: box_x,
     y: box_y,
     w: box_w,
     h: box_h,
-    r: 0, # Dark base
+    r: 0,
     g: 0,
     b: 0,
-    a: 60, # Semi-transparent (adjust 0-255 for softness; 100 ~40% opacity)
+    a: 60, # adjust 0-255
     primitive_marker: :solid
   }
 
-  # Render the label on top (top-left anchor by default)
   args.outputs.labels << {
     x: x,
     y: y,
@@ -330,11 +328,11 @@ def display_label_with_background(args, label_hash)
 end
 
 def display_commands(args)
-  items_per_line = 21
-  label_width = 60
+  items_per_line = 19
+  label_width = 65
   size_enum = 20
-  # for dragonruby size_enum 0 is 18 pixel, and every size increase, adds 2 pixels
-  line_height = 18 + 2 * size_enum
+
+  line_height = 31 + 2 * size_enum
 
   args.state.move_queue.each_with_index do |command, index|
     line = (index / items_per_line).to_i
