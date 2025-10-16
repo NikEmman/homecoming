@@ -146,5 +146,188 @@ class Furniture
         flip_horizontally: true,
         path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }
     end
+
+    def fireplace(args, row = 0, col = 0, variant = 1)
+      { x: row * args.state.grid_box.w,
+        y: col * args.state.grid_box.h,
+        w: 79,
+        h: 79,
+        tile_w: 34,
+        tile_h: 38,
+        tile_x: 142,
+        tile_y: 115,
+        path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }
+    end
+
+    def clock(args, row = 0, col = 0, variant = 1)
+      { x: row * args.state.grid_box.w,
+        y: col * args.state.grid_box.h,
+        w: 79,
+        h: 128,
+        tile_w: 33,
+        tile_h: 48,
+        tile_x: 63,
+        tile_y: 112,
+        path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }
+    end
+
+    def drawer_right(args, row = 0, col = 0, variant = 1)
+      { x: row * args.state.grid_box.w,
+        y: col * args.state.grid_box.h,
+        w: 79,
+        h: 128,
+        tile_w: 20,
+        tile_h: 48,
+        tile_x: 29,
+        tile_y: 112,
+        path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }
+    end
+
+    def drawer_left(args, row = 0, col = 0, variant = 1)
+      { x: row * args.state.grid_box.w,
+        y: col * args.state.grid_box.h,
+        w: 79,
+        h: 128,
+        tile_w: 20,
+        tile_h: 48,
+        tile_x: 29,
+        tile_y: 112,
+        flip_horizontally: true,
+        path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }
+    end
+
+    def drawer_front(args, row = 0, col = 0, variant = 1)
+      { x: row * args.state.grid_box.w,
+        y: col * args.state.grid_box.h,
+        w: 79,
+        h: 128,
+        tile_w: 27,
+        tile_h: 48,
+        tile_x: 3,
+        tile_y: 112,
+        path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }
+    end
+
+    def library_front(args, row = 0, col = 0, variant = 1)
+      { x: row * args.state.grid_box.w,
+        y: col * args.state.grid_box.h,
+        w: 158,
+        h: 158,
+        tile_w: 48,
+        tile_h: 47,
+        tile_x: 31,
+        tile_y: 64,
+        path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }
+    end
+
+    def library_left(args, row = 0, col = 0, variant = 1)
+      { x: row * args.state.grid_box.w,
+        y: col * args.state.grid_box.h,
+        w: 79,
+        h: 158,
+        tile_w: 18,
+        tile_h: 48,
+        tile_x: 79,
+        tile_y: 64,
+        flip_horizontally: true,
+        path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }
+    end
+
+    def complex_front(args, row = 0, col = 0, variant = 1)
+      { x: row * args.state.grid_box.w,
+        y: col * args.state.grid_box.h,
+        w: 158,
+        h: 158,
+        tile_w: 48,
+        tile_h: 47,
+        tile_x: 95,
+        tile_y: 65,
+        path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }
+    end
+
+    def complex_left(args, row = 0, col = 0, variant = 1)
+      { x: row * args.state.grid_box.w,
+        y: col * args.state.grid_box.h,
+        w: 79,
+        h: 158,
+        tile_w: 18,
+        tile_h: 48,
+        tile_x: 143,
+        tile_y: 64,
+        flip_horizontally: true,
+        path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }
+    end
+
+    def complex_right(args, row = 0, col = 0, variant = 1)
+      { x: row * args.state.grid_box.w,
+        y: col * args.state.grid_box.h,
+        w: 79,
+        h: 158,
+        tile_w: 18,
+        tile_h: 48,
+        tile_x: 143,
+        tile_y: 64,
+        path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }
+    end
+
+    def bathtub(args, row = 0, col = 0, variant = 1)
+      { x: row * args.state.grid_box.w,
+        y: col * args.state.grid_box.h,
+        w: 158,
+        h: 79,
+        tile_w: 50,
+        tile_h: 30,
+        tile_x: 77,
+        tile_y: 260,
+        path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }
+    end
+
+    def toilet_front(args, row = 0, col = 0, variant = 1)
+      { x: row * args.state.grid_box.w,
+        y: col * args.state.grid_box.h,
+        w: 70,
+        h: 79,
+        tile_w: 20,
+        tile_h: 42,
+        tile_x: 124,
+        tile_y: 256,
+        path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }
+    end
+
+    def sink(args, row = 0, col = 0, variant = 1)
+      { x: row * args.state.grid_box.w,
+        y: col * args.state.grid_box.h,
+        w: 79,
+        h: 79,
+        tile_w: 25,
+        tile_h: 42,
+        tile_x: 20,
+        tile_y: 256,
+        path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }
+    end
+
+    def ironing_board(args, row = 0, col = 0, variant = 1)
+      { x: row * args.state.grid_box.w,
+        y: col * args.state.grid_box.h,
+        w: 79,
+        h: 79,
+        tile_w: 26,
+        tile_h: 42,
+        tile_x: 50,
+        tile_y: 256,
+        path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }
+    end
+
+    def lamp(args, row = 0, col = 0, variant = 1)
+      { x: row * args.state.grid_box.w,
+        y: col * args.state.grid_box.h,
+        w: 79,
+        h: 128,
+        tile_w: 25,
+        tile_h: 48,
+        tile_x: 91,
+        tile_y: 112,
+        path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }
+    end
   end
 end

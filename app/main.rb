@@ -104,9 +104,8 @@ def gameplay_tick(args)
 
   display_carpets(args)
 
-  display_furniture(args)
-  args.outputs.sprites << Furniture.counter(args, 6, 6)
-  args.outputs.sprites << Furniture.counter_corner(args, 9, 5.5)
+  # display_furniture(args)
+  args.outputs.sprites << Furniture.clock(args, 5, 3)
 
   # display goal positions
   args.state.goal_positions.each do |pos|
