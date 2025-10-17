@@ -4,6 +4,7 @@ require_relative 'furniture'
 require_relative 'sounds'
 require_relative 'level'
 require_relative 'carpet'
+require_relative 'wall'
 
 def tick(args)
   args.state.scene ||= 'gameplay'
@@ -63,8 +64,7 @@ def gameplay_tick(args)
   # custom grid size for grid and grid boxes
   args.state.grid_box.h ||= 80
   args.state.grid_box.w ||= 80
-  args.state.grid_total.h ||= 9
-  args.state.grid_total.w ||= 16
+
   args.state.direction ||= 'home'
   args.state.level ||= 1
 
@@ -96,16 +96,17 @@ def gameplay_tick(args)
     display_commands(args)
     display_reset_instruction(args)
   end
-  # args.outputs.sprites << Floor.tiles(4, 2)
-  # args.outputs.sprites << Floor.tiles(4, 3)
-  # args.outputs.sprites << Floor.tiles(5, 2)
 
   cover_floor(args, args.state.floor_type)
+  display_grid_lines(args)
 
   display_carpets(args)
 
-  # display_furniture(args)
-  args.outputs.sprites << Furniture.nightstand(args, 5, 3)
+  display_furniture(args)
+  display_miscellaneous(args)
+
+  # args.outputs.sprites << Wall.beige_wallpaper(args, 1, 2)
+  # args.outputs.primitives << Furniture.door(args, 7, 6, 2)
 
   # display goal positions
   args.state.goal_positions.each do |pos|
@@ -121,12 +122,8 @@ def gameplay_tick(args)
 
   args.outputs.sprites << Player.empty_dock(args)
 
-  (1..args.state.grid_total.w).each do |i|
-    args.outputs.primitives << vertical_line(i, args)
-  end
-  (1..args.state.grid_total.h).each do |i|
-    args.outputs.primitives << horizontal_line(i, args)
-  end
+  display_furniture(args)
+  display_miscellaneous(args)
 
   # player
   args.outputs.sprites << args.state.player
@@ -409,15 +406,30 @@ end
 
 def cover_floor(args, material = 'tarp')
   (0..6).each do |row|
-    (0..14).each do |col|
+    (0..2).each do |col|
       args.outputs.sprites << Floor.send(material, row, col)
     end
+  end
+end
+
+def display_grid_lines(args)
+  (1..args.state.grid_total.w).each do |i|
+    args.outputs.primitives << vertical_line(i, args)
+  end
+  (1..args.state.grid_total.h).each do |i|
+    args.outputs.primitives << horizontal_line(i, args)
   end
 end
 
 def display_furniture(args)
   args.state.furniture.each do |f|
     args.outputs.sprites << f
+  end
+end
+
+def display_miscellaneous(args)
+  args.state.miscellaneous.each do |m|
+    args.outputs.primitives << m
   end
 end
 
@@ -436,7 +448,15 @@ def blocked?(args, next_pos, direction)
   player_sprite.x = next_pos[:col] * args.state.grid_box.w
   player_sprite.y = next_pos[:row] * args.state.grid_box.h
 
+  furniture_collision?(args, player_sprite) || miscellaneous_collision?(args, player_sprite)
+end
+
+def furniture_collision?(args, player_sprite)
   args.state.furniture.any? { |f| args.geometry.intersect_rect?(player_sprite, f) }
+end
+
+def miscellaneous_collision?(args, player_sprite)
+  args.state.miscellaneous.any? { |m| args.geometry.intersect_rect?(player_sprite, m) }
 end
 
 def outside_grid_x?(args, next_pos)

@@ -353,5 +353,85 @@ class Furniture
         tile_y: 4,
         path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }
     end
+
+    def stairs_front(args, row = 0, col = 0, variant = 1)
+      tile_y = variant == 1 ? 0 : 81
+      { x: row * args.state.grid_box.w,
+        y: col * args.state.grid_box.h,
+        w: 79,
+        h: 158,
+        tile_w: 32,
+        tile_h: 80,
+        tile_x: 0,
+        tile_y: tile_y,
+        # primitive_marker: :sprite,
+        path: 'sprites/background/topdownhousedoorsandwindows.png' }
+    end
+
+    def stairs_side(args, row = 0, col = 0, variant = 1)
+      tile_y = variant == 1 ? 0 : 81
+      { x: row * args.state.grid_box.w,
+        y: col * args.state.grid_box.h,
+        w: 158,
+        h: 158,
+        tile_w: 64,
+        tile_h: 80,
+        tile_x: 33,
+        tile_y: tile_y,
+        path: 'sprites/background/topdownhousedoorsandwindows.png' }
+    end
+
+    def door(args, row = 0, col = 0, variant = 1)
+      tile_y = variant == 1 ? 0 : 81
+      { x: row * args.state.grid_box.w,
+        y: col * args.state.grid_box.h,
+        w: 79,
+        h: 140,
+        tile_w: 33,
+        tile_h: 47,
+        tile_x: 128,
+        tile_y: tile_y,
+        path: 'sprites/background/topdownhousedoorsandwindows.png' }
+    end
+
+    def door_open(args, row = 0, col = 0, variant = 1)
+      tile_y = variant == 1 ? 2 : 82
+      { x: row * args.state.grid_box.w,
+        y: col * args.state.grid_box.h,
+        w: 79,
+        h: 140,
+        tile_w: 33,
+        tile_h: 49,
+        tile_x: 160,
+        tile_y: tile_y,
+        path: 'sprites/background/topdownhousedoorsandwindows.png' }
+    end
+
+    def window(args, row = 0, col = 0, variant = 1)
+      tile_y = variant == 1 ? 49 : 128
+      { x: row * args.state.grid_box.w,
+        y: col * args.state.grid_box.h,
+        w: 79,
+        h: 79,
+        tile_w: 33,
+        tile_h: 31,
+        tile_x: 95,
+        tile_y: tile_y,
+        path: 'sprites/background/topdownhousedoorsandwindows.png' }
+    end
+
+    def window_single(args, row = 0, col = 0, variant = 1)
+      tile_y = variant == 1 ? 49 : 128
+      { x: row * args.state.grid_box.w,
+        y: col * args.state.grid_box.h,
+        w: 79,
+        h: 79,
+        tile_w: 33,
+        tile_h: 31,
+        tile_x: 128,
+        tile_y: tile_y,
+        path: 'sprites/background/topdownhousedoorsandwindows.png',
+        primitive_marker: :sprite }
+    end
   end
 end
