@@ -7,7 +7,7 @@ require_relative 'carpet'
 require_relative 'wall'
 
 def tick(args)
-  args.state.scene ||= 'gameplay'
+  args.state.scene ||= 'end'
   send("#{args.state.scene}_tick", args)
 end
 
@@ -60,10 +60,55 @@ def title_tick(args)
   args.outputs.solids << { x: 0, y: 0, w: args.grid.w, h: args.grid.h, r: 73, g: 139, b: 227 }
 end
 
+def end_tick(args)
+  Sound.title_music(args)
+  if args.inputs.keyboard.key_down.s
+    Sound.area_cleanup(args)
+    args.state.scene = 'gameplay'
+    args.audio[:music] = nil
+    args.state.level = 1
+    return
+  end
+  if args.inputs.keyboard.key_down.x
+    GTK.request_quit
+    return
+  end
+
+  labels = [
+    {
+      x: 300,
+      y: args.grid.h - 40,
+      text: 'THANKS FOR CLEANING!',
+      size_enum: 20
+    },
+
+    {
+      x: 40,
+      y: args.grid.h - 200,
+      text: 'I hope you enjoyed playing this little game!'
+    },
+    {
+      x: 40,
+      y: 160,
+      text: 'Press S to start a new game'
+    },
+
+    {
+      x: 40,
+      y: 80,
+      text: 'Press X to exit the game'
+
+    }
+  ]
+  labels.each do |label|
+    display_label_with_background(args, label)
+  end
+  args.outputs.solids << { x: 0, y: 0, w: args.grid.w, h: args.grid.h, r: 73, g: 139, b: 227 }
+end
+
 def gameplay_tick(args)
   # custom grid size for grid and grid boxes
-  args.state.grid_box.h ||= 80
-  args.state.grid_box.w ||= 80
+  args.state.grid_box ||= { w: 80, h: 80 }
 
   args.state.direction ||= 'home'
   args.state.level ||= 1
@@ -198,6 +243,8 @@ def gameplay_tick(args)
         Sound.return_home(args)
         args.state.player = Player.docked(args)
         args.state.level_complete = true
+        args.state.level + 1 > args.state.max_level ? args.state.scene = 'end' : args.state.level += 1
+        args.state.level += 1
       elsif args.state.goal_positions.empty?
         Sound.cleanup_completed(args)
       else
@@ -423,7 +470,7 @@ end
 
 def display_furniture(args)
   args.state.furniture.each do |f|
-    args.outputs.sprites << f
+    args.outputs.primitives << f
   end
 end
 

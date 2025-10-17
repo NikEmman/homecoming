@@ -1,5 +1,5 @@
 * EXCEPTION:
-* ERROR - :pos method missing on ~Class~.
+* ERROR - :a method missing on ~Class~.
 
 #+begin_src ~Class#inspect~
 Level
@@ -8,11 +8,11 @@ Level
 
 
 The method named
-  :pos
+  :a
 doesn't exist on [Class, Level].
 
 (suggestions above)
 ** Backtrace:
-*** app/level.rb:8:in load_1
-*** app/main.rb:71:in gameplay_tick
+*** app/level.rb:10:in load_1
+*** app/main.rb:116:in gameplay_tick
 *** app/main.rb:11:in tick
