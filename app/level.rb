@@ -12,7 +12,7 @@ class Level
       # args.state.miscellaneous ||= []
 
       args.state.furniture ||= [Furniture.sofa_front(args, 2, 4, 2),
-                                Furniture.sofa_front(args, 2, 7),
+
                                 Furniture.single_sofa_left(args, 4, 2)]
       args.state.miscellaneous ||= [Wall.beige_wallpaper(args, 0, 3),
                                     Wall.beige_wallpaper(args, 1, 3),
@@ -21,7 +21,19 @@ class Level
                                     Wall.beige_wallpaper(args, 4, 3),
                                     Wall.beige_wallpaper(args, 5, 3),
                                     Wall.beige_wallpaper(args, 6, 3),
-                                    Furniture.stairs_side(args, 0, 5)]
+                                    Furniture.stairs_side(args, 0, 5),
+                                    Furniture.door(args, 6, 6),
+                                    Furniture.window(args, 8, 6.5),
+                                    Furniture.library_front(args, 14, 5, 2),
+                                    Furniture.counter(args, 12, 3, 2),
+                                    Furniture.counter_corner(args, 15, 2.5)]
     end
   end
 end
+# FURNITURE NAMES
+# sofa_back, sofa_front, sofa_right, sofa_left, fridge, oven, counter, counter_corner,
+# single_sofa_front, single_sofa_back, single_sofa_right, single_sofa_left,
+# fireplace, clock, drawer_right, drawer_left, drawer_front, library_front, library_left,
+# complex_front, complex_left, complex_right, bathtub, toilet_front, sink,
+# ironing_board, lamp, record_player, nightstand, stairs_front, stairs_side,
+# door, door_open, window, window_single

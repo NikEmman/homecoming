@@ -7,7 +7,7 @@ require_relative 'carpet'
 require_relative 'wall'
 
 def tick(args)
-  args.state.scene ||= 'end'
+  args.state.scene ||= 'gameplay'
   send("#{args.state.scene}_tick", args)
 end
 
