@@ -112,6 +112,7 @@ def gameplay_tick(args)
 
   args.state.direction ||= 'home'
   args.state.level ||= 1
+  args.state.max_level ||= 1
 
   Level.send("load_#{args.state.level}", args)
 
@@ -135,7 +136,7 @@ def gameplay_tick(args)
     home: Player.docked(args)
   }
   args.state.player ||= args.state.player_sprites[args.state.direction.to_sym].dup
-  args.state.reset_at_tick ||= nil
+  args.state.execute_at_tick ||= nil
 
   unless args.state.executing || args.state.in_error_state
     display_commands(args)
@@ -149,9 +150,6 @@ def gameplay_tick(args)
 
   display_furniture(args)
   display_miscellaneous(args)
-
-  # args.outputs.sprites << Wall.beige_wallpaper(args, 1, 2)
-  # args.outputs.primitives << Furniture.door(args, 7, 6, 2)
 
   # display goal positions
   args.state.goal_positions.each do |pos|
@@ -174,16 +172,18 @@ def gameplay_tick(args)
   args.outputs.sprites << args.state.player
 
   # Execute scheduled reset, see below in Move processor, PLAYER MOVEMENT
-  if args.state.reset_at_tick && args.state.tick_count >= args.state.reset_at_tick
+  if args.state.execute_at_tick && args.state.tick_count >= args.state.execute_at_tick
     reset_player(args)
 
-    args.state.reset_at_tick = nil
+    args.state.execute_at_tick = nil
   end
 
   display_missed_goal(args) if args.state.missed_goal
 
-  if args.state.goal_positions.empty? && args.state.home_position && !args.state.executing && !args.state.in_error_state
+  if args.state.goal_positions.empty? && args.state.home_position && !args.state.executing && !args.state.in_error_state && args.state.move_queue.empty?
+
     display_completed_goals_msg(args)
+
   end
 
   # execute queued moves by pressing 'e'
@@ -200,6 +200,12 @@ def gameplay_tick(args)
   if args.inputs.keyboard.key_down.c && !args.state.executing && !args.state.in_error_state && !args.state.level_complete
     args.state.move_queue.clear
     args.state.executing = false
+  end
+
+  if args.inputs.keyboard.key_down.n && args.state.level_complete
+    args.state.level + 1 > args.state.max_level ? args.state.scene = 'end' : args.state.level += 1
+    args.state.level += 1
+    reset_level(args)
   end
 
   # queue moves with arrow keys
@@ -224,7 +230,7 @@ def gameplay_tick(args)
       args.state.missed_goal = true
       args.state.blocked_route = true
       args.state.in_error_state = true
-      args.state.reset_at_tick = args.state.tick_count + 120 # Schedule reset in 2 seconds
+      args.state.execute_at_tick = args.state.tick_count + 120 # Schedule reset in 2 seconds
       args.state.move_queue.clear # discard the rest of the moves
     else
       Player.move_direction(args, args.state.move_queue.shift)
@@ -243,8 +249,7 @@ def gameplay_tick(args)
         Sound.return_home(args)
         args.state.player = Player.docked(args)
         args.state.level_complete = true
-        args.state.level + 1 > args.state.max_level ? args.state.scene = 'end' : args.state.level += 1
-        args.state.level += 1
+
       elsif args.state.goal_positions.empty?
         Sound.cleanup_completed(args)
       else
@@ -254,7 +259,7 @@ def gameplay_tick(args)
     else
       args.state.missed_goal = true
       args.state.in_error_state = true
-      args.state.reset_at_tick = args.state.tick_count + 120
+      args.state.execute_at_tick = args.state.tick_count + 120
       args.audio[:music] = nil # cancels the on sound loop that started when execution started
       Sound.vacuum_off(args)
 
@@ -305,19 +310,19 @@ def display_missed_goal(args)
          else
            'Missed the goal! Resetting position...'
          end
-  label = { x: 50, y: 700, text: text, size_enum: 20, r: 255, g: 50,
-            b: 60 }
+  label = { x: 50, y: 700, text: text, size_enum: 8, r: 240, g: 40,
+            b: 40 }
   display_label_with_background(args, label)
 end
 
 def display_completed_goals_msg(args)
   text = if args.state.level_complete
-           'Level completed, press "N" to go to the next level'
+           'Level completed, press N to go to the next level'
          else
            'The house is clean! Return to home base'
          end
-  label = { x: 30, y: 60, text: text, size_enum: 16, r: 111, g: 180,
-            b: 67 }
+  label = { x: 30, y: 60, text: text, size_enum: 8, r: 255, g: 255,
+            b: 255 }
   display_label_with_background(args, label)
 end
 
@@ -419,18 +424,33 @@ def reset_player(args)
   args.state.blocked_route = false
 end
 
+def reset_level(args)
+  args.state.home_position = nil
+  args.state.goal_positions = nil
+  args.state.furniture = nil
+  args.state.miscellaneous = nil
+  args.state.carpets = nil
+  args.state.floor_type = nil
+  args.state.trash_type = nil
+  args.state.grid_total = nil
+  args.state.starting_position = nil
+  args.state.player_grid = nil
+  args.state.level_complete = false
+end
+
 def reached_goal?(args)
-  grid = args.state.player_grid
+  grid = args.state.player_grid.dup
   goals = args.state.goal_positions
 
   # player reaches goal when lands on a goal position, or  reaches home base after all positions are reached
-  goals.any? do |goal|
+  # and is the final move (move queue empty)
+  (goals.any? do |goal|
     grid[:col] == goal[:col] && grid[:row] == goal[:row]
-  end || reached_home?(args)
+  end || reached_home?(args)) && args.state.move_queue.empty?
 end
 
 def reached_home?(args)
-  grid = args.state.player_grid
+  grid = args.state.player_grid.dup
   home = args.state.home_position
   goals = args.state.goal_positions
   # reached home returns true only when goals are done
@@ -490,6 +510,19 @@ def blocked?(args, next_pos, direction)
   # Grid bounds
   return true if outside_grid_x?(args, next_pos) || outside_grid_y?(args, next_pos)
 
+  # Premature landing on goal or home
+  goals = args.state.goal_positions
+  if goals.any? { |g| g[:col] == next_pos[:col] && g[:row] == next_pos[:row] } && args.state.move_queue.length > 1
+    args.state.missed_goal = true
+    args.state.blocked_route = false
+    return true
+  end
+  if goals.empty? && next_pos[:col] == args.state.home_position[:col] && next_pos[:row] == args.state.home_position[:row] && args.state.move_queue.length > 1
+    args.state.missed_goal = true
+    args.state.blocked_route = false
+    return true
+  end
+
   # Sprite collision
   player_sprite = args.state.player_sprites[direction.to_sym].dup
   player_sprite.x = next_pos[:col] * args.state.grid_box.w
@@ -512,11 +545,6 @@ end
 
 def outside_grid_y?(args, next_pos)
   next_pos[:row] < 0 || next_pos[:row] >= args.state.grid_total.h
-end
-
-def will_collide_with_furniture?(args)
-  player_sprite = args.state.player
-  args.state.furniture.any? { |f| args.geometry.intersect_rect?(player_sprite, f) }
 end
 
 def next_grid_position(grid, direction)
