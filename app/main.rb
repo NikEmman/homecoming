@@ -5,6 +5,7 @@ require_relative 'sounds'
 require_relative 'level'
 require_relative 'carpet'
 require_relative 'wall'
+require_relative 'biome'
 
 def tick(args)
   args.state.scene ||= 'gameplay'
@@ -112,7 +113,7 @@ def gameplay_tick(args)
 
   args.state.direction ||= 'home'
   args.state.level ||= 1
-  args.state.max_level ||= 1
+  args.state.max_level ||= 2
 
   Level.send("load_#{args.state.level}", args)
 
@@ -205,7 +206,6 @@ def gameplay_tick(args)
 
   if args.inputs.keyboard.key_down.n && args.state.level_complete
     args.state.level + 1 > args.state.max_level ? args.state.scene = 'end' : args.state.level += 1
-    args.state.level += 1
     reset_level(args)
   end
 
