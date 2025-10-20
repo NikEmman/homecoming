@@ -164,9 +164,9 @@ class Furniture
         y: col * args.state.grid_box.h,
         w: 79,
         h: 128,
-        tile_w: 33,
+        tile_w: 30,
         tile_h: 48,
-        tile_x: 63,
+        tile_x: 64,
         tile_y: 112,
         path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }
     end

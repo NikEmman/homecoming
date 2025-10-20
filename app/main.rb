@@ -166,7 +166,38 @@ def gameplay_tick(args)
   args.outputs.sprites << Player.empty_dock(args)
 
   display_furniture(args)
-  display_miscellaneous(args)
+  # display_miscellaneous(args)
+
+  # FURNITURE NAMES
+# sofa_back, sofa_front, sofa_right, sofa_left, fridge, oven, counter, counter_corner,
+# single_sofa_front, single_sofa_back, single_sofa_right, single_sofa_left,
+# fireplace, clock, drawer_right, drawer_left, drawer_front, library_front, library_left,
+# complex_front, complex_left, complex_right, bathtub, toilet_front, sink,
+# ironing_board, lamp, record_player, nightstand, stairs_front, stairs_side,
+# door, door_open, window, window_single
+
+
+  args.outputs.primitives << Furniture.sofa_front(args, 2, 4, 2)
+    args.outputs.primitives << Furniture.drawer_front(args, 4, 3.8, 2)
+  args.outputs.primitives << Furniture.lamp(args, 5, 4)
+    args.outputs.primitives << Furniture.ironing_board(args, 7, 2,2)
+      args.outputs.primitives << Furniture.counter_corner(args, 15, 2.5)
+
+    args.outputs.primitives << Furniture.library_left(args, 15.1, 1,2)
+    args.outputs.primitives << Furniture.fireplace(args, 12, 6,2)
+        args.outputs.primitives << Furniture.clock(args, 11, 6,2)
+
+  args.outputs.primitives << Furniture.single_sofa_left(args, 4, 2)
+  args.outputs.primitives << Furniture.stairs_side(args, 0, 5)
+  args.outputs.primitives << Furniture.door(args, 6, 6)
+  args.outputs.primitives << Furniture.window(args, 8, 6.5)
+  args.outputs.primitives << Furniture.library_front(args, 14, 5, 2)
+  args.outputs.primitives << Furniture.counter(args, 11, 3, 2)
+  args.outputs.primitives << Furniture.fridge(args, 10, 3)
+  args.outputs.primitives << Furniture.oven(args, 14, 2.8, 2)
+
+
+
 
   # player
   args.outputs.sprites << args.state.player
