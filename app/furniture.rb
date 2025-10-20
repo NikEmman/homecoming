@@ -1,4 +1,4 @@
-# Floorboard tiles class
+# Furniture tiles class
 class Furniture
   class << self
     def sofa_back(args, col = 0, row = 0, variant = 1)
@@ -432,6 +432,91 @@ class Furniture
         tile_y: tile_y,
         path: 'sprites/background/topdownhousedoorsandwindows.png',
         primitive_marker: :sprite }
+    end
+
+    def dinning_table(args, row = 0, col = 0, variant = 1)
+      { x: row * args.state.grid_box.w,
+        y: col * args.state.grid_box.h,
+        w: 148,
+        h: 148,
+        tile_w: 47,
+        tile_h: 32,
+        tile_x: 0,
+        tile_y: 32,
+        path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }
+    end
+
+    def dinning_table_vertical(args, row = 0, col = 0, variant = 1)
+      { x: row * args.state.grid_box.w,
+        y: col * args.state.grid_box.h,
+        w: 117,
+        h: 148,
+        tile_w: 33,
+        tile_h: 48,
+        tile_x: 0,
+        tile_y: 63,
+        path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }
+    end
+
+    def chair_front(args, row = 0, col = 0, variant = 1)
+      { x: row * args.state.grid_box.w,
+        y: col * args.state.grid_box.h,
+        w: 60,
+        h: 78,
+        tile_w: 16,
+        tile_h: 28,
+        tile_x: 80,
+        tile_y: 3,
+        path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }
+    end
+
+    def chair_left(args, row = 0, col = 0, variant = 1)
+      { x: row * args.state.grid_box.w,
+        y: col * args.state.grid_box.h,
+        w: 60,
+        h: 78,
+        tile_w: 16,
+        tile_h: 29,
+        tile_x: 95,
+        tile_y: 3,
+        path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }
+    end
+
+    def chair_right(args, row = 0, col = 0, variant = 1)
+      { x: row * args.state.grid_box.w,
+        y: col * args.state.grid_box.h,
+        w: 60,
+        h: 78,
+        tile_w: 16,
+        tile_h: 29,
+        tile_x: 95,
+        tile_y: 3,
+        flip_horizontally: true,
+        path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }
+    end
+
+    def chair_back(args, row = 0, col = 0, variant = 1)
+      { x: row * args.state.grid_box.w,
+        y: col * args.state.grid_box.h,
+        w: 60,
+        h: 78,
+        tile_w: 16,
+        tile_h: 29,
+        tile_x: 112,
+        tile_y: 3,
+        path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }
+    end
+
+    def table_small(args, row = 0, col = 0, variant = 1)
+      { x: row * args.state.grid_box.w,
+        y: col * args.state.grid_box.h,
+        w: 150,
+        h: 80,
+        tile_w: 32,
+        tile_h: 21,
+        tile_x: 80,
+        tile_y: 43,
+        path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }
     end
   end
 end
