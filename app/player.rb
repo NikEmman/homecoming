@@ -77,7 +77,7 @@ class Player
       grid = args.state.home_position
       { x: grid.col * args.state.grid_box.h,
         y: grid.row * args.state.grid_box.w,
-        tile_x: -10,
+        tile_x: 0,
         w: 100,
         h: 80,
         flip_horizontally: true,
@@ -88,7 +88,7 @@ class Player
       grid = args.state.home_position
       { x: grid.col * args.state.grid_box.h,
         y: grid.row * args.state.grid_box.w,
-        tile_x: -10,
+        tile_x: 0,
         w: 100,
         h: 80,
         flip_horizontally: true,

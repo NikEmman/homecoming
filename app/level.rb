@@ -3,8 +3,8 @@ class Level
     def load_1(args)
       args.state.home_position ||= { col: 0, row: 3, direction: 'home' }
       args.state.goal_positions ||= [{ col: 3, row: 2 }]
-      args.state.carpets ||= [Carpet.big_horizontal(args, 2, 2, 1), Carpet.small_vertical(args, 2, 0, 2),Carpet.small_horizontal(args, 11.5, 5,2)]
-      args.state.floor_type ||= 'hardwood'
+      args.state.carpets ||= [Carpet.big_horizontal(args, 2, 2, 1), Carpet.round(args, 12, 5)]
+      args.state.floor_type ||= 'carpeted'
       args.state.trash_type ||= 2
       args.state.grid_total ||= { h: 6, w: 16 }
 
@@ -19,7 +19,7 @@ class Level
                                     Wall.beige_wallpaper(args, 3, 3),
                                     Wall.beige_wallpaper(args, 4, 3),
                                     Wall.beige_wallpaper(args, 5, 3),
-                                    Wall.beige_wallpaper(args, 6, 3),]
+                                    Wall.beige_wallpaper(args, 6, 3)]
     end
   end
 end

@@ -18,10 +18,10 @@ class Furniture
         y: row * args.state.grid_box.h,
         w: 158,
         h: 79,
-        tile_w: 53,
-        tile_h: 34,
-        tile_x: 85,
-        tile_y: 158,
+        tile_w: 50,
+        tile_h: 31,
+        tile_x: 87,
+        tile_y: 161,
         path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }
     end
 
@@ -77,24 +77,24 @@ class Furniture
     def counter(args, col = 0, row = 0, variant = 1)
       { x: col * args.state.grid_box.w,
         y: (row * args.state.grid_box.h) + (args.state.grid_box.h / 4),
-        w: 240,
-        h: 120,
+        w: 237,
+        h: 119,
         tile_w: 80,
-        tile_h: 40,
+        tile_h: 43,
         tile_x: 96,
-        tile_y: 193,
+        tile_y: 192,
         path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }
     end
 
     def counter_corner(args, col = 0, row = 0, variant = 1)
       { x: col * args.state.grid_box.w,
         y: (row * args.state.grid_box.h) + (args.state.grid_box.h / 4),
-        w: 119,
-        h: 158,
-        tile_w: 80,
-        tile_h: 56,
-        tile_x: 176,
-        tile_y: 192,
+        w: 83,
+        h: 179,
+        tile_w: 33,
+        tile_h: 64,
+        tile_x: 175,
+        tile_y: 193,
         path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }
     end
 
@@ -164,9 +164,9 @@ class Furniture
         y: col * args.state.grid_box.h,
         w: 79,
         h: 128,
-        tile_w: 30,
-        tile_h: 48,
-        tile_x: 64,
+        tile_w: 24,
+        tile_h: 46,
+        tile_x: 68,
         tile_y: 112,
         path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }
     end
@@ -326,6 +326,18 @@ class Furniture
         tile_w: 25,
         tile_h: 48,
         tile_x: 91,
+        tile_y: 112,
+        path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }
+    end
+
+    def coat_rack(args, row = 0, col = 0, variant = 1)
+      { x: row * args.state.grid_box.w,
+        y: col * args.state.grid_box.h,
+        w: 79,
+        h: 128,
+        tile_w: 20,
+        tile_h: 48,
+        tile_x: 48,
         tile_y: 112,
         path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }
     end
