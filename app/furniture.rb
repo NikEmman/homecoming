@@ -530,5 +530,53 @@ class Furniture
         tile_y: 43,
         path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }
     end
+
+    def shelf(args, row = 0, col = 0, variant = 1)
+      { x: row * args.state.grid_box.w,
+        y: col * args.state.grid_box.h,
+        w: 159,
+        h: 39,
+        tile_w: 50,
+        tile_h: 20,
+        tile_x: 127,
+        tile_y: 236,
+        path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }
+    end
+
+    def pet_bed(args, row = 0, col = 0, variant = 1)
+      { x: row * args.state.grid_box.w,
+        y: col * args.state.grid_box.h,
+        w: 79,
+        h: 79,
+        tile_w: 30,
+        tile_h: 25,
+        tile_x: 97,
+        tile_y: 236,
+        path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }
+    end
+
+    def utensils(args, row = 0, col = 0, variant = 1)
+      { x: row * args.state.grid_box.w,
+        y: col * args.state.grid_box.h,
+        w: 79,
+        h: 79,
+        tile_w: 30,
+        tile_h: 25,
+        tile_x: 66,
+        tile_y: 236,
+        path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }
+    end
+
+    def flowerpot(args, row = 0, col = 0, variant = 1)
+      { x: row * args.state.grid_box.w,
+        y: col * args.state.grid_box.h,
+        w: 79,
+        h: 79,
+        tile_w: 24,
+        tile_h: 30,
+        tile_x: 0,
+        tile_y: 165,
+        path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }
+    end
   end
 end

@@ -7,7 +7,7 @@ class Wall
         h: args.state.grid_box.h * 4,
         tile_w: 62,
         tile_h: 64,
-        tile_x: 17,
+        tile_x: 18,
         tile_y: 17,
         path: 'sprites/background/topdownhouse_floorsandwalls.png' }
     end

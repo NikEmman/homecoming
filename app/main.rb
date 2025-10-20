@@ -149,7 +149,8 @@ def gameplay_tick(args)
   display_carpets(args)
 
   display_furniture(args)
-  display_miscellaneous(args)
+  # display_miscellaneous(args)
+  args.outputs.primitives << Furniture.flowerpot(args, 7, 6, 1)
 
   # display goal positions
   args.state.goal_positions.each do |pos|
@@ -165,42 +166,8 @@ def gameplay_tick(args)
 
   args.outputs.sprites << Player.empty_dock(args)
 
+  display_miscellaneous(args)
   display_furniture(args)
-  # display_miscellaneous(args)
-
-  # FURNITURE NAMES
-  # sofa_back, sofa_front, sofa_right, sofa_left, fridge, oven, counter, counter_corner,
-  # single_sofa_front, single_sofa_back, single_sofa_right, single_sofa_left,
-  # fireplace, clock, drawer_right, drawer_left, drawer_front, library_front, library_left,
-  # complex_front, complex_left, complex_right, bathtub, toilet_front, sink,
-  # ironing_board, lamp, record_player, nightstand, stairs_front, stairs_side,
-  # door, door_open, window, window_single
-
-  args.outputs.primitives << Furniture.sofa_front(args, 2, 4, 2)
-  args.outputs.primitives << Furniture.table_small(args, 2, 3, 2)
-  args.outputs.primitives << Furniture.nightstand(args, 4, 4)
-  args.outputs.primitives << Furniture.lamp(args, 5, 4)
-  args.outputs.primitives << Furniture.ironing_board(args, 7, 2, 2)
-  args.outputs.primitives << Furniture.counter_corner(args, 15, 1.2)
-
-  # args.outputs.primitives << Furniture.library_left(args, 15.1, 1, 2)
-  args.outputs.primitives << Furniture.fireplace(args, 12, 5.9, 2)
-  args.outputs.primitives << Furniture.single_sofa_right(args, 11, 5)
-  args.outputs.primitives << Furniture.single_sofa_left(args, 13, 5)
-
-  # args.outputs.primitives << Furniture.clock(args, 11, 5, 2)
-
-  args.outputs.primitives << Furniture.single_sofa_left(args, 4, 2, 2)
-  args.outputs.primitives << Furniture.stairs_side(args, 0, 5)
-  args.outputs.primitives << Furniture.door(args, 3, 6)
-  args.outputs.primitives << Furniture.window(args, 4, 6.5)
-  args.outputs.primitives << Furniture.coat_rack(args, 2, 5.5)
-
-  args.outputs.primitives << Furniture.library_front(args, 8, 5, 2)
-
-  args.outputs.primitives << Furniture.counter(args, 11, 2, 2)
-  args.outputs.primitives << Furniture.fridge(args, 14, 2)
-  # args.outputs.primitives << Furniture.oven(args, 13, 2.9, 2)
 
   # player
   args.outputs.sprites << args.state.player

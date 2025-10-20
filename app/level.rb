@@ -1,32 +1,45 @@
 class Level
   class << self
     def load_1(args)
-      args.state.home_position ||= { col: 0, row: 3, direction: 'home' }
-      args.state.goal_positions ||= [{ col: 3, row: 2 }]
-      args.state.carpets ||= [Carpet.big_horizontal(args, 2, 2, 1), Carpet.round(args, 12, 5)]
+      args.state.home_position ||= { col: 0, row: 1, direction: 'home' }
+      args.state.goal_positions ||= [{ col: 1, row: 2 }]
+      args.state.carpets ||= [Carpet.big_horizontal(args, 2, 2, 1), Carpet.small_horizontal(args, 12, 1, 2),
+                              Carpet.round(args, 12, 5)]
       args.state.floor_type ||= 'carpeted'
       args.state.trash_type ||= 2
       args.state.grid_total ||= { h: 6, w: 16 }
 
-      args.state.furniture ||= []
-      # args.state.miscellaneous ||= []
-
-      # args.state.furniture ||= [Furniture.sofa_front(args, 2, 4, 2),
-      #                           Furniture.single_sofa_left(args, 4, 2)]
-      args.state.miscellaneous ||= [Wall.beige_wallpaper(args, 0, 3),
-                                    Wall.beige_wallpaper(args, 1, 3),
-                                    Wall.beige_wallpaper(args, 2, 3),
-                                    Wall.beige_wallpaper(args, 3, 3),
-                                    Wall.beige_wallpaper(args, 4, 3),
-                                    Wall.beige_wallpaper(args, 5, 3),
-                                    Wall.beige_wallpaper(args, 6, 3)]
+      args.state.furniture ||= [Furniture.sofa_front(args, 2, 4, 2),
+                                Furniture.table_small(args, 2, 3, 2),
+                                Furniture.nightstand(args, 4, 4),
+                                Furniture.lamp(args, 5, 4),
+                                Furniture.chair_right(args, 8, 2, 2),
+                                Furniture.chair_right(args, 8, 3, 2),
+                                Furniture.dinning_table_vertical(args, 7, 2),
+                                Furniture.chair_back(args, 7, 1.2, 2),
+                                Furniture.counter_corner(args, 15, 1.2),
+                                Furniture.fireplace(args, 12, 5.9, 2),
+                                Furniture.single_sofa_right(args, 11, 5),
+                                Furniture.single_sofa_left(args, 13, 5),
+                                Furniture.single_sofa_left(args, 4, 2, 2),
+                                Furniture.stairs_side(args, 0, 5),
+                                Furniture.door(args, 3, 6),
+                                Furniture.window(args, 4, 6.5),
+                                Furniture.window_single(args, 13, 6.5),
+                                Furniture.window_single(args, 11, 6.5),
+                                Furniture.coat_rack(args, 2, 5.5),
+                                Furniture.library_front(args, 8, 5, 2),
+                                Furniture.counter(args, 11, 2, 2),
+                                Furniture.fridge(args, 14, 2)]
+      args.state.miscellaneous ||= [Wall.green_wallpaper(args, 0, 3),
+                                    Wall.green_wallpaper(args, 1, 3),
+                                    Wall.green_wallpaper(args, 2, 3),
+                                    Wall.green_wallpaper(args, 3, 3),
+                                    Wall.green_wallpaper(args, 4, 3),
+                                    Wall.green_wallpaper(args, 5, 3),
+                                    Wall.green_wallpaper(args, 6, 3),
+                                    Furniture.shelf(args, 6, 7, 1),
+                                    Furniture.flowerpot(args, 6, 7, 1)]
     end
   end
 end
-# FURNITURE NAMES
-# sofa_back, sofa_front, sofa_right, sofa_left, fridge, oven, counter, counter_corner,
-# single_sofa_front, single_sofa_back, single_sofa_right, single_sofa_left,
-# fireplace, clock, drawer_right, drawer_left, drawer_front, library_front, library_left,
-# complex_front, complex_left, complex_right, bathtub, toilet_front, sink,
-# ironing_board, lamp, record_player, nightstand, stairs_front, stairs_side,
-# door, door_open, window, window_single
