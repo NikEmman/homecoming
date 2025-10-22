@@ -11,13 +11,7 @@ class Player
       when 'home'  then grid.col = args.state.home_position[:col]
                         grid.row = args.state.home_position[:row]
       end
-
-      # Update sprite position
-      sprite = args.state.player_sprites[direction.to_sym].dup
-      sprite.x = grid.col * args.state.grid_box.h
-      sprite.y = grid.row * args.state.grid_box.w
-      args.state.player = sprite
-      args.state.direction = direction
+      update_sprite(args, direction, grid)
     end
 
     def up(args)
@@ -30,8 +24,7 @@ class Player
         tile_w: 64,
         tile_h: 64,
         tile_x: 64,
-        tile_y: 0,
-        speed: 41 }
+        tile_y: 0 }
     end
 
     def down(args)
@@ -73,26 +66,34 @@ class Player
         tile_y: 0 }
     end
 
-    def docked(args)
+    def docked(args, faced_right: true)
       grid = args.state.home_position
       { x: grid.col * args.state.grid_box.h,
         y: grid.row * args.state.grid_box.w,
         tile_x: 0,
         w: 100,
         h: 80,
-        flip_horizontally: true,
+        flip_horizontally: faced_right,
         path: 'sprites/docked2.png' }
     end
 
-    def empty_dock(args)
+    def empty_dock(args, faced_right: true)
       grid = args.state.home_position
       { x: grid.col * args.state.grid_box.h,
         y: grid.row * args.state.grid_box.w,
         tile_x: 0,
         w: 100,
         h: 80,
-        flip_horizontally: true,
+        flip_horizontally: faced_right,
         path: 'sprites/empty_dock.png' }
+    end
+
+    def update_sprite(args, direction, grid)
+      sprite = args.state.player_sprites[direction.to_sym].dup
+      sprite.x = grid.col * args.state.grid_box.h
+      sprite.y = grid.row * args.state.grid_box.w
+      args.state.player = sprite
+      args.state.direction = direction
     end
   end
 end
