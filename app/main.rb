@@ -113,7 +113,7 @@ def gameplay_tick(args)
   args.state.grid_box ||= { w: 80, h: 80 }
 
   args.state.direction ||= 'home'
-  args.state.level ||= 1
+  args.state.level ||= 5
   args.state.max_level ||= 5
 
   Level.send("load_#{args.state.level}", args)
@@ -309,6 +309,8 @@ end
 def display_missed_goal(args)
   text = if args.state.blocked_route
            'Error, obstacle found! Resetting position...'
+         elsif args.state.player_grid[:col] == args.state.home_position[:col] && args.state.player_grid[:row] == args.state.home_position[:row]
+           'Error, returned to home too early! Resetting position...'
          else
            'Missed the goal! Resetting position...'
          end
