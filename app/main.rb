@@ -58,6 +58,7 @@ def title_tick(args)
   labels.each do |label|
     display_label_with_background(args, label)
   end
+  # title background
   args.outputs.solids << { x: 0, y: 0, w: args.grid.w, h: args.grid.h, r: 73, g: 139, b: 227 }
 end
 
@@ -113,7 +114,7 @@ def gameplay_tick(args)
 
   args.state.direction ||= 'home'
   args.state.level ||= 1
-  args.state.max_level ||= 2
+  args.state.max_level ||= 5
 
   Level.send("load_#{args.state.level}", args)
 
@@ -300,7 +301,7 @@ end
 def display_reset_instruction(args)
   return if args.state.move_queue.empty?
 
-  label = { x: 30, y: 40, text: 'Press C to clear queue, or D to delete last step', size_enum: 7, r: 255, g: 255,
+  label = { x: 50, y: 40, text: 'Press C to clear queue, or D to delete last step', size_enum: 7, r: 255, g: 255,
             b: 255 }
   display_label_with_background(args, label)
 end
