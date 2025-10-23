@@ -8,7 +8,7 @@ require_relative 'wall'
 require_relative 'biome'
 
 def tick(args)
-  args.state.scene ||= 'gameplay'
+  args.state.scene ||= 'gameplay' # options are title, password, end, gameplay
   send("#{args.state.scene}_tick", args)
 end
 
@@ -108,12 +108,73 @@ def end_tick(args)
   args.outputs.solids << { x: 0, y: 0, w: args.grid.w, h: args.grid.h, r: 73, g: 139, b: 227 }
 end
 
+def password_tick(args)
+  generate_password(args)
+  if args.inputs.keyboard.key_down.n
+    Sound.area_cleanup(args) # needs new sound resuming cleanup
+    args.state.scene = 'gameplay'
+    args.audio[:music] = nil
+    args.state.password = nil
+    return
+  end
+  if args.inputs.keyboard.key_down.x
+    GTK.request_quit
+    return
+  end
+  label_text = { top: 'Hooray, you reached a saving point!',
+                 instruction: "Write down the following password so you start the game at level #{args.state.level}:",
+                 password: args.state.password.to_s }
+
+  # we calc the width of the strings, and use it below to center them
+  top_w, = GTK.calcstringbox(label_text[:top], size_enum: 15)
+  instruction_w, = GTK.calcstringbox(label_text[:instruction])
+  password_w, = GTK.calcstringbox(label_text[:password], size_enum: 40)
+
+  labels = [
+    {
+      x: (args.grid.w - top_w) / 2,
+      y: args.grid.h - 40,
+      text: label_text[:top],
+      size_enum: 15
+
+    },
+    {
+      x: (args.grid.w - instruction_w) / 2,
+      y: args.grid.h - 200,
+      text: label_text[:instruction]
+    },
+
+    {
+      x: (args.grid.w - password_w) / 2,
+      y: args.grid.h - 300,
+      text: label_text[:password],
+      size_enum: 40
+    },
+    {
+      x: 40,
+      y: 160,
+      text: 'Press N to resume the game'
+    },
+
+    {
+      x: 40,
+      y: 80,
+      text: 'Press X to exit the game'
+
+    }
+  ]
+  labels.each do |label|
+    display_label_with_background(args, label)
+  end
+  args.outputs.solids << { x: 0, y: 0, w: args.grid.w, h: args.grid.h, r: 73, g: 139, b: 227 }
+end
+
 def gameplay_tick(args)
   # custom grid size for grid and grid boxes
   args.state.grid_box ||= { w: 80, h: 80 }
 
-  args.state.direction ||= 'home'
-  args.state.level ||= 5
+  args.state.direction ||= 'gameplay'
+  args.state.level ||= 4
   args.state.max_level ||= 5
 
   Level.send("load_#{args.state.level}", args)
@@ -207,6 +268,7 @@ def gameplay_tick(args)
 
   if args.inputs.keyboard.key_down.n && args.state.level_complete
     args.state.level + 1 > args.state.max_level ? args.state.scene = 'end' : args.state.level += 1
+    args.state.scene = 'password' if (args.state.level % 5).zero? # thus after level 4, we get password
     reset_level(args)
   end
 
@@ -561,4 +623,13 @@ def next_grid_position(grid, direction)
 
   dx, dy = deltas[direction]
   { col: grid[:col] + dx, row: grid[:row] + dy }
+end
+
+def generate_password(args)
+  # 5,10 subject to change depending on after which lvl will password screen appear
+  saving_points = { 5 => %w[ABN HKT OEM YAX IOT].sample,
+                    10 => %w[TOBN MEKT NOIM XOYX MMMM].sample }
+
+  # will call the proper key from saving_points, or default to "d-v messed up"
+  args.state.password ||= saving_points.fetch(args.state.level, 'D-V messed up')
 end
