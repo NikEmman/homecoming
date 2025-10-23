@@ -6,9 +6,10 @@ require_relative 'level'
 require_relative 'carpet'
 require_relative 'wall'
 require_relative 'biome'
+require_relative 'labels'
 
 def tick(args)
-  args.state.scene ||= 'gameplay' # options are title, password, end, gameplay
+  args.state.scene ||= 'title' # options are title, password, end, gameplay
   send("#{args.state.scene}_tick", args)
 end
 
@@ -21,41 +22,7 @@ def title_tick(args)
     return
   end
 
-  labels = [
-    {
-      x: 40,
-      y: args.grid.h - 40,
-      text: 'Home coming',
-      size_enum: 6
-    },
-    {
-      x: 40,
-      y: args.grid.h - 88,
-      text: 'Lead the vacuum to clean all dirty spots, then guide it to base'
-    },
-    {
-      x: 40,
-      y: args.grid.h - 120,
-      text: 'by Nikos Emmanouilidis'
-    },
-    {
-      x: 40,
-      y: 160,
-      text: 'Press arrow keys to program moves | E to execute them'
-    },
-    {
-      x: 40,
-      y: 120,
-      text: 'C to clear move sequence or D to remove last step'
-    },
-    {
-      x: 40,
-      y: 80,
-      text: 'S to start the game'
-
-    }
-  ]
-  labels.each do |label|
+  title_labels(args).each do |label|
     display_label_with_background(args, label)
   end
   # title background
@@ -76,33 +43,7 @@ def end_tick(args)
     return
   end
 
-  labels = [
-    {
-      x: 300,
-      y: args.grid.h - 40,
-      text: 'THANKS FOR CLEANING!',
-      size_enum: 20
-    },
-
-    {
-      x: 40,
-      y: args.grid.h - 200,
-      text: 'I hope you enjoyed playing this little game!'
-    },
-    {
-      x: 40,
-      y: 160,
-      text: 'Press S to start a new game'
-    },
-
-    {
-      x: 40,
-      y: 80,
-      text: 'Press X to exit the game'
-
-    }
-  ]
-  labels.each do |label|
+  end_labels(args).each do |label|
     display_label_with_background(args, label)
   end
   args.outputs.solids << { x: 0, y: 0, w: args.grid.w, h: args.grid.h, r: 73, g: 139, b: 227 }
@@ -121,49 +62,8 @@ def password_tick(args)
     GTK.request_quit
     return
   end
-  label_text = { top: 'Hooray, you reached a saving point!',
-                 instruction: "Write down the following password so you start the game at level #{args.state.level}:",
-                 password: args.state.password.to_s }
 
-  # we calc the width of the strings, and use it below to center them
-  top_w, = GTK.calcstringbox(label_text[:top], size_enum: 15)
-  instruction_w, = GTK.calcstringbox(label_text[:instruction])
-  password_w, = GTK.calcstringbox(label_text[:password], size_enum: 40)
-
-  labels = [
-    {
-      x: (args.grid.w - top_w) / 2,
-      y: args.grid.h - 40,
-      text: label_text[:top],
-      size_enum: 15
-
-    },
-    {
-      x: (args.grid.w - instruction_w) / 2,
-      y: args.grid.h - 200,
-      text: label_text[:instruction]
-    },
-
-    {
-      x: (args.grid.w - password_w) / 2,
-      y: args.grid.h - 300,
-      text: label_text[:password],
-      size_enum: 40
-    },
-    {
-      x: 40,
-      y: 160,
-      text: 'Press N to resume the game'
-    },
-
-    {
-      x: 40,
-      y: 80,
-      text: 'Press X to exit the game'
-
-    }
-  ]
-  labels.each do |label|
+  password_labels(args).each do |label|
     display_label_with_background(args, label)
   end
   args.outputs.solids << { x: 0, y: 0, w: args.grid.w, h: args.grid.h, r: 73, g: 139, b: 227 }
