@@ -9,7 +9,7 @@ require_relative 'biome'
 require_relative 'labels'
 
 def tick(args)
-  args.state.scene ||= 'title' # options are title, password, end, gameplay
+  args.state.scene ||= 'password' # options are title, password, end, gameplay
   send("#{args.state.scene}_tick", args)
 end
 
@@ -22,7 +22,7 @@ def title_tick(args)
     return
   end
 
-  title_labels(args).each do |label|
+  Labels.title(args).each do |label|
     display_label_with_background(args, label)
   end
   # title background
@@ -43,7 +43,7 @@ def end_tick(args)
     return
   end
 
-  end_labels(args).each do |label|
+  Labels.end(args).each do |label|
     display_label_with_background(args, label)
   end
   args.outputs.solids << { x: 0, y: 0, w: args.grid.w, h: args.grid.h, r: 73, g: 139, b: 227 }
@@ -63,7 +63,7 @@ def password_tick(args)
     return
   end
 
-  password_labels(args).each do |label|
+  Labels.password(args).each do |label|
     display_label_with_background(args, label)
   end
   args.outputs.solids << { x: 0, y: 0, w: args.grid.w, h: args.grid.h, r: 73, g: 139, b: 227 }
