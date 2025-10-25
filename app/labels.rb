@@ -21,6 +21,12 @@ class Labels
         },
         {
           x: 40,
+          y: 205,
+          text: 'How to play:',
+          size_enum: 3
+        },
+        {
+          x: 40,
           y: 160,
           text: 'Press arrow keys to program moves | E to execute them'
         },
@@ -34,6 +40,11 @@ class Labels
           y: 80,
           text: 'S to start the game'
 
+        },
+        {
+          x: 40,
+          y: 400,
+          text: 'Press P to enter a password to start at an advanced level'
         }
       ]
     end
@@ -110,6 +121,63 @@ class Labels
 
         }
       ]
+    end
+
+    def input(args)
+      [{
+        x: 40,
+        y: 500,
+        text: 'Enter password to unlock advanced level:',
+        r: 255,
+        g: 255,
+        b: 255,
+        a: 255,
+        size_enum: 10
+      },
+
+       {
+         x: 40,
+         y: 350,
+         text: args.state.password_input.empty? ? 'Type here...' : args.state.password_input.join(''),
+         r: 255,
+         g: 255,
+         b: 255,
+         a: 255,
+         size_enum: 8
+       },
+
+       {
+         x: 40,
+         y: 200,
+         text: 'Press Enter to submit. Backspace to delete.',
+         r: 128,
+         g: 228,
+         b: 128,
+         a: 255,
+         size_enum: 5
+       },
+       {
+         x: 40,
+         y: 100,
+         text: 'Press Escape to return to title screen',
+         r: 255,
+         g: 255,
+         b: 255,
+         a: 255
+
+       }]
+    end
+
+    def wrong_password
+      {
+        x: 40,
+        y: 600,
+        text: 'Wrong password! Try again.',
+        r: 255,
+        g: 80,
+        b: 80,
+        size_enum: 10
+      }
     end
   end
 end

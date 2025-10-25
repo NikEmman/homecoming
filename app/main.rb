@@ -9,7 +9,7 @@ require_relative 'biome'
 require_relative 'labels'
 
 def tick(args)
-  args.state.scene ||= 'password' # options are title, password, end, gameplay
+  args.state.scene ||= 'title' # options are title, password, end, gameplay
   send("#{args.state.scene}_tick", args)
 end
 
@@ -19,6 +19,11 @@ def title_tick(args)
     Sound.area_cleanup(args)
     args.state.scene = 'gameplay'
     args.audio[:music] = nil # cancels the title music
+    return
+  end
+
+  if args.inputs.keyboard.key_down.p
+    args.state.scene = 'input'
     return
   end
 
@@ -69,6 +74,40 @@ def password_tick(args)
   args.outputs.solids << { x: 0, y: 0, w: args.grid.w, h: args.grid.h, r: 73, g: 139, b: 227 }
 end
 
+def input_tick(args)
+  args.outputs.solids << { x: 0, y: 0, w: args.grid.w, h: args.grid.h, r: 73, g: 139, b: 227 }
+  args.state.password_input ||= []
+  Labels.input(args).each do |label|
+    display_label_with_background(args, label)
+  end
+
+  args.state.password_input += args.inputs.text unless args.inputs.text.empty?
+
+  # Handle backspace/delete
+  args.state.password_input.pop if args.inputs.keyboard.key_down.backspace
+
+  # display error message for 2 sec
+  if args.state.error_flash && args.state.tick_count - args.state.error_flash < 120
+    display_label_with_background(args, Labels.wrong_password)
+  else
+    args.state.error_flash = nil
+  end
+  args.state.scene = 'title' if args.inputs.keyboard.key_down.escape
+  # Handle Enter to submit
+  return unless args.inputs.keyboard.key_down.enter
+
+  if args.state.password_input.join == 'secret' # Replace with your password
+    args.state.level ||= 5
+    args.state.scene = 'gameplay'
+    args.state.password_input = []
+
+  else
+    # Wrong password: Flash error or reset (example: reset input)
+    args.state.password_input = []
+    args.state.error_flash ||= args.state.tick_count
+  end
+end
+
 def gameplay_tick(args)
   # custom grid size for grid and grid boxes
   args.state.grid_box ||= { w: 80, h: 80 }
@@ -116,14 +155,7 @@ def gameplay_tick(args)
   args.outputs.primitives << Furniture.flowerpot(args, 7, 6, 1)
 
   # display goal positions
-  args.state.goal_positions.each do |pos|
-    args.outputs.sprites <<
-      { x: pos.col * args.state.grid_box.w,
-        y: pos.row * args.state.grid_box.h,
-        w: args.state.grid_box.w,
-        h: args.state.grid_box.h,
-        path: "sprites/trash#{args.state.trash_type}.png" }
-  end
+  display_goal_positions(args)
 
   # home base
 
@@ -279,6 +311,17 @@ def display_missed_goal(args)
   label = { x: 50, y: 700, text: text, size_enum: 8, r: 255, g: 120,
             b: 120 }
   display_label_with_background(args, label)
+end
+
+def display_goal_positions(args)
+  args.state.goal_positions.each do |pos|
+    args.outputs.sprites <<
+      { x: pos.col * args.state.grid_box.w,
+        y: pos.row * args.state.grid_box.h,
+        w: args.state.grid_box.w,
+        h: args.state.grid_box.h,
+        path: "sprites/trash#{args.state.trash_type}.png" }
+  end
 end
 
 def display_completed_goals_msg(args)
