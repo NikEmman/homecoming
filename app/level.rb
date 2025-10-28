@@ -21,7 +21,7 @@ class Level
     def load_4(args)
       Biome.number_one(args)
       args.state.home_position ||= { col: 0, row: 1, direction: 'home' }
-      args.state.goal_positions ||= [{ col: 8, row: 4 }]
+      args.state.goal_positions ||= [{ col: 5, row: 2 }]
     end
 
     def load_5(args)

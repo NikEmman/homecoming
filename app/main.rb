@@ -9,6 +9,10 @@ require_relative 'biome'
 require_relative 'labels'
 
 def tick(args)
+  # 5,10 subject to change depending on after which lvl will password screen appear
+  args.state.password_list ||= { 5 => %w[ABN HKT OEM YAX IOT],
+                                 10 => %w[TOBN MEKT NOIM XOYX MMMM] }
+
   args.state.scene ||= 'title' # options are title, password, end, gameplay
   send("#{args.state.scene}_tick", args)
 end
@@ -96,8 +100,8 @@ def input_tick(args)
   # Handle Enter to submit
   return unless args.inputs.keyboard.key_down.enter
 
-  if args.state.password_input.join == 'secret' # Replace with your password
-    args.state.level ||= 5
+  if password_correct?(args, args.state.password_input.join)
+    args.state.level ||= find_level_for_password(args, args.state.password_input.join)
     args.state.scene = 'gameplay'
     args.state.password_input = []
 
@@ -569,10 +573,18 @@ def next_grid_position(grid, direction)
 end
 
 def generate_password(args)
-  # 5,10 subject to change depending on after which lvl will password screen appear
-  saving_points = { 5 => %w[ABN HKT OEM YAX IOT].sample,
-                    10 => %w[TOBN MEKT NOIM XOYX MMMM].sample }
+  # will call the proper key from password_list and then pick a random password
+  args.state.password ||= args.state.password_list[args.state.level].sample
+end
 
-  # will call the proper key from saving_points, or default to "d-v messed up"
-  args.state.password ||= saving_points.fetch(args.state.level, 'D-V messed up')
+def password_correct?(args, password)
+  cleaned = password.strip.upcase
+  args.state.password_list.any? do |_level, passwords|
+    passwords.any? { |p| p == cleaned }
+  end
+end
+
+def find_level_for_password(args, password)
+  cleaned = password.strip.upcase
+  args.state.password_list.find { |level, passes| passes.any? { |p| p == cleaned } }&.first
 end
