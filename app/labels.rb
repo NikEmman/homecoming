@@ -168,6 +168,16 @@ class Labels
        }]
     end
 
+    def current_level(args)
+      { x: 10,
+        y: 700,
+        text: 'Lvl: ' + args.state.level.to_s,
+        r: 255,
+        g: 255,
+        b: 255,
+        a: 255 }
+    end
+
     def wrong_password
       {
         x: 40,

@@ -28,7 +28,8 @@ class Biome
                                 Furniture.coat_rack(args, 2, 5.5),
                                 Furniture.library_front(args, 8, 5, 2),
                                 Furniture.counter(args, 11, 2, 2),
-                                Furniture.fridge(args, 14, 2)]
+                                Furniture.fridge(args, 14, 2),
+                                Furniture.pet_bed(args, 1, 0)]
       args.state.miscellaneous ||= [Wall.green_wallpaper(args, 0, 3),
                                     Wall.green_wallpaper(args, 1, 3),
                                     Wall.green_wallpaper(args, 2, 3),

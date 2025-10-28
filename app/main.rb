@@ -13,7 +13,7 @@ def tick(args)
   args.state.password_list ||= { 5 => %w[ABN HKT OEM YAX IOT],
                                  10 => %w[TOBN MEKT NOIM XOYX MMMM] }
 
-  args.state.scene ||= 'title' # options are title, password, end, gameplay
+  args.state.scene ||= 'gameplay' # options are title, password, end, gameplay
   send("#{args.state.scene}_tick", args)
 end
 
@@ -117,10 +117,10 @@ def gameplay_tick(args)
   args.state.grid_box ||= { w: 80, h: 80 }
 
   args.state.direction ||= 'gameplay'
-  args.state.level ||= 4
+  args.state.level ||= 1
   args.state.max_level ||= 5
 
-  Level.send("load_#{args.state.level}", args)
+  Level.send("load#{args.state.level}", args)
 
   args.state.starting_position ||= args.state.home_position.clone
 
@@ -160,6 +160,7 @@ def gameplay_tick(args)
 
   # display goal positions
   display_goal_positions(args)
+  display_label_with_background(args, Labels.current_level(args))
 
   # home base
 
@@ -586,5 +587,5 @@ end
 
 def find_level_for_password(args, password)
   cleaned = password.strip.upcase
-  args.state.password_list.find { |level, passes| passes.any? { |p| p == cleaned } }&.first
+  args.state.password_list.find { |_level, passes| passes.any? { |p| p == cleaned } }&.first
 end
