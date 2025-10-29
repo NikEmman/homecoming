@@ -7,6 +7,7 @@ require_relative 'carpet'
 require_relative 'wall'
 require_relative 'biome'
 require_relative 'labels'
+require_relative 'shapes'
 
 def tick(args)
   # 5,10 subject to change depending on after which lvl will password screen appear
@@ -34,8 +35,8 @@ def title_tick(args)
   Labels.title(args).each do |label|
     display_label_with_background(args, label)
   end
-  # title background
-  args.outputs.solids << { x: 0, y: 0, w: args.grid.w, h: args.grid.h, r: 73, g: 139, b: 227 }
+  # title scene background
+  args.outputs.solids << Shapes.scene_background(args)
 end
 
 def end_tick(args)
@@ -56,7 +57,7 @@ def end_tick(args)
   Labels.end(args).each do |label|
     display_label_with_background(args, label)
   end
-  args.outputs.solids << { x: 0, y: 0, w: args.grid.w, h: args.grid.h, r: 73, g: 139, b: 227 }
+  args.outputs.solids << Shapes.scene_background(args)
 end
 
 def password_tick(args)
@@ -76,11 +77,11 @@ def password_tick(args)
   Labels.password(args).each do |label|
     display_label_with_background(args, label)
   end
-  args.outputs.solids << { x: 0, y: 0, w: args.grid.w, h: args.grid.h, r: 73, g: 139, b: 227 }
+  args.outputs.solids << Shapes.scene_background(args)
 end
 
 def input_tick(args)
-  args.outputs.solids << { x: 0, y: 0, w: args.grid.w, h: args.grid.h, r: 73, g: 139, b: 227 }
+  args.outputs.solids << Shapes.scene_background(args)
   args.state.password_input ||= []
   Labels.input(args).each do |label|
     display_label_with_background(args, label)
@@ -275,40 +276,10 @@ def gameplay_tick(args)
   end
 end
 
-def vertical_line(column, args)
-  {
-    x: column * args.state.grid_box.w,
-    y: 0,
-    w: 2,
-    h: args.state.grid_total.h * args.state.grid_box.h,
-    r: 92,
-    g: 120,
-    b: 230,
-    a: 128,
-    primitive_marker: :solid
-  }
-end
-
-def horizontal_line(row, args)
-  {
-    x: 0,
-    y: row * args.state.grid_box.h,
-    w: args.state.grid_total.w * args.state.grid_box.w,
-    h: 2,
-    r: 92,
-    g: 120,
-    b: 230,
-    a: 128,
-    primitive_marker: :solid
-  }
-end
-
 def display_reset_instruction(args)
   return if args.state.move_queue.empty?
 
-  label = { x: 50, y: 40, text: 'Press C to clear queue, or D to delete last step', size_enum: 7, r: 255, g: 255,
-            b: 255 }
-  display_label_with_background(args, label)
+  display_label_with_background(args, Labels.command_deletion)
 end
 
 def display_goal_positions(args)
@@ -348,17 +319,7 @@ def display_label_with_background(args, label_hash)
   box_h = text_h + (2 * padding)
 
   # Render semi-transparent dark background box
-  args.outputs.primitives << {
-    x: box_x,
-    y: box_y,
-    w: box_w,
-    h: box_h,
-    r: 0,
-    g: 0,
-    b: 0,
-    a: 60, # adjust 0-255
-    primitive_marker: :solid
-  }
+  args.outputs.primitives << Shapes.label_background(box_x, box_y, box_w, box_h)
 
   args.outputs.labels << {
     x: x,
@@ -471,10 +432,10 @@ end
 
 def display_grid_lines(args)
   (1..args.state.grid_total.w).each do |i|
-    args.outputs.primitives << vertical_line(i, args)
+    args.outputs.primitives << Shapes.vertical_line(i, args)
   end
   (1..args.state.grid_total.h).each do |i|
-    args.outputs.primitives << horizontal_line(i, args)
+    args.outputs.primitives << Shapes.horizontal_line(i, args)
   end
 end
 

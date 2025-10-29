@@ -220,5 +220,10 @@ class Labels
         'right' => '⇨'
       }[command]
     end
+
+    def command_deletion
+      { x: 50, y: 40, text: 'Press C to clear queue, or D to delete last step', size_enum: 7, r: 255, g: 255,
+        b: 255 }
+    end
   end
 end
