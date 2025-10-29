@@ -45,6 +45,7 @@ def end_tick(args)
     args.state.scene = 'gameplay'
     args.audio[:music] = nil
     args.state.level = 1
+    reset_level(args)
     return
   end
   if args.inputs.keyboard.key_down.x
@@ -116,15 +117,15 @@ def gameplay_tick(args)
   # custom grid size for grid and grid boxes
   args.state.grid_box ||= { w: 80, h: 80 }
 
-  args.state.direction ||= 'gameplay'
   args.state.level ||= 1
   args.state.max_level ||= 5
 
   Level.send("load#{args.state.level}", args)
 
-  args.state.starting_position ||= args.state.home_position.clone
+  args.state.starting_position ||= args.state.home_position.dup
 
-  args.state.player_grid ||= args.state.starting_position.clone
+  args.state.player_grid ||= args.state.starting_position.dup
+  args.state.direction ||= args.state.player_grid[:direction].dup
 
   args.state.move_queue ||= []
   args.state.executing ||= false
@@ -204,7 +205,12 @@ def gameplay_tick(args)
   end
 
   if args.inputs.keyboard.key_down.n && args.state.level_complete
-    args.state.level + 1 > args.state.max_level ? args.state.scene = 'end' : args.state.level += 1
+    if args.state.level + 1 > args.state.max_level
+      args.state.scene = 'end'
+      return
+    else
+      args.state.level += 1
+    end
     args.state.scene = 'password' if (args.state.level % 5).zero? # thus after level 4, we get password
     reset_level(args)
   end
@@ -426,7 +432,7 @@ def command_display(command)
 end
 
 def reset_player(args)
-  args.state.player_grid = args.state.starting_position.clone
+  args.state.player_grid = args.state.starting_position.dup
   args.state.direction = args.state.starting_position[:direction]
 
   sprite = args.state.player_sprites[args.state.direction.to_sym].dup
@@ -450,6 +456,10 @@ def reset_level(args)
   args.state.starting_position = nil
   args.state.player_grid = nil
   args.state.level_complete = false
+  args.state.player = nil
+  args.state.direction = nil
+  args.state.player_sprites = nil
+  args.outputs.sprites.clear
 end
 
 def reached_goal?(args)

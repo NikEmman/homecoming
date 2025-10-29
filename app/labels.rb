@@ -80,7 +80,7 @@ class Labels
 
     def password(args)
       label_text = { top: 'Hooray, you reached a saving point!',
-                     instruction: "Write down the following password so you start the game at level #{args.state.level}:",
+                     instruction: "Write down the following password so you may start the game at level #{args.state.level}:",
                      password: args.state.password.to_s }
 
       # we calc the width of the strings, and use it below to center them
