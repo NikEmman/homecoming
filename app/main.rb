@@ -11,8 +11,8 @@ require_relative 'shapes'
 
 def tick(args)
   # 5,10 subject to change depending on after which lvl will password screen appear
-  args.state.password_list ||= { 5 => %w[ABN HKT OEM YAX IOT],
-                                 10 => %w[TOBN MEKT NOIM XOYX MMMM] }
+  args.state.password_list ||= { 5 => %w[ABN HKT OEM YAX 765],
+                                 10 => %w[TOBN MEKT NOIM 1337 M77M] }
 
   args.state.scene ||= 'gameplay' # options are title, password, end, gameplay
   send("#{args.state.scene}_tick", args)
@@ -211,7 +211,7 @@ def gameplay_tick(args)
     else
       args.state.level += 1
     end
-    args.state.scene = 'password' if (args.state.level % 5).zero? # thus after level 4, we get password
+    args.state.scene = 'password' if args.state.password_list.key?(args.state.level)
     reset_level(args)
   end
 
@@ -292,44 +292,36 @@ def display_goal_positions(args)
 end
 
 def display_label_with_background(args, label_hash)
-  # Extract label properties (defaults if missing)
-  x = label_hash[:x] || 0
-  y = label_hash[:y] || 0
-  text = label_hash[:text] || ''
-  size_enum = label_hash[:size_enum] || 0
-  text_r = label_hash[:r] || 255
-  text_g = label_hash[:g] || 255
-  text_b = label_hash[:b] || 255
-  text_a = label_hash[:a] || 255
-
-  # Optional: font (if provided)
-  font = label_hash[:font]
+  # Extract label properties with defaults
+  config = {
+    x: 0,
+    y: 0,
+    text: '',
+    size_enum: 0,
+    r: 255,
+    g: 255,
+    b: 255,
+    a: 255,
+    font: nil
+  }.merge(label_hash)
 
   # Calculate text dimensions
-  text_w, text_h = args.gtk.calcstringbox(text, size_enum)
-
+  text_w, text_h = args.gtk.calcstringbox(config[:text], config[:size_enum])
   padding = 4
 
   # Background box position and size (top-left aligned with padding)
-  box_x = x - padding
-  box_y = y - text_h - padding
-  box_w = text_w + (2 * padding)
-  box_h = text_h + (2 * padding)
+  box = {
+    x: config[:x] - padding,
+    y: config[:y] - text_h - padding,
+    w: text_w + (2 * padding),
+    h: text_h + (2 * padding)
+  }
 
   # Render semi-transparent dark background box
-  args.outputs.primitives << Shapes.label_background(box_x, box_y, box_w, box_h)
+  args.outputs.primitives << Shapes.label_background(box[:x], box[:y], box[:w], box[:h])
 
-  args.outputs.labels << {
-    x: x,
-    y: y,
-    text: text,
-    size_enum: size_enum,
-    r: text_r,
-    g: text_g,
-    b: text_b,
-    a: text_a,
-    font: font
-  }
+  # Render label
+  args.outputs.labels << config.slice(:x, :y, :text, :size_enum, :r, :g, :b, :a, :font)
 end
 
 def display_commands(args)
@@ -343,16 +335,7 @@ def display_commands(args)
     line = (index / items_per_line).to_i
     column = index % items_per_line
 
-    label = {
-      x: 30 + (column * label_width),
-      y: 710 - (line * line_height),
-      text: Labels.command(command),
-      size_enum: size_enum,
-      r: 255,
-      g: 255,
-      b: 255
-    }
-    display_label_with_background(args, label)
+    display_label_with_background(args, Labels.command(line, column, label_width, line_height, command, size_enum))
   end
 end
 
@@ -399,23 +382,37 @@ def all_goals_completed?(state)
     state.move_queue.empty?
 end
 
+def same_grid_position?(pos1, pos2)
+  pos1[:row] == pos2[:row] && pos1[:col] == pos2[:col]
+end
+
 def reached_goal?(args)
-  grid = args.state.player_grid.dup
+  grid = args.state.player_grid
   goals = args.state.goal_positions
 
-  # player reaches goal when lands on a goal position, or  reaches home base after all positions are reached
-  # and is the final move (move queue empty)
-  (goals.any? do |goal|
-    grid[:col] == goal[:col] && grid[:row] == goal[:row]
-  end || reached_home?(args)) && args.state.move_queue.empty?
+  # Only count as reaching goal if:
+  # 1. Move queue is empty (this is the final position)
+  # 2. Player is on a goal OR (all goals done AND on home)
+  # 3. NOT in error state
+  return false if args.state.in_error_state
+  return false unless args.state.move_queue.empty?
+
+  # Check if on a goal position
+  on_goal = goals.any? { |goal| same_grid_position?(grid, goal) }
+
+  # Or if all goals collected and on home
+  on_home = goals.empty? && same_grid_position?(grid, args.state.home_position)
+
+  on_goal || on_home
 end
 
 def reached_home?(args)
   grid = args.state.player_grid.dup
   home = args.state.home_position
   goals = args.state.goal_positions
+
   # reached home returns true only when goals are done
-  goals.empty? && grid[:row] == home[:row] && grid[:col] == home[:col]
+  goals.empty? && same_grid_position?(grid, home)
 end
 
 def update_player_position(args)
@@ -429,7 +426,7 @@ end
 def reject_goal(args)
   grid = args.state.player_grid
   goals = args.state.goal_positions
-  goals.reject! { |goal| grid[:col] == goal[:col] && grid[:row] == goal[:row] }
+  goals.reject! { |goal| same_grid_position?(grid, goal) }
 end
 
 def cover_floor(args, material = 'tarp')
@@ -473,12 +470,8 @@ def blocked?(args, next_pos, direction)
 
   # Premature landing on goal or home
   goals = args.state.goal_positions
-  if goals.any? { |g| g[:col] == next_pos[:col] && g[:row] == next_pos[:row] } && args.state.move_queue.length > 1
-    args.state.missed_goal = true
-    args.state.blocked_route = false
-    return true
-  end
-  if goals.empty? && next_pos[:col] == args.state.home_position[:col] && next_pos[:row] == args.state.home_position[:row] && args.state.move_queue.length > 1
+
+  if goals.empty? && same_grid_position?(next_pos, args.state.home_position) && args.state.move_queue.length > 1
     args.state.missed_goal = true
     args.state.blocked_route = false
     return true

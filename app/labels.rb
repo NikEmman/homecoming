@@ -212,17 +212,26 @@ class Labels
         b: 255 }
     end
 
-    def command(command)
-      {
+    def command(line, column, label_width, line_height, command, size_enum)
+      text = {
         'up' => '⇧',
         'down' => '⇩',
         'left' => '⇦',
         'right' => '⇨'
       }[command]
+      {
+        x: 30 + (column * label_width),
+        y: 710 - (line * line_height),
+        text: text,
+        size_enum: size_enum,
+        r: 255,
+        g: 255,
+        b: 255
+      }
     end
 
     def command_deletion
-      { x: 50, y: 40, text: 'Press C to clear queue, or D to delete last step', size_enum: 7, r: 255, g: 255,
+      { x: 30, y: 60, text: 'Press C to clear queue, or D to delete last step', size_enum: 7, r: 255, g: 255,
         b: 255 }
     end
   end
