@@ -183,11 +183,7 @@ def gameplay_tick(args)
 
   display_label_with_background(args, Labels.missed_goal(args)) if args.state.missed_goal
 
-  if args.state.goal_positions.empty? && args.state.home_position && !args.state.executing && !args.state.in_error_state && args.state.move_queue.empty?
-
-    display_label_with_background(args, Labels.goal_complete(args))
-
-  end
+  display_label_with_background(args, Labels.goals_complete(args)) if all_goals_completed?(args.state)
 
   # execute queued moves by pressing 'e'
   if args.inputs.keyboard.key_down.e && !args.state.level_complete
@@ -195,12 +191,15 @@ def gameplay_tick(args)
     Sound.vacuum_on(args)
   end
 
-  if args.inputs.keyboard.key_down.d && !args.state.executing && !args.state.in_error_state && !args.state.level_complete
+  # !state.executing && !state.in_error_state && !state.level_complete
+  if args.inputs.keyboard.key_down.d && can_queue_moves?(args.state)
+
     args.state.move_queue.pop
     args.state.executing = false
   end
   # clear queued moves by pressing 'c'
-  if args.inputs.keyboard.key_down.c && !args.state.executing && !args.state.in_error_state && !args.state.level_complete
+  if args.inputs.keyboard.key_down.c && can_queue_moves?(args.state)
+
     args.state.move_queue.clear
     args.state.executing = false
   end
@@ -217,11 +216,10 @@ def gameplay_tick(args)
   end
 
   # queue moves with arrow keys
-  unless args.state.executing || args.state.in_error_state || args.state.level_complete
-    args.state.move_queue << 'up' if args.inputs.keyboard.key_down.up
-    args.state.move_queue << 'down'  if args.inputs.keyboard.key_down.down
-    args.state.move_queue << 'left'  if args.inputs.keyboard.key_down.left
-    args.state.move_queue << 'right' if args.inputs.keyboard.key_down.right
+  if can_queue_moves?(args.state)
+    %i[up down left right].each do |direction|
+      args.state.move_queue << direction.to_s if args.inputs.keyboard.key_down.send(direction)
+    end
   end
 
   # process move queue
@@ -387,6 +385,18 @@ def reset_level(args)
   args.state.direction = nil
   args.state.player_sprites = nil
   args.outputs.sprites.clear
+end
+
+def can_queue_moves?(state)
+  !state.executing && !state.in_error_state && !state.level_complete
+end
+
+def all_goals_completed?(state)
+  state.goal_positions.empty? &&
+    state.home_position &&
+    !state.executing &&
+    !state.in_error_state &&
+    state.move_queue.empty?
 end
 
 def reached_goal?(args)

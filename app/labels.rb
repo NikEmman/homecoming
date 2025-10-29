@@ -202,7 +202,7 @@ class Labels
         b: 120 }
     end
 
-    def goal_complete(args)
+    def goals_complete(args)
       text = if args.state.level_complete
                'Level completed, press N to go to the next level'
              else
