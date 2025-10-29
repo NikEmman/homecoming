@@ -14,7 +14,7 @@ def tick(args)
   args.state.password_list ||= { 5 => %w[ABN HKT OEM YAX 765],
                                  10 => %w[TOBN MEKT NOIM 1337 M77M] }
 
-  args.state.scene ||= 'gameplay' # options are title, password, end, gameplay
+  args.state.scene ||= 'title' # options are title, password, end, gameplay
   send("#{args.state.scene}_tick", args)
 end
 
@@ -521,11 +521,11 @@ end
 def password_correct?(args, password)
   cleaned = password.strip.upcase
   args.state.password_list.any? do |_level, passwords|
-    passwords.any? { |p| p == cleaned }
+    passwords.include?(cleaned)
   end
 end
 
 def find_level_for_password(args, password)
   cleaned = password.strip.upcase
-  args.state.password_list.find { |_level, passes| passes.any? { |p| p == cleaned } }&.first
+  args.state.password_list.find { |_level, passes| passes.include?(cleaned) }.first
 end
