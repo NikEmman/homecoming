@@ -180,11 +180,11 @@ def gameplay_tick(args)
     args.state.execute_at_tick = nil
   end
 
-  display_missed_goal(args) if args.state.missed_goal
+  display_label_with_background(args, Labels.missed_goal(args)) if args.state.missed_goal
 
   if args.state.goal_positions.empty? && args.state.home_position && !args.state.executing && !args.state.in_error_state && args.state.move_queue.empty?
 
-    display_completed_goals_msg(args)
+    display_label_with_background(args, Labels.goal_complete(args))
 
   end
 
@@ -311,19 +311,6 @@ def display_reset_instruction(args)
   display_label_with_background(args, label)
 end
 
-def display_missed_goal(args)
-  text = if args.state.blocked_route
-           'Error, obstacle found! Resetting position...'
-         elsif args.state.player_grid[:col] == args.state.home_position[:col] && args.state.player_grid[:row] == args.state.home_position[:row]
-           'Error, returned to home too early! Resetting position...'
-         else
-           'Missed the goal! Resetting position...'
-         end
-  label = { x: 50, y: 700, text: text, size_enum: 8, r: 255, g: 120,
-            b: 120 }
-  display_label_with_background(args, label)
-end
-
 def display_goal_positions(args)
   args.state.goal_positions.each do |pos|
     args.outputs.sprites <<
@@ -333,17 +320,6 @@ def display_goal_positions(args)
         h: args.state.grid_box.h,
         path: "sprites/trash#{args.state.trash_type}.png" }
   end
-end
-
-def display_completed_goals_msg(args)
-  text = if args.state.level_complete
-           'Level completed, press N to go to the next level'
-         else
-           'The house is clean! Return to home base'
-         end
-  label = { x: 30, y: 60, text: text, size_enum: 8, r: 255, g: 255,
-            b: 255 }
-  display_label_with_background(args, label)
 end
 
 def display_label_with_background(args, label_hash)
@@ -411,7 +387,7 @@ def display_commands(args)
     label = {
       x: 30 + (column * label_width),
       y: 710 - (line * line_height),
-      text: command_display(command),
+      text: Labels.command(command),
       size_enum: size_enum,
       r: 255,
       g: 255,
@@ -419,16 +395,6 @@ def display_commands(args)
     }
     display_label_with_background(args, label)
   end
-end
-
-def command_display(command)
-  {
-    'up' => '⇧',
-    'down' => '⇩',
-    'left' => '⇦',
-    'right' => '⇨'
-  }[command]
-  # should I need a default, instead of [command], I can use instead  {...}.fetch(command,"default")
 end
 
 def reset_player(args)

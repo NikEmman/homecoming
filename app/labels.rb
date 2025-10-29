@@ -169,7 +169,7 @@ class Labels
     end
 
     def current_level(args)
-      { x: 10,
+      { x: 1210,
         y: 700,
         text: 'Lvl: ' + args.state.level.to_s,
         r: 255,
@@ -188,6 +188,37 @@ class Labels
         b: 80,
         size_enum: 10
       }
+    end
+
+    def missed_goal(args)
+      text = if args.state.blocked_route
+               'Error, obstacle found! Resetting position...'
+             elsif args.state.player_grid[:col] == args.state.home_position[:col] && args.state.player_grid[:row] == args.state.home_position[:row]
+               'Error, returned to home too early! Resetting position...'
+             else
+               'Missed the goal! Resetting position...'
+             end
+      { x: 50, y: 700, text: text, size_enum: 8, r: 255, g: 120,
+        b: 120 }
+    end
+
+    def goal_complete(args)
+      text = if args.state.level_complete
+               'Level completed, press N to go to the next level'
+             else
+               'The house is clean! Return to home base'
+             end
+      { x: 30, y: 60, text: text, size_enum: 8, r: 255, g: 255,
+        b: 255 }
+    end
+
+    def command(command)
+      {
+        'up' => '⇧',
+        'down' => '⇩',
+        'left' => '⇦',
+        'right' => '⇨'
+      }[command]
     end
   end
 end
