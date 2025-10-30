@@ -29,5 +29,11 @@ class Level
       args.state.home_position ||= { col: 0, row: 1, direction: 'home' }
       args.state.goal_positions ||= [{ col: 3, row: 2 }, { col: 4, row: 0 }]
     end
+
+    def load6(args)
+      Biome.number_two(args)
+      args.state.home_position ||= { col: 0, row: 1, direction: 'home' }
+      args.state.goal_positions ||= [{ col: 2, row: 3 }]
+    end
   end
 end

@@ -380,7 +380,7 @@ class Furniture
         path: 'sprites/background/topdownhousedoorsandwindows.png' }
     end
 
-    def stairs_side(args, row = 0, col = 0, variant = 1)
+    def stairs_right(args, row = 0, col = 0, variant = 1)
       tile_y = variant == 1 ? 0 : 81
       { x: row * args.state.grid_box.w,
         y: col * args.state.grid_box.h,
@@ -390,6 +390,20 @@ class Furniture
         tile_h: 80,
         tile_x: 33,
         tile_y: tile_y,
+        path: 'sprites/background/topdownhousedoorsandwindows.png' }
+    end
+
+    def stairs_left(args, row = 0, col = 0, variant = 1)
+      tile_y = variant == 1 ? 0 : 81
+      { x: row * args.state.grid_box.w,
+        y: col * args.state.grid_box.h,
+        w: 158,
+        h: 158,
+        tile_w: 64,
+        tile_h: 80,
+        tile_x: 33,
+        tile_y: tile_y,
+        flip_horizontally: true,
         path: 'sprites/background/topdownhousedoorsandwindows.png' }
     end
 

@@ -14,7 +14,7 @@ def tick(args)
   args.state.password_list ||= { 5 => %w[ABN HKT OEM YAX 765],
                                  10 => %w[TOBN MEKT NOIM 1337 M77M] }
 
-  args.state.scene ||= 'title' # options are title, password, end, gameplay
+  args.state.scene ||= 'gameplay' # options are title, password, end, gameplay
   send("#{args.state.scene}_tick", args)
 end
 
@@ -105,6 +105,9 @@ def input_tick(args)
   if password_correct?(args, args.state.password_input.join)
     args.state.level ||= find_level_for_password(args, args.state.password_input.join)
     args.state.scene = 'gameplay'
+    Sound.area_cleanup(args)
+    args.audio[:music] = nil # cancels the title music
+
     args.state.password_input = []
 
   else
@@ -118,8 +121,8 @@ def gameplay_tick(args)
   # custom grid size for grid and grid boxes
   args.state.grid_box ||= { w: 80, h: 80 }
 
-  args.state.level ||= 1
-  args.state.max_level ||= 5
+  args.state.level ||= 6
+  args.state.max_level ||= 6
 
   Level.send("load#{args.state.level}", args)
 
