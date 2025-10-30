@@ -149,11 +149,6 @@ def gameplay_tick(args)
   args.state.player ||= args.state.player_sprites[args.state.direction.to_sym].dup
   args.state.execute_at_tick ||= nil
 
-  unless args.state.executing || args.state.in_error_state
-    display_commands(args)
-    display_reset_instruction(args)
-  end
-
   cover_floor(args, args.state.floor_type)
   display_grid_lines(args)
 
@@ -163,7 +158,6 @@ def gameplay_tick(args)
 
   # display goal positions
   display_goal_positions(args)
-  display_label_with_background(args, Labels.current_level(args))
 
   # home base
 
@@ -171,6 +165,11 @@ def gameplay_tick(args)
 
   display_miscellaneous(args)
   display_furniture(args)
+  display_label_with_background(args, Labels.current_level(args))
+  unless args.state.executing || args.state.in_error_state
+    display_commands(args)
+    display_reset_instruction(args)
+  end
 
   # player
   args.outputs.sprites << args.state.player
@@ -326,7 +325,7 @@ def display_label_with_background(args, label_hash)
 end
 
 def display_commands(args)
-  items_per_line = 19
+  items_per_line = 18
   label_width = 65
   size_enum = 20
 
