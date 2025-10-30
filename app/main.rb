@@ -121,8 +121,8 @@ def gameplay_tick(args)
   # custom grid size for grid and grid boxes
   args.state.grid_box ||= { w: 80, h: 80 }
 
-  args.state.level ||= 6
-  args.state.max_level ||= 6
+  args.state.level ||= 10
+  args.state.max_level ||= 10
 
   Level.send("load#{args.state.level}", args)
 
@@ -160,8 +160,6 @@ def gameplay_tick(args)
   display_carpets(args)
 
   display_furniture(args)
-  # display_miscellaneous(args)
-  args.outputs.primitives << Furniture.flowerpot(args, 7, 6, 1)
 
   # display goal positions
   display_goal_positions(args)

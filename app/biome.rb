@@ -50,7 +50,7 @@ class Biome
 
       args.state.furniture ||= [Furniture.sofa_right(args, 0, 3, 2),
                                 Furniture.sofa_left(args, 4, 3, 2),
-                                Furniture.sofa_back(args, 1, 2, 2),
+                                Furniture.sofa_back(args, 2, 2, 2),
                                 Furniture.drawer_front(args, 7, 5),
 
                                 Furniture.record_player(args, 4, 2, 2),

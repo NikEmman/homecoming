@@ -35,5 +35,29 @@ class Level
       args.state.home_position ||= { col: 0, row: 1, direction: 'home' }
       args.state.goal_positions ||= [{ col: 2, row: 3 }]
     end
+
+    def load7(args)
+      Biome.number_two(args)
+      args.state.home_position ||= { col: 0, row: 1, direction: 'home' }
+      args.state.goal_positions ||= [{ col: 3, row: 3 }, { col: 1, row: 4 }]
+    end
+
+    def load8(args)
+      Biome.number_two(args)
+      args.state.home_position ||= { col: 0, row: 1, direction: 'home' }
+      args.state.goal_positions ||= [{ col: 3, row: 3 }, { col: 1, row: 4 }]
+    end
+
+    def load9(args)
+      Biome.number_two(args)
+      args.state.home_position ||= { col: 0, row: 1, direction: 'home' }
+      args.state.goal_positions ||= [{ col: 2, row: 0 }, { col: 1, row: 3 }]
+    end
+
+    def load10(args)
+      Biome.number_two(args)
+      args.state.home_position ||= { col: 0, row: 1, direction: 'home' }
+      args.state.goal_positions ||= [{ col: 5, row: 5 }]
+    end
   end
 end
