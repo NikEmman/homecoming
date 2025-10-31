@@ -61,6 +61,7 @@ def end_tick(args)
 end
 
 def password_tick(args)
+  Sound.password_music(args)
   generate_password(args)
   if args.inputs.keyboard.key_down.n
     Sound.area_cleanup(args) # needs new sound resuming cleanup
@@ -121,7 +122,7 @@ def gameplay_tick(args)
   # custom grid size for grid and grid boxes
   args.state.grid_box ||= { w: 80, h: 80 }
 
-  args.state.level ||= 10
+  args.state.level ||= 1
   args.state.max_level ||= 10
 
   Level.send("load#{args.state.level}", args)
@@ -148,6 +149,7 @@ def gameplay_tick(args)
   }
   args.state.player ||= args.state.player_sprites[args.state.direction.to_sym].dup
   args.state.execute_at_tick ||= nil
+  args.state.end_level_at_tick ||= nil
 
   cover_floor(args, args.state.floor_type)
   display_grid_lines(args)
@@ -181,12 +183,25 @@ def gameplay_tick(args)
     args.state.execute_at_tick = nil
   end
 
+  if args.state.end_level_at_tick && args.state.tick_count >= args.state.end_level_at_tick
+    if args.state.level + 1 > args.state.max_level
+      args.state.scene = 'end'
+      return
+    else
+      args.state.level += 1
+    end
+    args.state.scene = 'password' if args.state.password_list.key?(args.state.level)
+    args.state.end_level_at_tick = nil
+    reset_level(args)
+  end
+
   display_label_with_background(args, Labels.missed_goal(args)) if args.state.missed_goal
 
   display_label_with_background(args, Labels.goals_complete(args)) if all_goals_completed?(args.state)
 
   # execute queued moves by pressing 'e'
   if args.inputs.keyboard.key_down.e && !args.state.level_complete
+    args.outputs.sounds = []
     args.state.executing = true
     Sound.vacuum_on(args)
   end
@@ -205,14 +220,8 @@ def gameplay_tick(args)
   end
 
   if args.inputs.keyboard.key_down.n && args.state.level_complete
-    if args.state.level + 1 > args.state.max_level
-      args.state.scene = 'end'
-      return
-    else
-      args.state.level += 1
-    end
-    args.state.scene = 'password' if args.state.password_list.key?(args.state.level)
-    reset_level(args)
+    args.state.end_level_at_tick = args.state.tick_count + 180 # Schedule reset in 3 seconds
+
   end
 
   # queue moves with arrow keys
@@ -375,7 +384,7 @@ def can_queue_moves?(state)
 end
 
 def all_goals_completed?(state)
-  state.goal_positions.empty? &&
+  state.goal_positions&.empty? &&
     state.home_position &&
     !state.executing &&
     !state.in_error_state &&
