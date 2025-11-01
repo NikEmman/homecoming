@@ -11,10 +11,10 @@ require_relative 'shapes'
 
 def tick(args)
   # 5,10 subject to change depending on after which lvl will password screen appear
-  args.state.password_list ||= { 5 => %w[ABN HKT OEM YAX 765],
-                                 10 => %w[TOBN MEKT NOIM 1337 M77M] }
+  args.state.password_list ||= { 6 => %w[ABN HKT OEM YAX 765],
+                                 11 => %w[TOBN MEKT NOIM 1337 M77M] }
 
-  args.state.scene ||= 'gameplay' # options are title, password, end, gameplay
+  args.state.scene ||= 'title' # options are title, password, end, gameplay
   send("#{args.state.scene}_tick", args)
 end
 
@@ -22,7 +22,7 @@ def title_tick(args)
   Sound.title_music(args)
   if args.inputs.keyboard.key_down.s
     Sound.area_cleanup(args)
-    args.state.scene = 'gameplay'
+    args.state.scene = 'title'
     args.audio[:music] = nil # cancels the title music
     return
   end
@@ -247,6 +247,7 @@ def gameplay_tick(args)
       args.state.in_error_state = true
       args.state.execute_at_tick = args.state.tick_count + 120 # Schedule reset in 2 seconds
       args.state.move_queue.clear # discard the rest of the moves
+
     else
       Player.move_direction(args, args.state.move_queue.shift)
     end
@@ -276,8 +277,7 @@ def gameplay_tick(args)
       args.state.in_error_state = true
       args.state.execute_at_tick = args.state.tick_count + 120
       args.audio[:music] = nil # cancels the on sound loop that started when execution started
-      Sound.vacuum_off(args)
-
+      Sound.error(args)
     end
 
   end

@@ -1,4 +1,18 @@
-* EXCEPTION: uninitialized constant Sounds
+* EXCEPTION:
+* ERROR - :start_text method missing on ~Class~.
+
+#+begin_src ~Class#inspect~
+Labels
+#+end_src ~Class#inspect~
+
+
+
+The method named
+  :start_text
+doesn't exist on [Class, Labels].
+
+(suggestions above)
 ** Backtrace:
-*** app/main.rb:64:in password_tick
+*** app/labels.rb:40:in title
+*** app/main.rb:35:in title_tick
 *** app/main.rb:18:in tick

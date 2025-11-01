@@ -10,10 +10,6 @@ class Sound
         { input: 'sounds/on.mp3', looping: true }
     end
 
-    def vacuum_off(args)
-      args.outputs.sounds << 'sounds/off.mp3'
-    end
-
     def cleanup_completed(args)
       args.outputs.sounds << 'sounds/cleanup_completed.mp3'
     end
@@ -24,6 +20,10 @@ class Sound
 
     def return_home(args)
       args.outputs.sounds << 'sounds/return_home.mp3'
+    end
+
+    def error(args)
+      args.outputs.sounds << 'sounds/error.mp3'
     end
 
     def title_music(args)

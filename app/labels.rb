@@ -2,43 +2,45 @@
 class Labels
   class << self
     def title(args)
+      title_text = 'Roxanne\'s Quest'
+      start_text = 'Press S to START the game'
+      title_w, = GTK.calcstringbox(title_text, size_enum: 20)
+      start_w, = GTK.calcstringbox(start_text, size_enum: 2)
+
       [
         {
-          x: 40,
+          x: (args.grid.w - title_w) / 2,
           y: args.grid.h - 40,
-          text: 'Home coming',
-          size_enum: 6
+          text: title_text,
+          size_enum: 20
         },
         {
           x: 40,
-          y: args.grid.h - 88,
-          text: 'Lead the vacuum to clean all dirty spots, then guide it to base'
+          y: args.grid.h - 180,
+          text: 'Guide Roxanne the robot vacuum to dirty spots, then back to base'
         },
+
         {
           x: 40,
-          y: args.grid.h - 120,
-          text: 'by Nikos Emmanouilidis'
-        },
-        {
-          x: 40,
-          y: 205,
+          y: 235,
           text: 'How to play:',
           size_enum: 3
         },
         {
           x: 40,
-          y: 160,
+          y: 180,
           text: 'Press arrow keys to program moves | E to execute them'
         },
         {
           x: 40,
-          y: 120,
+          y: 140,
           text: 'C to clear move sequence or D to remove last step'
         },
         {
-          x: 40,
+          x: (args.grid.w - start_w) / 2,
           y: 80,
-          text: 'S to start the game'
+          text: start_text,
+          size_enum: 2
 
         },
         {
