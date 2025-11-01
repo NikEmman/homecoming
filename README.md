@@ -15,7 +15,7 @@ Hit S button to start the game. The player then has to input a series of command
 
 ## Live
 
-When ready for launch, I will post a link to [itch.io](itch.io). Will be available for Windows, MacOS, Linux and browser environments
+Play the early version of the game on [itch.io](https://nikemman.itch.io/roxannes-quest)
 
 ## Resources
 

@@ -33,7 +33,7 @@ class Sound
 
     def password_music(args)
       args.audio[:music] ||=
-        { input: 'sounds/password_scene.mp3', looping: true }
+        { input: 'sounds/password_scene.mp3', looping: true, gain: 0.3 }
     end
   end
 end

@@ -22,7 +22,7 @@ def title_tick(args)
   Sound.title_music(args)
   if args.inputs.keyboard.key_down.s
     Sound.area_cleanup(args)
-    args.state.scene = 'title'
+    args.state.scene = 'gameplay'
     args.audio[:music] = nil # cancels the title music
     return
   end

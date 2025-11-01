@@ -1,7 +1,7 @@
 # Remove the pound sign and leading space for the properties below before publishing your game.
 devid=NikEmman
 devtitle=Nikos Emmanouilidis
-gameid=roxannesquest
+gameid=roxannes-quest
 gametitle=Roxanne's Quest
 version=0.1
 icon=metadata/icon.png
