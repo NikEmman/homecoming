@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # labels class
 class Labels
   class << self
@@ -17,7 +19,7 @@ class Labels
         {
           x: 40,
           y: args.grid.h - 180,
-          text: 'Guide Roxanne the robot vacuum to dirty spots, then back to base'
+          text: 'Program Roxanne the robot vacuum to move exactly on top of dirty spots, then back to base'
         },
 
         {
@@ -233,7 +235,7 @@ class Labels
     end
 
     def command_deletion
-      { x: 30, y: 60, text: 'Press C to clear queue, or D to delete last step', size_enum: 7, r: 255, g: 255,
+      { x: 30, y: 60, text: 'Press C to clear queue, or D to delete last step, E to execute', size_enum: 7, r: 255, g: 255,
         b: 255 }
     end
   end

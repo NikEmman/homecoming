@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# carpet sprites
 class Carpet
   class << self
     def big_horizontal(args, row = 0, col = 0, variant = 1)

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # game sounds class
 class Sound
   class << self

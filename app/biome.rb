@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Biome class draws backgrounds and furniture
 class Biome
   class << self
     def number_one(args)

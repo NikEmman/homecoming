@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# wall sprites
 class Wall
   class << self
     def green_wallpaper(args, row = 0, col = 0)

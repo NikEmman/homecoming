@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# class to draw shapes, like grid lines
 class Shapes
   class << self
     def vertical_line(column, args)

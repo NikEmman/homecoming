@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Furniture tiles class
 class Furniture
   class << self

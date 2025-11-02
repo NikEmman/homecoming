@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# class to set each lvl's variables
 class Level
   class << self
     def load1(args)

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Player class for ....well, the Player
 class Player
   class << self

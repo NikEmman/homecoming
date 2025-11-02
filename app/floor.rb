@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Floorboard tiles class
 class Floor
   class << self
