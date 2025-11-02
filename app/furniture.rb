@@ -88,6 +88,19 @@ class Furniture
         path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }
     end
 
+    def counter_reverse(args, col = 0, row = 0, variant = 1)
+      { x: col * args.state.grid_box.w,
+        y: (row * args.state.grid_box.h) + (args.state.grid_box.h / 4),
+        w: 237,
+        h: 119,
+        tile_w: 80,
+        tile_h: 43,
+        tile_x: 96,
+        tile_y: 192,
+        flip_horizontally: true,
+        path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }
+    end
+
     def counter_corner(args, col = 0, row = 0, variant = 1)
       { x: col * args.state.grid_box.w,
         y: (row * args.state.grid_box.h) + (args.state.grid_box.h / 4),
@@ -284,14 +297,27 @@ class Furniture
         path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }
     end
 
-    def toilet_front(args, row = 0, col = 0, variant = 1)
+    def toilet_left(args, row = 0, col = 0, variant = 1)
       { x: row * args.state.grid_box.w,
         y: col * args.state.grid_box.h,
         w: 70,
         h: 79,
-        tile_w: 20,
+        tile_w: 22,
         tile_h: 42,
-        tile_x: 124,
+        tile_x: 144,
+        tile_y: 256,
+        flip_horizontally: true,
+        path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }
+    end
+
+    def toilet_right(args, row = 0, col = 0, variant = 1)
+      { x: row * args.state.grid_box.w,
+        y: col * args.state.grid_box.h,
+        w: 70,
+        h: 79,
+        tile_w: 22,
+        tile_h: 42,
+        tile_x: 144,
         tile_y: 256,
         path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }
     end
@@ -379,6 +405,20 @@ class Furniture
         tile_x: 0,
         tile_y: tile_y,
         # primitive_marker: :sprite,
+        path: 'sprites/background/topdownhousedoorsandwindows.png' }
+    end
+
+    def stairs_front_reverse(args, row = 0, col = 0, variant = 1)
+      tile_y = variant == 1 ? 0 : 81
+      { x: row * args.state.grid_box.w,
+        y: col * args.state.grid_box.h,
+        w: 79,
+        h: 158,
+        tile_w: 32,
+        tile_h: 80,
+        tile_x: 0,
+        tile_y: tile_y,
+        flip_horizontally: true,
         path: 'sprites/background/topdownhousedoorsandwindows.png' }
     end
 

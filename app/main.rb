@@ -16,7 +16,7 @@ def tick(args)
   args.state.password_list ||= { 6 => %w[ABN HKT OEM YAX 765],
                                  11 => %w[TOBN MEKT NOIM 1337 M77M] }
 
-  args.state.scene ||= 'title' # options are title, password, end, gameplay
+  args.state.scene ||= 'gameplay' # options are title, password, end, gameplay
   send("#{args.state.scene}_tick", args)
 end
 
@@ -124,8 +124,8 @@ def gameplay_tick(args)
   # custom grid size for grid and grid boxes
   args.state.grid_box ||= { w: 80, h: 80 }
 
-  args.state.level ||= 1
-  args.state.max_level ||= 10
+  args.state.level ||= 11
+  args.state.max_level ||= 15
 
   Level.send("load#{args.state.level}", args)
 
@@ -153,6 +153,11 @@ def gameplay_tick(args)
   args.state.execute_at_tick ||= nil
 
   cover_floor(args, args.state.floor_type)
+  args.outputs.sprites << Floor.tiles(4.8, 2)
+  args.outputs.sprites << Floor.tiles(5.8, 2)
+  args.outputs.sprites << Floor.tiles(5.8, 1)
+  args.outputs.sprites << Floor.tiles(4.8, 1)
+
   display_grid_lines(args)
 
   display_carpets(args)
@@ -436,7 +441,7 @@ def reject_goal(args)
   goals.reject! { |goal| same_grid_position?(grid, goal) }
 end
 
-def cover_floor(args, material = 'tarp')
+def cover_floor(args, material)
   (0..6).each do |row|
     (0..2).each do |col|
       args.outputs.sprites << Floor.send(material, row, col)
