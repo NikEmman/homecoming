@@ -1,18 +1,4 @@
-* EXCEPTION:
-* ERROR - :start_text method missing on ~Class~.
-
-#+begin_src ~Class#inspect~
-Labels
-#+end_src ~Class#inspect~
-
-
-
-The method named
-  :start_text
-doesn't exist on [Class, Labels].
-
-(suggestions above)
+* EXCEPTION: comparison of Integer with GTK::OpenEntity failed
 ** Backtrace:
-*** app/labels.rb:40:in title
-*** app/main.rb:35:in title_tick
+*** app/main.rb:186:in gameplay_tick
 *** app/main.rb:18:in tick

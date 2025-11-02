@@ -149,7 +149,6 @@ def gameplay_tick(args)
   }
   args.state.player ||= args.state.player_sprites[args.state.direction.to_sym].dup
   args.state.execute_at_tick ||= nil
-  args.state.end_level_at_tick ||= nil
 
   cover_floor(args, args.state.floor_type)
   display_grid_lines(args)
@@ -183,18 +182,6 @@ def gameplay_tick(args)
     args.state.execute_at_tick = nil
   end
 
-  if args.state.end_level_at_tick && args.state.tick_count >= args.state.end_level_at_tick
-    if args.state.level + 1 > args.state.max_level
-      args.state.scene = 'end'
-      return
-    else
-      args.state.level += 1
-    end
-    args.state.scene = 'password' if args.state.password_list.key?(args.state.level)
-    args.state.end_level_at_tick = nil
-    reset_level(args)
-  end
-
   display_label_with_background(args, Labels.missed_goal(args)) if args.state.missed_goal
 
   display_label_with_background(args, Labels.goals_complete(args)) if all_goals_completed?(args.state)
@@ -220,7 +207,15 @@ def gameplay_tick(args)
   end
 
   if args.inputs.keyboard.key_down.n && args.state.level_complete
-    args.state.end_level_at_tick = args.state.tick_count + 180 # Schedule reset in 3 seconds
+    if args.state.level + 1 > args.state.max_level
+      args.state.scene = 'end'
+      return
+    else
+      args.state.level += 1
+    end
+    args.state.scene = 'password' if args.state.password_list.key?(args.state.level)
+    reset_level(args)
+    args.audio[:return_home] = nil
 
   end
 
@@ -262,6 +257,7 @@ def gameplay_tick(args)
       args.audio[:music] = nil
 
       if reached_home?(args)
+        args.audio[:cleanup_completed] = nil # cancels the cleanup complete sound
         Sound.return_home(args)
         args.state.player = Player.docked(args)
         args.state.level_complete = true

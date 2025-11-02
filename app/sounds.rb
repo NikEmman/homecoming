@@ -11,7 +11,7 @@ class Sound
     end
 
     def cleanup_completed(args)
-      args.outputs.sounds << 'sounds/cleanup_completed.mp3'
+      args.audio[:cleanup_completed] ||= { input: 'sounds/cleanup_completed.mp3' }
     end
 
     def trash_pickup(args)
@@ -19,7 +19,7 @@ class Sound
     end
 
     def return_home(args)
-      args.outputs.sounds << 'sounds/return_home.mp3'
+      args.audio[:return_home] ||= { input: 'sounds/return_home.mp3' }
     end
 
     def error(args)
