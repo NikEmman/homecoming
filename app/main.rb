@@ -124,7 +124,7 @@ def gameplay_tick(args)
   # custom grid size for grid and grid boxes
   args.state.grid_box ||= { w: 80, h: 80 }
 
-  args.state.level ||= 11
+  args.state.level ||= 15
   args.state.max_level ||= 15
 
   Level.send("load#{args.state.level}", args)
@@ -153,10 +153,10 @@ def gameplay_tick(args)
   args.state.execute_at_tick ||= nil
 
   cover_floor(args, args.state.floor_type)
-  args.outputs.sprites << Floor.tiles(4.8, 2)
-  args.outputs.sprites << Floor.tiles(5.8, 2)
-  args.outputs.sprites << Floor.tiles(5.8, 1)
-  args.outputs.sprites << Floor.tiles(4.8, 1)
+  args.outputs.sprites << Floor.tiles(4.8, 1.5)
+  args.outputs.sprites << Floor.tiles(5.8, 1.5)
+  # args.outputs.sprites << Floor.tiles(5.8, 1)
+  # args.outputs.sprites << Floor.tiles(4.8, 1)
 
   display_grid_lines(args)
 

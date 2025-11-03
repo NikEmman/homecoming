@@ -358,6 +358,18 @@ class Furniture
         path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }
     end
 
+    def mirror(args, row = 0, col = 0, variant = 1)
+      { x: row * args.state.grid_box.w,
+        y: col * args.state.grid_box.h,
+        w: 79,
+        h: 128,
+        tile_w: 25,
+        tile_h: 48,
+        tile_x: 116,
+        tile_y: 112,
+        path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }
+    end
+
     def coat_rack(args, row = 0, col = 0, variant = 1)
       { x: row * args.state.grid_box.w,
         y: col * args.state.grid_box.h,
