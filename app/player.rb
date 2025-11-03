@@ -70,16 +70,19 @@ class Player
 
     def docked(args, faced_right: true)
       grid = args.state.home_position
+      sprite = args.state.level < 11 ? '1' : '2'
+
       { x: grid.col * args.state.grid_box.h,
         y: grid.row * args.state.grid_box.w,
         tile_x: 0,
         w: 100,
         h: 80,
         flip_horizontally: faced_right,
-        path: 'sprites/docked2.png' }
+        path: "sprites/docked#{sprite}.png" }
     end
 
     def empty_dock(args, faced_right: true)
+      sprite = args.state.level < 11 ? '1' : '2'
       grid = args.state.home_position
       { x: grid.col * args.state.grid_box.h,
         y: grid.row * args.state.grid_box.w,
@@ -87,7 +90,7 @@ class Player
         w: 100,
         h: 80,
         flip_horizontally: faced_right,
-        path: 'sprites/empty_dock.png' }
+        path: "sprites/empty_dock#{sprite}.png" }
     end
 
     def update_sprite(args, direction, grid)
