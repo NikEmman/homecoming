@@ -124,7 +124,7 @@ def gameplay_tick(args)
   # custom grid size for grid and grid boxes
   args.state.grid_box ||= { w: 80, h: 80 }
 
-  args.state.level ||= 1
+  args.state.level ||= 11
   args.state.max_level ||= 15
 
   Level.send("load#{args.state.level}", args)
@@ -152,11 +152,7 @@ def gameplay_tick(args)
   args.state.player ||= args.state.player_sprites[args.state.direction.to_sym].dup
   args.state.execute_at_tick ||= nil
 
-  cover_floor(args, args.state.floor_type)
-  args.outputs.sprites << Floor.tiles(4.8, 1.5)
-  args.outputs.sprites << Floor.tiles(5.8, 1.5)
-  # args.outputs.sprites << Floor.tiles(5.8, 1)
-  # args.outputs.sprites << Floor.tiles(4.8, 1)
+  display_floor(args)
 
   display_grid_lines(args)
 
@@ -441,11 +437,9 @@ def reject_goal(args)
   goals.reject! { |goal| same_grid_position?(grid, goal) }
 end
 
-def cover_floor(args, material)
-  (0..6).each do |row|
-    (0..2).each do |col|
-      args.outputs.sprites << Floor.send(material, row, col)
-    end
+def display_floor(args)
+  args.state.floor_tiles.each do |tile|
+    args.outputs.sprites << tile
   end
 end
 

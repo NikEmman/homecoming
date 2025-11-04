@@ -10,6 +10,14 @@ class Biome
       args.state.trash_type ||= 2
       args.state.grid_total ||= { h: 6, w: 16 }
 
+      # floor drawing
+      args.state.floor_tiles ||= []
+      (0..6).each do |row|
+        (0..2).each do |col|
+          args.state.floor_tiles << Floor.send(args.state.floor_type, row, col)
+        end
+      end
+
       args.state.furniture ||= [Furniture.sofa_front(args, 2, 4, 2),
                                 Furniture.table_small(args, 2, 3, 2),
                                 Furniture.record_player(args, 4, 4),
@@ -50,6 +58,13 @@ class Biome
       args.state.floor_type ||= 'laminate'
       args.state.trash_type ||= 2
       args.state.grid_total ||= { h: 6, w: 16 }
+      # floor drawing
+      args.state.floor_tiles ||= []
+      (0..6).each do |row|
+        (0..2).each do |col|
+          args.state.floor_tiles << Floor.send(args.state.floor_type, row, col)
+        end
+      end
 
       args.state.furniture ||= [Furniture.sofa_right(args, 0, 3, 2),
                                 Furniture.sofa_left(args, 4, 3, 2),
@@ -93,6 +108,16 @@ class Biome
       args.state.floor_type ||= 'fishbone'
       args.state.trash_type ||= 2
       args.state.grid_total ||= { h: 6, w: 16 }
+      # floor drawing
+      args.state.floor_tiles ||= []
+      (0..6).each do |row|
+        (0..2).each do |col|
+          args.state.floor_tiles << Floor.send(args.state.floor_type, row, col)
+        end
+      end
+
+      args.state.floor_tiles << Floor.tiles(4.8, 1.5)
+      args.state.floor_tiles << Floor.tiles(5.8, 1.5)
 
       args.state.furniture ||= [Furniture.single_sofa_right(args, 5, 1),
                                 Furniture.single_sofa_left(args, 9, 2),
