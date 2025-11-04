@@ -124,7 +124,7 @@ def gameplay_tick(args)
   # custom grid size for grid and grid boxes
   args.state.grid_box ||= { w: 80, h: 80 }
 
-  args.state.level ||= 11
+  args.state.level ||= 1
   args.state.max_level ||= 15
 
   Level.send("load#{args.state.level}", args)
@@ -375,6 +375,7 @@ def reset_level(args)
   args.state.player = nil
   args.state.direction = nil
   args.state.player_sprites = nil
+  args.state.floor_tiles = nil
   args.outputs.sprites.clear
 end
 

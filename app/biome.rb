@@ -11,12 +11,7 @@ class Biome
       args.state.grid_total ||= { h: 6, w: 16 }
 
       # floor drawing
-      args.state.floor_tiles ||= []
-      (0..6).each do |row|
-        (0..2).each do |col|
-          args.state.floor_tiles << Floor.send(args.state.floor_type, row, col)
-        end
-      end
+      args.state.floor_tiles ||= (0..6).flat_map { |x| (0..2).map { |y| Floor.send(args.state.floor_type, x, y) } }
 
       args.state.furniture ||= [Furniture.sofa_front(args, 2, 4, 2),
                                 Furniture.table_small(args, 2, 3, 2),
@@ -59,12 +54,7 @@ class Biome
       args.state.trash_type ||= 2
       args.state.grid_total ||= { h: 6, w: 16 }
       # floor drawing
-      args.state.floor_tiles ||= []
-      (0..6).each do |row|
-        (0..2).each do |col|
-          args.state.floor_tiles << Floor.send(args.state.floor_type, row, col)
-        end
-      end
+      args.state.floor_tiles ||= (0..6).flat_map { |x| (0..2).map { |y| Floor.send(args.state.floor_type, x, y) } }
 
       args.state.furniture ||= [Furniture.sofa_right(args, 0, 3, 2),
                                 Furniture.sofa_left(args, 4, 3, 2),
@@ -103,21 +93,14 @@ class Biome
 
     def number_three(args)
       args.state.carpets ||= [Carpet.big_horizontal(args, 5.8, 1, 1),
-                              Carpet.small_vertical(args, 11.5, 3.5),
+                              Carpet.round(args, 13, 5),
                               Carpet.small_horizontal(args, 13, 0, 2)]
       args.state.floor_type ||= 'fishbone'
       args.state.trash_type ||= 2
       args.state.grid_total ||= { h: 6, w: 16 }
       # floor drawing
-      args.state.floor_tiles ||= []
-      (0..6).each do |row|
-        (0..2).each do |col|
-          args.state.floor_tiles << Floor.send(args.state.floor_type, row, col)
-        end
-      end
-
-      args.state.floor_tiles << Floor.tiles(4.8, 1.5)
-      args.state.floor_tiles << Floor.tiles(5.8, 1.5)
+      args.state.floor_tiles ||= (0..6).flat_map { |x| (0..2).map { |y| Floor.send(args.state.floor_type, x, y) } } +
+                                 [Floor.tiles(4.8, 1.5), Floor.tiles(5.8, 1.5)]
 
       args.state.furniture ||= [Furniture.single_sofa_right(args, 5, 1),
                                 Furniture.single_sofa_left(args, 9, 2),
@@ -146,10 +129,11 @@ class Biome
                                 Furniture.door(args, 3, 6, 2),
                                 Furniture.window_single(args, 2, 6.5, 2),
                                 Furniture.window_single(args, 4, 6.5, 2),
+                                Furniture.window_single(args, 14, 6.5, 2),
 
                                 Furniture.counter(args, 11.1, 1),
                                 Furniture.counter_reverse(args, 14, 1, 2),
-                                Furniture.complex_front(args, 8, 5, 2),
+                                Furniture.complex_front(args, 8, 5.4, 2),
                                 Furniture.pet_bed(args, 5, 5)]
       args.state.miscellaneous ||= [Wall.green_wallpaper(args, 0, 3),
                                     Wall.green_wallpaper(args, 1, 3),

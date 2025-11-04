@@ -27,18 +27,6 @@ class Floor
         path: 'sprites/background/topdownhouse_floorsandwalls.png' }
     end
 
-    def hardwood(row = 0, col = 2)
-      { x: row * 200,
-        y: col * 200,
-        w: 200,
-        h: 200,
-        tile_w: 200,
-        tile_h: 200,
-        tile_x: 0,
-        tile_y: 60,
-        path: 'sprites/background/laminate.jpg' }
-    end
-
     def fishbone(row = 0, col = 1)
       { x: row * 200,
         y: col * 200,
