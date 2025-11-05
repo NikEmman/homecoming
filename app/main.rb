@@ -193,6 +193,8 @@ def gameplay_tick(args)
   if args.inputs.keyboard.key_down.e && !args.state.level_complete
     args.outputs.sounds = []
     args.state.executing = true
+    args.audio[:cleanup_completed] = nil # cancels the cleanup complete sound
+
     Sound.vacuum_on(args)
   end
 
@@ -260,7 +262,6 @@ def gameplay_tick(args)
       args.audio[:music] = nil
 
       if reached_home?(args)
-        args.audio[:cleanup_completed] = nil # cancels the cleanup complete sound
         Sound.return_home(args)
         args.state.player = Player.docked(args)
         args.state.level_complete = true
