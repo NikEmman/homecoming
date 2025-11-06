@@ -145,5 +145,65 @@ class Biome
                                     Furniture.shelf(args, 0, 7),
                                     Furniture.flowerpot(args, 1, 7, 2)]
     end
+
+    def number_four(args)
+      args.state.carpets ||= [Carpet.big_horizontal(args, 11.8, 0.5),
+                              Carpet.big_horizontal(args, 8.8, 0.5),
+                              Carpet.big_vertical(args, 5.8, 0.5, 2),
+                              Carpet.small_horizontal(args, 1, 4, 2),
+                              Carpet.round(args, 12, 5),
+                              Carpet.small_horizontal(args, 7.5, 5, 2)]
+      args.state.floor_type ||= 'hex'
+      args.state.trash_type ||= 1
+      args.state.grid_total ||= { h: 6, w: 16 }
+      # floor drawing
+      args.state.floor_tiles ||= (0..6).flat_map { |x| (0..2).map { |y| Floor.send(args.state.floor_type, x, y) } } +
+                                 [Floor.tiles(4.8, 1.5), Floor.tiles(5.8, 1.5)]
+
+      args.state.furniture ||= [Furniture.single_sofa_back(args, 11, 0, 2),
+                                Furniture.single_sofa_back(args, 13, 0, 2),
+                                Furniture.sofa_front(args, 11, 2, 2),
+                                Furniture.sofa_left(args, 14, 1, 2),
+
+                                Furniture.stairs_front_reverse(args, 11, 5.4, 2),
+                                Furniture.stairs_front_reverse(args, 11, 8, 2),
+
+                                Furniture.stairs_front_reverse(args, 11, 7, 2),
+                                Furniture.stairs_front(args, 11.1, 8, 2),
+                                Furniture.stairs_front(args, 11.1, 7, 2),
+
+                                Furniture.stairs_front(args, 11.1, 5.4, 2),
+                                Furniture.bathtub(args, 14, 4),
+                                Furniture.toilet_front(args, 13, 5.5),
+                                Furniture.sink(args, 12, 6),
+                                Furniture.complex_left(args, 8, 2),
+                                Furniture.library_front(args, 6, 3, 2),
+                                Furniture.single_sofa_right(args, 5, 2, 2),
+                                Furniture.pet_bed(args, 5, 0),
+
+                                Furniture.chair_right(args, 3, 1, 2),
+                                Furniture.chair_front(args, 1.5, 2, 2),
+                                Furniture.dinning_table(args, 1, 1),
+                                Furniture.chair_back(args, 1.5, 1, 2),
+
+                                Furniture.door(args, 8, 6),
+                                Furniture.window(args, 7, 6.5),
+                                Furniture.window(args, 9, 6.5),
+                                Furniture.window(args, 14, 6.5),
+
+                                Furniture.counter(args, 0.9, 5, 2),
+                                Furniture.counter_corner_reverse(args, 0, 4.2, 2),
+                                Furniture.utensils(args, 2.5, 6.5)]
+      args.state.miscellaneous ||= [Wall.green_wallpaper(args, 0, 3),
+                                    Wall.green_wallpaper(args, 1, 3),
+                                    Wall.green_wallpaper(args, 2, 3),
+                                    Wall.green_wallpaper(args, 3, 3),
+                                    Wall.green_wallpaper(args, 4, 3),
+                                    Wall.green_wallpaper(args, 5, 3),
+                                    Wall.red_wallpaper(args, 6, 3),
+                                    Furniture.shelf(args, 4, 7, 2),
+                                    Furniture.shelf(args, 0, 7, 2),
+                                    Furniture.flowerpot(args, 5, 7, 2)]
+    end
   end
 end

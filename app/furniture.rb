@@ -113,6 +113,19 @@ class Furniture
         path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }
     end
 
+    def counter_corner_reverse(args, col = 0, row = 0, variant = 1)
+      { x: col * args.state.grid_box.w,
+        y: (row * args.state.grid_box.h) + (args.state.grid_box.h / 4),
+        w: 79,
+        h: 179,
+        tile_w: 33,
+        tile_h: 64,
+        tile_x: 175,
+        tile_y: 193,
+        flip_horizontally: true,
+        path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }
+    end
+
     def single_sofa_front(args, row = 0, col = 0, variant = 1)
       { x: row * args.state.grid_box.w,
         y: col * args.state.grid_box.h,
@@ -307,6 +320,18 @@ class Furniture
         tile_x: 144,
         tile_y: 256,
         flip_horizontally: true,
+        path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }
+    end
+
+    def toilet_front(args, row = 0, col = 0, variant = 1)
+      { x: row * args.state.grid_box.w,
+        y: col * args.state.grid_box.h,
+        w: 70,
+        h: 79,
+        tile_w: 20,
+        tile_h: 42,
+        tile_x: 124,
+        tile_y: 256,
         path: "sprites/background/topdownhouse_furniturestate#{variant}.png" }
     end
 

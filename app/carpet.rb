@@ -18,7 +18,7 @@ class Carpet
     def big_vertical(args, row = 0, col = 0, variant = 1)
       { x: row * args.state.grid_box.w,
         y: col * args.state.grid_box.h,
-        w: 150,
+        w: 200,
         h: 200,
         tile_w: 48,
         tile_h: 48,

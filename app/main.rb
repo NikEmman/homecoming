@@ -14,9 +14,10 @@ require_relative 'shapes'
 def tick(args)
   # 5,10 subject to change depending on after which lvl will password screen appear
   args.state.password_list ||= { 6 => %w[ABN HKT OEM YAX 765],
-                                 11 => %w[TOBN MEKT NOIM 1337 M77M] }
+                                 11 => %w[TOBN MEKT NOIM 1337 M77M],
+                                 16 => %w[EKTON 99561 ZAXAP KIMON 20521] }
 
-  args.state.scene ||= 'title' # options are title, password, end, gameplay
+  args.state.scene ||= 'gameplay' # options are title, password, end, gameplay
   send("#{args.state.scene}_tick", args)
 end
 
@@ -124,8 +125,8 @@ def gameplay_tick(args)
   # custom grid size for grid and grid boxes
   args.state.grid_box ||= { w: 80, h: 80 }
 
-  args.state.level ||= 1
-  args.state.max_level ||= 15
+  args.state.level ||= 20
+  args.state.max_level ||= 20
 
   Level.send("load#{args.state.level}", args)
 
