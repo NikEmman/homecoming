@@ -3,7 +3,7 @@ devid=NikEmman
 devtitle=Nikos Emmanouilidis
 gameid=roxannes-quest
 gametitle=Roxanne's Quest
-version=0.2b
+version=0.6
 icon=metadata/icon.png
 
 # === Flags available at all licensing tiers ===
