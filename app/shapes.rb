@@ -48,5 +48,9 @@ class Shapes
     def scene_background(args)
       { x: 0, y: 0, w: args.grid.w, h: args.grid.h, r: 73, g: 139, b: 227 }
     end
+
+    def flag(state)
+      { x: 1100, y: 200, w: 40, h: 24, path: "sprites/#{state.lang}.jpg" }
+    end
   end
 end

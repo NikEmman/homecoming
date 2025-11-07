@@ -12,12 +12,14 @@ require_relative 'labels'
 require_relative 'shapes'
 
 def tick(args)
+  # args.outputs.debug << args.inputs.keyboard.key_down
   # 5,10 subject to change depending on after which lvl will password screen appear
   args.state.password_list ||= { 6 => %w[ABN HKT OEM YAX 765],
                                  11 => %w[TOBN MEKT NOIM 1337 M77M],
                                  16 => %w[EKTON 99561 ZAXAP KIMON 20521] }
 
   args.state.scene ||= 'title' # options are title, password, end, gameplay
+  args.state.lang ||= 'en' # en or gre
   send("#{args.state.scene}_tick", args)
 end
 
@@ -35,11 +37,18 @@ def title_tick(args)
     return
   end
 
+  if args.inputs.keyboard.key_down.l
+    args.state.lang = args.state.lang == 'en' ? 'gre' : 'en'
+  end
+
   Labels.title(args).each do |label|
     display_label_with_background(args, label)
   end
   # title scene background
   args.outputs.solids << Shapes.scene_background(args)
+
+  # display flag depending on language settings
+  args.outputs.sprites << Shapes.flag(args.state)
 end
 
 def end_tick(args)
