@@ -13,9 +13,9 @@ class Biome
       # floor drawing
       args.state.floor_tiles ||= (0..6).flat_map { |x| (0..2).map { |y| Floor.send(args.state.floor_type, x, y) } }
 
-      args.state.furniture ||= [Furniture.sofa_front(args, 2, 4, 2),
-                                Furniture.table_small(args, 2, 3, 2),
-                                Furniture.record_player(args, 4, 4),
+      args.state.furniture ||= [Furniture.sofa_front(args, 3, 4, 2),
+                                Furniture.table_small(args, 3, 3, 2),
+                                Furniture.record_player(args, 5, 4),
                                 Furniture.stairs_right(args, 0, 5),
                                 Furniture.lamp(args, 0, 4),
                                 Furniture.chair_right(args, 8, 2, 2),
@@ -31,7 +31,7 @@ class Biome
                                 Furniture.window(args, 4, 6.5),
                                 Furniture.window_single(args, 13, 6.5),
                                 Furniture.window_single(args, 11, 6.5),
-                                Furniture.coat_rack(args, 2, 5.5),
+                                Furniture.coat_rack(args, 5, 5.5),
                                 Furniture.library_front(args, 8, 5, 2),
                                 Furniture.counter(args, 11, 2, 2),
                                 Furniture.fridge(args, 14, 2),
@@ -174,7 +174,7 @@ class Biome
 
                                 Furniture.stairs_front(args, 11.1, 5.4, 2),
                                 Furniture.bathtub(args, 14, 4),
-                                Furniture.toilet_front(args, 13, 5.5),
+                                Furniture.toilet_front(args, 15, 5.5),
                                 Furniture.sink(args, 12, 6),
                                 Furniture.complex_left(args, 8, 2),
                                 Furniture.library_front(args, 6, 3, 2),
